@@ -1,0 +1,31 @@
+name: lint
+
+on:
+  push
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    name: run eslint
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-node@v2.4.1
+        with:
+          node-version: 16.10.1
+          cache: yarn
+      - name: lint check
+        run: |
+          yarn
+          yarn lint
+
+  slack-notify:
+    if: always()
+    needs: [eslint]
+    name: post slack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Gamesight/slack-workflow-status@v1.0.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+
