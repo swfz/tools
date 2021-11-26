@@ -12,7 +12,9 @@ function Layout({ children }: { children: ReactNode }) {
     <div className="flex">
       <div
         className={
-          isOpen ? 'h-screen sticky top-0 bg-gray-300 p-4' : 'w-10 overflow-x-hidden h-screen sticky top-0 bg-gray-300'
+          isOpen
+            ? 'h-screen sticky top-0 bg-gray-300 p-4 flex-shrink-0 w-64'
+            : 'w-10 overflow-x-hidden h-screen sticky top-0 bg-gray-300'
         }
       >
         <div className="flex justify-center font-mono text-3xl">
@@ -40,6 +42,27 @@ function Layout({ children }: { children: ReactNode }) {
                   />
                 </svg>
                 <span className={isOpen ? '' : 'hidden'}>Picture in Piscture Timer</span>
+              </span>
+            </Link>
+          </li>
+          <li className="inline-block h-8 hover:text-pink-800">
+            <Link href="/timeline" passHref>
+              <span className="flex items-center cursor-pointer">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                  />
+                </svg>
+                <span className={isOpen ? '' : 'hidden'}>Hourly Timeline Editor</span>
               </span>
             </Link>
           </li>
