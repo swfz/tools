@@ -1,7 +1,5 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
   return (
@@ -20,7 +18,7 @@ const Home: NextPage = () => {
 
       <footer className="absolute bottom-0">
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://github.com/swfz"
           target="_blank"
           rel="noopener noreferrer"
         >
