@@ -1,6 +1,6 @@
 // import '../styles/globals.css'
 import 'tailwindcss/tailwind.css';
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
 import Layout from '../components/layout';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Layout>
       <Component {...pageProps} />
     </Layout>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
