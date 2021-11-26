@@ -1,6 +1,11 @@
 import Link from 'next/link'
+import { useState, ReactNode } from 'react'
 
-function Layout({children}) {
+function Layout({children}: {children: ReactNode}) {
+  const [isOpen, setIsOpen] = useState(true)
+
+  const togglOpen = () => {setIsOpen(!isOpen)}
+
   return (
     <div className="flex">
       <div className="h-screen sticky top-0 bg-gray-300 p-4">
