@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write --ignore-path .gitignore './**/*.{js,ts,tsx,json,css}'"
   },
   "dependencies": {
     "@tailwindcss/forms": "0.3.4",
@@ -25,5 +26,10 @@
     "prettier": "^2.5.0",
     "tailwindcss": "2.2.19",
     "typescript": "4.5.2"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "printWidth": 120
   }
 }

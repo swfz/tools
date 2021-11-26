@@ -1,11 +1,11 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "next/core-web-vitals",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:import/warnings",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "prettier"
   ],
   "ignorePatterns": ["*.config.js"]
 }
