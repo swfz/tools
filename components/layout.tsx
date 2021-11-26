@@ -9,7 +9,7 @@ function Layout({children}: {children: ReactNode}) {
   return (
     <div className="flex">
       <div className={isOpen ? "h-screen sticky top-0 bg-gray-300 p-4" : "w-10 overflow-x-hidden h-screen sticky top-0 bg-gray-300"}>
-        <div className="flex justify-center text-3xl font-mono">
+        <div className="flex justify-center font-mono text-3xl">
           <span className={isOpen ? "" : "hidden"}>
             <Link href="/">
               swfz tools
@@ -18,10 +18,10 @@ function Layout({children}: {children: ReactNode}) {
           &nbsp;
         </div>
         <ul className="flex flex-col p-2">
-          <li className="hover:text-pink-800 h-8 inline-block">
-            <Link href="/timer">
+          <li className="inline-block h-8 hover:text-pink-800">
+            <Link href="/timer" passHref>
               <span className="flex items-center cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span className={isOpen ? "" : "hidden"}>Picture in Piscture Timer</span>
@@ -33,7 +33,7 @@ function Layout({children}: {children: ReactNode}) {
         </div>
       </div>
       <div>
-        <svg onClick={togglOpen} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg onClick={togglOpen} xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </div>

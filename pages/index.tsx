@@ -12,7 +12,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="">
-        <h1 className="text-5xl flex justify-center">
+        <h1 className="flex justify-center text-5xl">
           swfz tools
         </h1>
 

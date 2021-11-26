@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 
 interface formValues {
   hour: number;
@@ -66,7 +66,7 @@ const Timer: NextPage = () => {
     setCount(0);
   }
 
-  const writeToCanvas = (ctx: CanvasRenderingContext2D, count: number) => {
+  const writeToCanvas = useCallback((ctx: CanvasRenderingContext2D, count: number) => {
     const width = 300;
     const height = 100;
 
@@ -110,7 +110,7 @@ const Timer: NextPage = () => {
 
     ctx.fillStyle = fgGradient;
     ctx.fillRect(21, 71, remaining, 8);
-  }
+  }, [maxCount]);
 
   const formatTime = (count: number) => {
     const hour = Math.floor(count / 60 / 60);
@@ -134,10 +134,10 @@ const Timer: NextPage = () => {
     }, 1000);
 
     return () => clearInterval(interval)
-  }, [count])
+  }, [count, writeToCanvas])
 
   return(
-    <div className="divide-y divide-black-300">
+    <div className="divide-y divide-gray-300">
       <div>
         <h1 className="text-3xl">Picture in Picture Timer</h1>
       </div>
@@ -153,11 +153,11 @@ const Timer: NextPage = () => {
             時間になると背景色が変わります
           </div>
         </div>
-        <div className="divide-y divide-black-300 p-2">
+        <div className="p-2 divide-y divide-gray-300">
           <div id="timer">
             <canvas id="canvas" width="300" height="100" ref={canvasRef}></canvas>
           </div>
-          <div className="p-1 flex">
+          <div className="flex p-1">
             <span className="flex-1">Hour: </span>
             <select className="flex-1 rounded" value={formValue.hour} onChange={handleHourChange}>
               {hours.map(hour => {
@@ -165,7 +165,7 @@ const Timer: NextPage = () => {
               })}
             </select>
           </div>
-          <div className="p-1 flex">
+          <div className="flex p-1">
             <span className="flex-1">Minute: </span>
             <select className="flex-1 rounded" value={formValue.min} onChange={handleMinChange}>
               {minutes.map(min=> {
@@ -173,7 +173,7 @@ const Timer: NextPage = () => {
               })}
             </select>
           </div>
-          <div className="p-1 flex">
+          <div className="flex p-1">
             <span className="flex-1">Second: </span>
             <select className="flex-1 rounded" value={formValue.sec} onChange={handleSecChange}>
               {seconds.map(sec=> {
@@ -181,16 +181,16 @@ const Timer: NextPage = () => {
               })}
             </select>
           </div>
-          <div className="p-1 flex flex-row">
-            <button className="flex items-center mx-1 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={startTimer}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex flex-row p-1">
+            <button className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow" onClick={startTimer}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Start Timer
             </button>
-            <button className="flex items-center mx-1 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={resetTimer}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow" onClick={resetTimer}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
               </svg>
@@ -198,8 +198,8 @@ const Timer: NextPage = () => {
             </button>
           </div>
           <div className="p-1">
-            <button className="flex items-center mx-1 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={createVideo}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow" onClick={createVideo}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
               Picture in Picture
