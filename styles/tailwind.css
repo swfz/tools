@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.name {
+  @apply sticky left-0 bg-white;
+}
