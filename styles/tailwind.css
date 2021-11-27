@@ -2,6 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+/* for timeline */
+
 .name {
-  @apply sticky left-0 bg-white;
+  @apply sticky w-32 left-0 bg-white;
+}
+
+.start {
+  @apply sticky w-16 left-32 bg-white;
+}
+
+.end {
+  @apply sticky w-16 left-48 bg-white;
+}
+
+.remark {
+  @apply w-32;
+}
+
+.data-name,
+.data-remark {
+  @apply w-32 text-gray-700 bg-gray-200;
+}
+
+.data-start,
+.data-end {
+  @apply w-16 text-gray-700 bg-gray-200;
+}
+
+.input-name,
+.input-remark {
+  @apply appearance-none block w-32  bg-white text-gray-700 border border-gray-500 rounded px-1 py-0 leading-none focus:outline-none focus:bg-white;
+}
+.input-start,
+.input-end {
+  @apply appearance-none block w-16  bg-white text-gray-700 border border-gray-500 rounded px-1 py-0 leading-none focus:outline-none focus:bg-white;
 }
