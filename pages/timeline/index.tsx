@@ -23,7 +23,8 @@ type Column = 'name' | 'startTime' | 'endTime' | 'remark';
 const Schedule: NextPage = () => {
   const [items, setItems] = useState<Item[]>([]);
   const columns: Column[] = ['name', 'startTime', 'endTime', 'remark'];
-  const unit = 10;
+  const [unit, setUnit] = useState(10);
+  const units = [1, 5, 10, 30, 60];
   const times = [...Array((24 * 60) / unit)].map((_, i) => i);
   const [startTime, setStartTime] = useState();
 
@@ -69,6 +70,10 @@ const Schedule: NextPage = () => {
     };
   };
 
+  const handleUnitChange = (event: any) => {
+    setUnit(event.target.value);
+  };
+
   return (
     <div className="divide-y divide-gray-300">
       <div>
@@ -81,6 +86,18 @@ const Schedule: NextPage = () => {
         </div>
       </div>
       <div>
+        <div>
+          <span>単位時間(分)</span>
+          <select className="rounded" value={unit} onChange={handleUnitChange}>
+            {units.map((u) => {
+              return (
+                <option key={u} value={u}>
+                  {u.toString().padStart(2, '0')}
+                </option>
+              );
+            })}
+          </select>
+        </div>
         <table className="border-2">
           <thead>
             <tr className="border-2">
