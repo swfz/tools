@@ -100,7 +100,7 @@ const Schedule: NextPage = () => {
         </div>
         <table className="border-2">
           <thead>
-            <tr className="border-2 flex flex-row">
+            <tr className="flex flex-row">
               {columns.map((column) => {
                 return (
                   <td className={column} key={column}>
@@ -110,7 +110,7 @@ const Schedule: NextPage = () => {
               })}
               <td className="whitespace-nowrap">timeline(hour)</td>
             </tr>
-            <tr className="border-2 flex flex-row">
+            <tr className="flex flex-row border-2">
               {columns.map((column) => {
                 const className = `data-${column}`;
                 return (
