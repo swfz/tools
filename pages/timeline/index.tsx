@@ -9,11 +9,11 @@ dayjs.extend(isBetween);
 interface Item {
   id: string;
   name: string;
-  startTime: string;
-  endTime: string;
+  start: string;
+  end: string;
   remark: string;
 }
-type Column = 'name' | 'startTime' | 'endTime' | 'remark';
+type Column = 'name' | 'start' | 'end' | 'remark';
 
 // timeline
 // デフォルトで24時間分
@@ -22,28 +22,29 @@ type Column = 'name' | 'startTime' | 'endTime' | 'remark';
 
 const Schedule: NextPage = () => {
   const [items, setItems] = useState<Item[]>([]);
-  const columns: Column[] = ['name', 'startTime', 'endTime', 'remark'];
-  const unit = 10;
+  const columns: Column[] = ['name', 'start', 'end', 'remark'];
+  const [unit, setUnit] = useState(10);
+  const units = [1, 5, 10, 30, 60];
   const times = [...Array((24 * 60) / unit)].map((_, i) => i);
   const [startTime, setStartTime] = useState();
 
-  const sample: Item = {
+  const sampleData: Item = {
     id: uuid(),
-    name: 'sampleData',
-    startTime: '01:00',
-    endTime: '01:30',
-    remark: 'Sample Remark',
+    name: 'SampleName',
+    start: '01:00',
+    end: '01:30',
+    remark: 'Remark　　　　　　',
   };
 
   const addItem = () => {
     setItems((prevItems) => {
-      return [...prevItems, { id: uuid(), name: '', startTime: '00:00', endTime: '00:00', remark: '' }];
+      return [...prevItems, { id: uuid(), name: '', start: '00:00', end: '00:00', remark: '' }];
     });
   };
 
   const isBetween = (item: Item, time: number) => {
-    const [startHour, startMin] = item.startTime.split(':').map((s) => parseInt(s));
-    const [endHour, endMin] = item.endTime.split(':').map((s) => parseInt(s));
+    const [startHour, startMin] = item.start.split(':').map((s) => parseInt(s));
+    const [endHour, endMin] = item.end.split(':').map((s) => parseInt(s));
     const start = dayjs().hour(startHour).minute(startMin);
     const end = dayjs().hour(endHour).minute(endMin);
 
@@ -69,6 +70,10 @@ const Schedule: NextPage = () => {
     };
   };
 
+  const handleUnitChange = (event: any) => {
+    setUnit(event.target.value);
+  };
+
   return (
     <div className="divide-y divide-gray-300">
       <div>
@@ -81,9 +86,21 @@ const Schedule: NextPage = () => {
         </div>
       </div>
       <div>
+        <div>
+          <span>単位時間(分)</span>
+          <select className="rounded pr-8 py-0 " value={unit} onChange={handleUnitChange}>
+            {units.map((u) => {
+              return (
+                <option key={u} value={u}>
+                  {u.toString().padStart(2, '0')}
+                </option>
+              );
+            })}
+          </select>
+        </div>
         <table className="border-2">
           <thead>
-            <tr className="border-2">
+            <tr className="flex flex-row">
               {columns.map((column) => {
                 return (
                   <td className={column} key={column}>
@@ -93,11 +110,12 @@ const Schedule: NextPage = () => {
               })}
               <td className="whitespace-nowrap">timeline(hour)</td>
             </tr>
-            <tr className="border-2">
+            <tr className="flex flex-row border-2">
               {columns.map((column) => {
+                const className = `data-${column}`;
                 return (
-                  <td className="text-gray-700 bg-gray-200" key={column}>
-                    {sample[column]}
+                  <td className={className} key={column}>
+                    {sampleData[column]}
                   </td>
                 );
               })}
@@ -105,14 +123,14 @@ const Schedule: NextPage = () => {
                 {times.map((t) => {
                   if (t % (60 / unit) === 0) {
                     return (
-                      <div key={t} className="inline-block w-4">
+                      <div key={t} className="inline-block w-5 font-bold">
                         {t / (60 / unit)}
                       </div>
                     );
                   } else {
                     return (
-                      <div key={t} className="inline-block w-4">
-                        -
+                      <div key={t} className="inline-block w-5 text-xs">
+                        {(t % (60 / unit)) * unit}
                       </div>
                     );
                   }
@@ -123,18 +141,26 @@ const Schedule: NextPage = () => {
           <tbody>
             {items.map((item) => {
               return (
-                <tr key={item.id}>
+                <tr className="flex flex-row" key={item.id}>
                   {columns.map((column) => {
+                    const inputClassName = `input-${column}`;
                     return (
                       <td className={column} key={column}>
-                        <input key={column} type="text" onChange={fixHandleInput(item, column)} value={item[column]} />
+                        <input
+                          className={inputClassName}
+                          key={column}
+                          type="text"
+                          onChange={fixHandleInput(item, column)}
+                          value={item[column]}
+                          placeholder={sampleData[column]}
+                        />
                       </td>
                     );
                   })}
                   <td className="whitespace-nowrap">
                     {times.map((t) => {
                       return (
-                        <span key={t} className="inline-block w-4">
+                        <span key={t} className="inline-block w-5">
                           {isBetween(item, t)}
                         </span>
                       );
