@@ -122,14 +122,14 @@ const Schedule: NextPage = () => {
                 {times.map((t) => {
                   if (t % (60 / unit) === 0) {
                     return (
-                      <div key={t} className="inline-block w-4">
+                      <div key={t} className="inline-block w-5 font-bold">
                         {t / (60 / unit)}
                       </div>
                     );
                   } else {
                     return (
-                      <div key={t} className="inline-block w-4">
-                        -
+                      <div key={t} className="inline-block w-5 text-xs">
+                        {(t % (60 / unit)) * unit}
                       </div>
                     );
                   }
@@ -151,7 +151,7 @@ const Schedule: NextPage = () => {
                   <td className="whitespace-nowrap">
                     {times.map((t) => {
                       return (
-                        <span key={t} className="inline-block w-4">
+                        <span key={t} className="inline-block w-5">
                           {isBetween(item, t)}
                         </span>
                       );
