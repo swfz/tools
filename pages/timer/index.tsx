@@ -47,7 +47,6 @@ const Timer: NextPage = () => {
   };
 
   const handleHourChange = (e: any) => {
-    console.log(e);
     setFormValue((prev) => {
       return { ...prev, hour: parseInt(e.target.value) };
     });
