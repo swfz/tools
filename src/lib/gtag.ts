@@ -1,16 +1,18 @@
-type ContactEvent = {
-  action: 'submit_form';
-  category: 'contact';
-  label: string;
+type TimerEvent = {
+  action: 'start' | 'reset' | 'pinp' | 'timeup';
+  category: 'timer';
 };
 
-type ClickEvent = {
-  action: 'click';
-  category: 'other';
-  label: string;
+type TimelineEvent = {
+  action: 'add_row' | 'change_unit';
+  category: 'timeline';
 };
 
-export type Event = ContactEvent | ClickEvent;
+export type Event = (TimerEvent | TimelineEvent) & {
+  label?: Record<string, string | number | boolean> | string;
+  value?: number | string;
+};
+
 export const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || '';
 export const existsGaId = GA_ID !== '';
 
