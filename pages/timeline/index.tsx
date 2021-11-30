@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import Head from 'next/head';
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import dayjs from 'dayjs';
@@ -75,110 +76,115 @@ const Schedule: NextPage = () => {
   };
 
   return (
-    <div className="divide-y divide-gray-300">
-      <div>
-        <h1 className="text-3xl">Hourly Timeline Editor</h1>
-      </div>
-      <div className="p-3">
+    <>
+      <Head>
+        <title>Hourly Timeline Editor</title>
+      </Head>
+      <div className="divide-y divide-gray-300">
         <div>
-          <div>時間単位でのタイムラインを可視化するフォーム</div>
-          <div>分、時間単位で何が起こっていてどういう順番なのかを整理するのを効率化するためのページ</div>
+          <h1 className="text-3xl">Hourly Timeline Editor</h1>
         </div>
-      </div>
-      <div>
+        <div className="p-3">
+          <div>
+            <div>時間単位でのタイムラインを可視化するフォーム</div>
+            <div>分、時間単位で何が起こっていてどういう順番なのかを整理するのを効率化するためのページ</div>
+          </div>
+        </div>
         <div>
-          <span>単位時間(分)</span>
-          <select className="py-0 pr-8 rounded" value={unit} onChange={handleUnitChange}>
-            {units.map((u) => {
-              return (
-                <option key={u} value={u}>
-                  {u.toString().padStart(2, '0')}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <table className="border-2">
-          <thead>
-            <tr className="flex flex-row">
-              {columns.map((column) => {
+          <div>
+            <span>単位時間(分)</span>
+            <select className="py-0 pr-8 rounded" value={unit} onChange={handleUnitChange}>
+              {units.map((u) => {
                 return (
-                  <td className={column} key={column}>
-                    {column}
-                  </td>
+                  <option key={u} value={u}>
+                    {u.toString().padStart(2, '0')}
+                  </option>
                 );
               })}
-              <td className="whitespace-nowrap">timeline(hour)</td>
-            </tr>
-            <tr className="flex flex-row border-2">
-              {columns.map((column) => {
-                const className = `data-${column}`;
-                return (
-                  <td className={className} key={column}>
-                    {sampleData[column]}
-                  </td>
-                );
-              })}
-              <td className="whitespace-nowrap">
-                {times.map((t) => {
-                  if (t % (60 / unit) === 0) {
-                    return (
-                      <div key={t} className="inline-block w-5 font-bold">
-                        {t / (60 / unit)}
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div key={t} className="inline-block w-5 text-xs">
-                        {(t % (60 / unit)) * unit}
-                      </div>
-                    );
-                  }
+            </select>
+          </div>
+          <table className="border-2">
+            <thead>
+              <tr className="flex flex-row">
+                {columns.map((column) => {
+                  return (
+                    <td className={column} key={column}>
+                      {column}
+                    </td>
+                  );
                 })}
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => {
-              return (
-                <tr className="flex flex-row" key={item.id}>
-                  {columns.map((column) => {
-                    const inputClassName = `input-${column}`;
-                    return (
-                      <td className={column} key={column}>
-                        <input
-                          className={inputClassName}
-                          key={column}
-                          type="text"
-                          onChange={fixHandleInput(item, column)}
-                          value={item[column]}
-                          placeholder={sampleData[column]}
-                        />
-                      </td>
-                    );
-                  })}
-                  <td className="whitespace-nowrap">
-                    {times.map((t) => {
+                <td className="whitespace-nowrap">timeline(hour)</td>
+              </tr>
+              <tr className="flex flex-row border-2">
+                {columns.map((column) => {
+                  const className = `data-${column}`;
+                  return (
+                    <td className={className} key={column}>
+                      {sampleData[column]}
+                    </td>
+                  );
+                })}
+                <td className="whitespace-nowrap">
+                  {times.map((t) => {
+                    if (t % (60 / unit) === 0) {
                       return (
-                        <span key={t} className="inline-block w-5">
-                          {isBetween(item, t)}
-                        </span>
+                        <div key={t} className="inline-block w-5 font-bold">
+                          {t / (60 / unit)}
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div key={t} className="inline-block w-5 text-xs">
+                          {(t % (60 / unit)) * unit}
+                        </div>
+                      );
+                    }
+                  })}
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => {
+                return (
+                  <tr className="flex flex-row" key={item.id}>
+                    {columns.map((column) => {
+                      const inputClassName = `input-${column}`;
+                      return (
+                        <td className={column} key={column}>
+                          <input
+                            className={inputClassName}
+                            key={column}
+                            type="text"
+                            onChange={fixHandleInput(item, column)}
+                            value={item[column]}
+                            placeholder={sampleData[column]}
+                          />
+                        </td>
                       );
                     })}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <button
-          className="flex sticky left-0 items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
-          onClick={addItem}
-        >
-          +
-        </button>
+                    <td className="whitespace-nowrap">
+                      {times.map((t) => {
+                        return (
+                          <span key={t} className="inline-block w-5">
+                            {isBetween(item, t)}
+                          </span>
+                        );
+                      })}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <button
+            className="flex sticky left-0 items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+            onClick={addItem}
+          >
+            +
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
