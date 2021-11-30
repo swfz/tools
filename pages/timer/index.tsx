@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { event } from '../../src/lib/gtag';
 
 interface formValues {
   hour: number;
@@ -37,6 +38,12 @@ const Timer: NextPage = () => {
 
   const handleVideoEvent = (e: any) => {
     e.target.requestPictureInPicture();
+    event({
+      action: 'pinp',
+      category: 'timer',
+      label: 'count',
+      value: count,
+    });
   };
 
   const handleHourChange = (e: any) => {
@@ -60,11 +67,23 @@ const Timer: NextPage = () => {
     const count = formValue.hour * 60 * 60 + formValue.min * 60 + formValue.sec;
     setCount(count);
     setMaxCount(count);
+    event({
+      action: 'start',
+      category: 'timer',
+      label: 'count',
+      value: count,
+    });
   };
 
   const resetTimer = () => {
     setFormValue({ hour: 0, min: 0, sec: 0 });
     setCount(0);
+    event({
+      action: 'reset',
+      category: 'timer',
+      label: 'count',
+      value: count,
+    });
   };
 
   const writeToCanvas = useCallback(
@@ -138,6 +157,14 @@ const Timer: NextPage = () => {
 
     const interval = setInterval(() => {
       setCount((c) => c - 1);
+      if (count === 0) {
+        event({
+          action: 'timeup',
+          category: 'timer',
+          label: 'max_count',
+          value: maxCount,
+        });
+      }
       writeToCanvas(ctx, count);
     }, 1000);
 

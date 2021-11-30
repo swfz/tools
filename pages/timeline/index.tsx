@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import { event as gaEvent } from '../../src/lib/gtag';
 
 dayjs.extend(isBetween);
 
@@ -41,6 +42,10 @@ const Schedule: NextPage = () => {
     setItems((prevItems) => {
       return [...prevItems, { id: uuid(), name: '', start: '00:00', end: '00:00', remark: '' }];
     });
+    gaEvent({
+      action: 'add_row',
+      category: 'timeline',
+    });
   };
 
   const isBetween = (item: Item, time: number) => {
@@ -73,6 +78,11 @@ const Schedule: NextPage = () => {
 
   const handleUnitChange = (event: any) => {
     setUnit(event.target.value);
+    gaEvent({
+      action: 'change_unit',
+      category: 'timeline',
+      value: event.target.value,
+    });
   };
 
   return (
