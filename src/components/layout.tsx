@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useState, ReactNode } from 'react';
-import { ClockIcon, AdjustmentsIcon } from '../src/components/icon';
+import { ClockIcon, AdjustmentsIcon } from './icon';
 
 function Layout({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
