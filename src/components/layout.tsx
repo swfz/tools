@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, MouseEvent } from 'react';
 import { ClockIcon, AdjustmentsIcon } from './icon';
 
 function Layout({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(true);
 
-  const togglOpen = (event: any) => {
+  const togglOpen = (event: MouseEvent<SVGElement>) => {
     setIsOpen(!isOpen);
   };
 

@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent } from 'react';
 import { event } from '../../src/lib/gtag';
 import { PlayIcon, StopIcon, DuplicateIcon } from '../../src/components/icon';
 
@@ -9,6 +9,7 @@ interface formValues {
   min: number;
   sec: number;
 }
+
 const Timer: NextPage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -37,8 +38,11 @@ const Timer: NextPage = () => {
     }
   }
 
-  const handleVideoEvent = (e: any) => {
-    e.target.requestPictureInPicture();
+  const handleVideoEvent = (e: SyntheticEvent<HTMLVideoElement>) => {
+    // TODO: さっと解決できなかったのでキャストしている
+    const video = e.target as HTMLVideoElement;
+    video.requestPictureInPicture();
+
     event({
       action: 'pinp',
       category: 'timer',
@@ -47,17 +51,17 @@ const Timer: NextPage = () => {
     });
   };
 
-  const handleHourChange = (e: any) => {
+  const handleHourChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setFormValue((prev) => {
       return { ...prev, hour: parseInt(e.target.value) };
     });
   };
-  const handleMinChange = (e: any) => {
+  const handleMinChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setFormValue((prev) => {
       return { ...prev, min: parseInt(e.target.value) };
     });
   };
-  const handleSecChange = (e: any) => {
+  const handleSecChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setFormValue((prev) => {
       return { ...prev, sec: parseInt(e.target.value) };
     });
