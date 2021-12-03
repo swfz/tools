@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { v4 as uuid } from 'uuid';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
@@ -76,8 +76,8 @@ const Schedule: NextPage = () => {
     };
   };
 
-  const handleUnitChange = (event: any) => {
-    setUnit(event.target.value);
+  const handleUnitChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setUnit(parseInt(event.target.value));
     gaEvent({
       action: 'change_unit',
       category: 'timeline',
