@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent } from 'react';
 import { event } from '../../src/lib/gtag';
-import { PlayIcon, StopIcon, DuplicateIcon } from '../../src/components/icon';
+import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '../../src/components/icon';
 
 interface formValues {
   hour: number;
@@ -21,6 +21,7 @@ const Timer: NextPage = () => {
   const [count, setCount] = useState(0);
   const [maxCount, setMaxCount] = useState(0);
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
+  const [paused, setPaused] = useState(false);
 
   const getContext = (): CanvasRenderingContext2D | null => {
     const canvas = canvasRef.current;
@@ -79,9 +80,14 @@ const Timer: NextPage = () => {
     });
   };
 
+  const pauseTimer = () => {
+    setPaused((paused) => !paused);
+  };
+
   const resetTimer = () => {
     setFormValue({ hour: 0, min: 0, sec: 0 });
     setCount(0);
+    setPaused(false);
     event({
       action: 'reset',
       category: 'timer',
@@ -160,7 +166,9 @@ const Timer: NextPage = () => {
     writeToCanvas(ctx, count);
 
     const interval = setInterval(() => {
-      setCount((c) => c - 1);
+      if (!paused) {
+        setCount((c) => c - 1);
+      }
       if (count === 0) {
         event({
           action: 'timeup',
@@ -173,7 +181,7 @@ const Timer: NextPage = () => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [count, writeToCanvas]);
+  }, [count, paused, writeToCanvas]);
 
   return (
     <>
@@ -236,14 +244,30 @@ const Timer: NextPage = () => {
                 onClick={startTimer}
               >
                 <PlayIcon />
-                Start Timer
+                Start
+              </button>
+              <button
+                className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                onClick={pauseTimer}
+              >
+                {paused ? (
+                  <>
+                    <PlayIcon />
+                    Replay
+                  </>
+                ) : (
+                  <>
+                    <PauseIcon />
+                    Pause
+                  </>
+                )}
               </button>
               <button
                 className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
                 onClick={resetTimer}
               >
                 <StopIcon />
-                Reset Timer
+                Reset
               </button>
             </div>
             <div className="p-1">
