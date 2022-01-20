@@ -18,6 +18,9 @@ const Timer: NextPage = () => {
   const minutes = [...Array(60)].map((_, i) => i);
   const hours = [...Array(24)].map((_, i) => i);
 
+  const [startMs, setStartMs] = useState(Date.now());
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const [decrement, setDecrement] = useState(0);
   const [count, setCount] = useState(0);
   const [maxCount, setMaxCount] = useState(0);
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
@@ -69,6 +72,8 @@ const Timer: NextPage = () => {
   };
 
   const startTimer = () => {
+    setStartMs(Date.now());
+    console.log('start ==============');
     const count = formValue.hour * 60 * 60 + formValue.min * 60 + formValue.sec;
     setCount(count);
     setMaxCount(count);
@@ -81,13 +86,25 @@ const Timer: NextPage = () => {
   };
 
   const pauseTimer = () => {
-    setPaused((paused) => !paused);
+    setPaused((paused) => {
+      if (paused) {
+        setStartMs(Date.now());
+      }
+      if (!paused) {
+        setElapsedMs((elapsed) => elapsed + (Date.now() - startMs));
+      }
+
+      return !paused;
+    });
   };
 
   const resetTimer = () => {
     setFormValue({ hour: 0, min: 0, sec: 0 });
     setCount(0);
     setPaused(false);
+    setDecrement(0);
+    setElapsedMs(0);
+    setStartMs(0);
     event({
       action: 'reset',
       category: 'timer',
@@ -165,9 +182,12 @@ const Timer: NextPage = () => {
 
     writeToCanvas(ctx, count);
 
-    const interval = setInterval(() => {
+    const interval = setTimeout(() => {
       if (!paused) {
-        setCount((c) => c - 1);
+        const thisRangeElapsedMs = Date.now() - startMs;
+
+        setDecrement(Date.now() - startMs);
+        setCount(maxCount - Math.floor((elapsedMs + thisRangeElapsedMs) / 1000));
       }
       if (count === 0) {
         event({
@@ -178,10 +198,10 @@ const Timer: NextPage = () => {
         });
       }
       writeToCanvas(ctx, count);
-    }, 1000);
+    }, 200);
 
     return () => clearInterval(interval);
-  }, [count, paused, writeToCanvas]);
+  }, [count, elapsedMs, decrement, startMs, paused, writeToCanvas]);
 
   return (
     <>
