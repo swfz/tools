@@ -1,18 +1,15 @@
-import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useRouter } from "next/router";
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { event as gaEvent } from '../../src/lib/gtag';
-
+import { useRouter } from 'next/router';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 type Props = {
   user: string;
-}
+};
 
 export const getServerSideProps = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<Props>> => {
-  if (typeof context.params?.user === "string") {
+  if (typeof context.params?.user === 'string') {
     return {
       props: {
         user: context.params?.user,
@@ -46,10 +43,10 @@ const Kusa = (props: Props) => {
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@swfz" />
+        <meta name="twitter:image" content={imgUrl} />
       </Head>
       <div>
-        {user}
+        {title}
         <img src={imgUrl} />
       </div>
     </>
