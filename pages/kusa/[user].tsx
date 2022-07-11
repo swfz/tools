@@ -28,7 +28,7 @@ export const getServerSideProps = async (
 const Kusa = (props: Props) => {
   const router = useRouter();
   const user = props.user;
-  const imgUrl = `https://grass-graph.appspot.com/images/${user}.png`;
+  const imgUrl = `https://grass-graph.appspot.com/images/${user}.png?width=1200&height=630`;
   const siteUrl = `https://tools.swfz.io/kusa/${user}`;
   const title = `${user}'s kusa`;
   const desc = `GitHub Contirbutions in ${user}`;
