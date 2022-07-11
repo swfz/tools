@@ -45,7 +45,7 @@ const Kusa = (props: Props) => {
         <meta property="og:image" content={imgUrl} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@swfz" />
       </Head>
       <div>
