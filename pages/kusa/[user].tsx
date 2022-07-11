@@ -1,11 +1,33 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from "next/router";
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { event as gaEvent } from '../../src/lib/gtag';
 
-const Kusa: NextPage = () => {
+
+type Props = {
+  user: string;
+}
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<Props>> => {
+  if (typeof context.params?.user === "string") {
+    return {
+      props: {
+        user: context.params?.user,
+      },
+    };
+  } else {
+    return {
+      notFound: true,
+    };
+  }
+};
+
+const Kusa: NextPage = (props: Props) => {
   const router = useRouter();
-  const { user } = router.query;
+  const user = props.user;
   const imgUrl = `https://grass-graph.appspot.com/images/${user}.png`;
   const siteUrl = `https://tools.swfz.io/kusa/${user}`;
   const title = `${user}'s kusa`;
