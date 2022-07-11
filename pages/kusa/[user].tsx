@@ -25,7 +25,7 @@ export const getServerSideProps = async (
   }
 };
 
-const Kusa: NextPage = (props: Props) => {
+const Kusa = (props: Props) => {
   const router = useRouter();
   const user = props.user;
   const imgUrl = `https://grass-graph.appspot.com/images/${user}.png`;
