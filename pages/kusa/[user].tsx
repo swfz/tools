@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
@@ -47,7 +48,7 @@ const Kusa = (props: Props) => {
       </Head>
       <div>
         {title}
-        <img src={imgUrl} />
+        <Image src={imgUrl} alt="GitHub Contribution" />
       </div>
     </>
   );
