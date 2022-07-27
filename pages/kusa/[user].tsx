@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import Link from 'next/link';
 
 type Props = {
   user: string;
@@ -30,6 +31,7 @@ const Kusa = (props: Props) => {
   const siteUrl = `https://tools.swfz.io/kusa/${user}`;
   const title = `${user}'s kusa`;
   const desc = `GitHub Contirbutions in ${user}`;
+  const toGitHub = `https://github.com/${user}`;
 
   return (
     <>
@@ -47,7 +49,10 @@ const Kusa = (props: Props) => {
         <meta name="twitter:image" content={imgUrl} />
       </Head>
       <div>
-        {title}
+        <Link href={toGitHub}>
+          <span className="text-blue-600 no-underline hover:underline cursor-pointer font-bold">{user}</span>
+        </Link>
+        <span>&apos;s kusa</span>
         <img src={imgUrl} alt="GitHub Contribution" />
       </div>
     </>

@@ -14,7 +14,7 @@ function Layout({ children }: { children: ReactNode }) {
       <div
         className={
           isOpen
-            ? 'h-screen sticky top-0 bg-gray-300 p-4 flex-shrink-0 w-64'
+            ? 'h-screen sticky top-0 bg-gray-300 p-4 shrink-0 w-64'
             : 'w-10 overflow-x-hidden h-screen sticky top-0 bg-gray-300'
         }
       >
