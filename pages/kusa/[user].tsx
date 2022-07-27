@@ -52,7 +52,7 @@ const Kusa = (props: Props) => {
         <Link href={toGitHub}>
           <span className="text-blue-600 no-underline hover:underline cursor-pointer font-bold">{user}</span>
         </Link>
-        <span>'s kusa</span>
+        <span>&apos;s kusa</span>
         <img src={imgUrl} alt="GitHub Contribution" />
       </div>
     </>
