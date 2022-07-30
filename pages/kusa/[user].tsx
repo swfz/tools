@@ -30,7 +30,7 @@ const Kusa = (props: Props) => {
   const imgUrl = `https://grass-graph.appspot.com/images/${user}.png`;
   const siteUrl = `https://tools.swfz.io/kusa/${user}`;
   const title = `${user}'s kusa`;
-  const desc = `GitHub Contirbutions in ${user}`;
+  const desc = `GitHub Contributions in ${user}`;
   const toGitHub = `https://github.com/${user}`;
 
   return (
