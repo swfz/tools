@@ -8,6 +8,67 @@ type Props = {
   user: string;
 };
 
+type PullRequestEventPayload = {
+  action: string;
+  number: number;
+  pull_request: {
+    title: string;
+    url: string;
+    html_url: string;
+    number: number;
+  };
+};
+
+type IssuesEventPayload = {
+  action: string;
+  number: number;
+  issue: {
+    title: string;
+    url: string;
+    html_url: string;
+    number: number;
+  };
+};
+
+type Commit = {
+  message: string;
+  sha: string;
+  url: string;
+};
+
+type PushEventPayload = {
+  before: string;
+  head: string;
+  ref: string;
+  commits: Commit[];
+};
+
+type DeleteEventPayload = {
+  ref: string;
+  ref_type: string;
+};
+
+type CreateEventPayload = {
+  ref: string;
+  ref_type: string;
+};
+
+type GitHubRepo = {
+  url: string;
+  name: string;
+};
+
+type GitHubEventType = 'PullRequestEvent' | 'IssuesEvent' | 'PushEvent' | 'CreateEvent' | 'DeleteEvent';
+
+type GitHubEvent = {
+  id: number;
+  repo: GitHubRepo;
+  created_at: string;
+  type: GitHubEventType;
+  // FIXME: うまく解決できなかったので余裕ある時に取り組む
+  payload: any;
+};
+
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<Props>> => {
@@ -31,10 +92,10 @@ const fetchFunc = async (userId: string) => {
   return data;
 };
 
-const toHtmlUrl = (url) => {
+const toHtmlUrl = (url: string) => {
   return url.replace('api.github.com/repos', 'github.com');
 };
-const IssueEvent = ({ payload }) => {
+const IssueEvent = ({ payload }: { payload: IssuesEventPayload }) => {
   return (
     <div>
       <span className="text-blue-600 hover:underline">
@@ -47,7 +108,7 @@ const IssueEvent = ({ payload }) => {
   );
 };
 
-const PullRequestEvent = ({ payload }) => {
+const PullRequestEvent = ({ payload }: { payload: PullRequestEventPayload }) => {
   return (
     <div>
       <span className="text-blue-600 hover:underline">
@@ -60,7 +121,7 @@ const PullRequestEvent = ({ payload }) => {
   );
 };
 
-const PushEvent = ({ payload }) => {
+const PushEvent = ({ payload }: { payload: PushEventPayload }) => {
   return (
     <ul className="list-disc">
       {payload.commits?.map((c) => {
@@ -81,7 +142,7 @@ const PushEvent = ({ payload }) => {
   );
 };
 
-const DeleteEvent = ({ payload }) => {
+const DeleteEvent = ({ payload }: { payload: DeleteEventPayload }) => {
   return (
     <div>
       {payload.ref_type}: {payload.ref} Deleted
@@ -89,7 +150,7 @@ const DeleteEvent = ({ payload }) => {
   );
 };
 
-const CreateEvent = ({ payload }) => {
+const CreateEvent = ({ payload }: { payload: CreateEventPayload }) => {
   return (
     <div>
       {payload.ref_type}: {payload.ref} Created
@@ -97,17 +158,17 @@ const CreateEvent = ({ payload }) => {
   );
 };
 
-const Detail = ({ user }) => {
+const Detail = ({ user }: { user: string }) => {
   const { result, refetch } = useFetch(fetchFunc);
-  console.log(result);
+  // console.log(result);
 
   return (
     <div>
       <h2 className="font-bold">Recent {user} Events</h2>
       <div>
-        {result.map((row: any) => {
+        {result.map((row: GitHubEvent) => {
           return (
-            <div className="grid grid-cols-10 gap-4">
+            <div key={row.id} className="grid grid-cols-10 gap-4">
               <div className="col-start-1 col-end-1">{row.created_at.split('T')[0]}</div>
               <div className="col-start-2 col-end-3 whitespace-nowrap text-blue-600 hover:underline">
                 {row.repo.url ? (
@@ -121,11 +182,11 @@ const Detail = ({ user }) => {
               <div className="col-start-4 col-end-10">
                 <details>
                   <summary>{row.type}</summary>
-                  {row.type == 'PullRequestEvent' && <PullRequestEvent payload={row.payload}></PullRequestEvent>}
-                  {row.type == 'PushEvent' && <PushEvent payload={row.payload}></PushEvent>}
-                  {row.type == 'IssuesEvent' && <IssueEvent payload={row.payload}></IssueEvent>}
-                  {row.type == 'DeleteEvent' && <DeleteEvent payload={row.payload}></DeleteEvent>}
-                  {row.type == 'CreateEvent' && <CreateEvent payload={row.payload}></CreateEvent>}
+                  {row.type === 'PullRequestEvent' && <PullRequestEvent payload={row.payload}></PullRequestEvent>}
+                  {row.type === 'PushEvent' && <PushEvent payload={row.payload}></PushEvent>}
+                  {row.type === 'IssuesEvent' && <IssueEvent payload={row.payload}></IssueEvent>}
+                  {row.type === 'DeleteEvent' && <DeleteEvent payload={row.payload}></DeleteEvent>}
+                  {row.type === 'CreateEvent' && <CreateEvent payload={row.payload}></CreateEvent>}
                 </details>
               </div>
             </div>
