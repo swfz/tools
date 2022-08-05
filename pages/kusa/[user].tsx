@@ -99,7 +99,7 @@ const IssueEvent = ({ payload }: { payload: IssuesEventPayload }) => {
   return (
     <div>
       <span className="text-blue-600 hover:underline">
-        <a href={payload.issue.html_url} target="_blank">
+        <a href={payload.issue.html_url} target="_blank" rel="noreferrer">
           #{payload.issue.number} {payload.issue.title}
         </a>
       </span>
@@ -112,7 +112,7 @@ const PullRequestEvent = ({ payload }: { payload: PullRequestEventPayload }) => 
   return (
     <div>
       <span className="text-blue-600 hover:underline">
-        <a href={payload.pull_request.html_url} target="_blank">
+        <a href={payload.pull_request.html_url} target="_blank" rel="noreferrer">
           #{payload.pull_request.number} {payload.pull_request.title}
         </a>
       </span>
@@ -126,10 +126,11 @@ const PushEvent = ({ payload }: { payload: PushEventPayload }) => {
     <ul className="list-disc">
       {payload.commits?.map((c) => {
         return (
-          <li className="ml-8">
+          <li key={c.sha} className="ml-8">
             <a
               href={toHtmlUrl(c.url).replace('commits', 'commit')}
               target="_blank"
+              rel="noreferrer"
               className="text-blue-600 hover:underline"
             >
               {c.sha.substring(0, 6)}
@@ -172,7 +173,7 @@ const Detail = ({ user }: { user: string }) => {
               <div className="col-start-1 col-end-1">{row.created_at.split('T')[0]}</div>
               <div className="col-start-2 col-end-3 whitespace-nowrap text-blue-600 hover:underline">
                 {row.repo.url ? (
-                  <a href={toHtmlUrl(row.repo.url)} target="_blank">
+                  <a href={toHtmlUrl(row.repo.url)} target="_blank" rel="noreferrer">
                     {row.repo.name}
                   </a>
                 ) : (
