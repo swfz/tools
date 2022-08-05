@@ -53,12 +53,16 @@ type CreateEventPayload = {
   ref_type: string;
 };
 
+type WatchEventPayload = {
+  action: string;
+};
+
 type GitHubRepo = {
   url: string;
   name: string;
 };
 
-type GitHubEventType = 'PullRequestEvent' | 'IssuesEvent' | 'PushEvent' | 'CreateEvent' | 'DeleteEvent';
+type GitHubEventType = 'PullRequestEvent' | 'IssuesEvent' | 'PushEvent' | 'CreateEvent' | 'DeleteEvent' | 'WatchEvent';
 
 type GitHubEvent = {
   id: number;
@@ -159,6 +163,10 @@ const CreateEvent = ({ payload }: { payload: CreateEventPayload }) => {
   );
 };
 
+const WatchEvent = ({ payload }: { payload: WatchEventPayload }) => {
+  return <div>{payload.action}</div>;
+};
+
 const Detail = ({ user }: { user: string }) => {
   const { result, refetch } = useFetch(fetchFunc);
   // console.log(result);
@@ -188,6 +196,7 @@ const Detail = ({ user }: { user: string }) => {
                   {row.type === 'IssuesEvent' && <IssueEvent payload={row.payload}></IssueEvent>}
                   {row.type === 'DeleteEvent' && <DeleteEvent payload={row.payload}></DeleteEvent>}
                   {row.type === 'CreateEvent' && <CreateEvent payload={row.payload}></CreateEvent>}
+                  {row.type === 'WatchEvent' && <WatchEvent payload={row.payload}></WatchEvent>}
                 </details>
               </div>
             </div>
