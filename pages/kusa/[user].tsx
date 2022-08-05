@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Link from 'next/link';
 import { FetchProvider, useFetch } from 'react-hooks-fetch';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 type Props = {
   user: string;
@@ -226,17 +226,30 @@ const ForkEvent = ({ payload }: { payload: ForkEventPayload }) => {
 
 const Detail = ({ user }: { user: string }) => {
   const { result, refetch } = useFetch(fetchFunc);
+  const [open, setOpen] = useState<boolean>();
   // console.log(result);
+
+  const handleSummaryOpen = () => {
+    setOpen((prev) => !prev);
+  };
 
   return (
     <div>
-      <h2 className="font-bold">Recent {user} Events</h2>
+      <div className="grid grid-cols-10">
+        <h2 className="font-bold col-start-1 col-end-4">Recent {user} Events</h2>
+        <button
+          onClick={handleSummaryOpen}
+          className="col-start-5 col-end-10 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-2 border border-gray-400 rounded shadow"
+        >
+          {open ? 'Fold up' : 'Open'} All Details
+        </button>
+      </div>
       <div>
         {result.map((row: GitHubEvent) => {
           return (
             <div key={row.id} className="grid grid-cols-10 gap-4">
               <div className="col-start-1 col-end-1">{row.created_at.split('T')[0]}</div>
-              <div className="col-start-2 col-end-3 whitespace-nowrap text-blue-600 hover:underline">
+              <div className="col-start-2 col-end-4 whitespace-nowrap text-blue-600 hover:underline">
                 {row.repo.url ? (
                   <a href={toHtmlUrl(row.repo.url)} target="_blank" rel="noreferrer">
                     {row.repo.name}
@@ -245,8 +258,8 @@ const Detail = ({ user }: { user: string }) => {
                   <>{row.repo.name}</>
                 )}
               </div>
-              <div className="col-start-4 col-end-10">
-                <details>
+              <div className="col-start-5 col-end-10">
+                <details open={open}>
                   <summary>{row.type}</summary>
                   {row.type === 'PullRequestEvent' && <PullRequestEvent payload={row.payload}></PullRequestEvent>}
                   {row.type === 'PushEvent' && <PushEvent payload={row.payload}></PushEvent>}
