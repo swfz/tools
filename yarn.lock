@@ -3373,6 +3373,13 @@ react-dom@18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
+react-hooks-fetch@^0.16.1:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/react-hooks-fetch/-/react-hooks-fetch-0.16.1.tgz#21a3ffda3060aeb82b6655b49280f42ea4d608c7"
+  integrity sha512-f5CQPjtl2gTV4tLv2YooGrbihjLoHqlWZd7+0bM8z14txdHv2r53obFlouPcLnUpY6y3V+hcMyCDhh4A8KIQyg==
+  dependencies:
+    use-context-selector "1.4.0"
+
 react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -4043,6 +4050,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+use-context-selector@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/use-context-selector/-/use-context-selector-1.4.0.tgz#fd46afe322e4f7e2d8fba91d806af075d646ef85"
+  integrity sha512-1vaCjBq/ryq9y79qwh1tkqrUNLYlSLXNHClUkpgBWPvnUV5jqAJvRSsK77mG80uBwNF9HF/kuRyPtXEQhlJ4Jw==
 
 use-sync-external-store@1.2.0:
   version "1.2.0"
