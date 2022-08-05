@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Link from 'next/link';
+import { FetchProvider, useFetch } from 'react-hooks-fetch';
+import { Suspense } from 'react';
 
 type Props = {
   user: string;
@@ -24,8 +24,119 @@ export const getServerSideProps = async (
   }
 };
 
+const fetchFunc = async (userId: string) => {
+  const res = await fetch(`https://api.github.com/users/${userId}/events`);
+  const data = await res.json();
+
+  return data;
+};
+
+const toHtmlUrl = (url) => {
+  return url.replace('api.github.com/repos', 'github.com');
+};
+const IssueEvent = ({ payload }) => {
+  return (
+    <div>
+      <span className="text-blue-600 hover:underline">
+        <a href={payload.issue.html_url} target="_blank">
+          #{payload.issue.number} {payload.issue.title}
+        </a>
+      </span>
+      {payload.action}
+    </div>
+  );
+};
+
+const PullRequestEvent = ({ payload }) => {
+  return (
+    <div>
+      <span className="text-blue-600 hover:underline">
+        <a href={payload.pull_request.html_url} target="_blank">
+          #{payload.pull_request.number} {payload.pull_request.title}
+        </a>
+      </span>
+      {payload.action}
+    </div>
+  );
+};
+
+const PushEvent = ({ payload }) => {
+  return (
+    <ul className="list-disc">
+      {payload.commits?.map((c) => {
+        return (
+          <li className="ml-8">
+            <a
+              href={toHtmlUrl(c.url).replace('commits', 'commit')}
+              target="_blank"
+              className="text-blue-600 hover:underline"
+            >
+              {c.sha.substring(0, 6)}
+            </a>{' '}
+            {c.message}
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+
+const DeleteEvent = ({ payload }) => {
+  return (
+    <div>
+      {payload.ref_type}: {payload.ref} Deleted
+    </div>
+  );
+};
+
+const CreateEvent = ({ payload }) => {
+  return (
+    <div>
+      {payload.ref_type}: {payload.ref} Created
+    </div>
+  );
+};
+
+const Detail = ({ user }) => {
+  const { result, refetch } = useFetch(fetchFunc);
+  console.log(result);
+
+  return (
+    <div>
+      <h2 className="font-bold">Recent {user} Events</h2>
+      <div>
+        {result.map((row: any) => {
+          return (
+            <div className="grid grid-cols-10 gap-4">
+              <div className="col-start-1 col-end-1">{row.created_at.split('T')[0]}</div>
+              <div className="col-start-2 col-end-3 whitespace-nowrap text-blue-600 hover:underline">
+                {row.repo.url ? (
+                  <a href={toHtmlUrl(row.repo.url)} target="_blank">
+                    {row.repo.name}
+                  </a>
+                ) : (
+                  <>{row.repo.name}</>
+                )}
+              </div>
+              <div className="col-start-4 col-end-10">
+                <details>
+                  <summary>{row.type}</summary>
+                  {row.type == 'PullRequestEvent' && <PullRequestEvent payload={row.payload}></PullRequestEvent>}
+                  {row.type == 'PushEvent' && <PushEvent payload={row.payload}></PushEvent>}
+                  {row.type == 'IssuesEvent' && <IssueEvent payload={row.payload}></IssueEvent>}
+                  {row.type == 'DeleteEvent' && <DeleteEvent payload={row.payload}></DeleteEvent>}
+                  {row.type == 'CreateEvent' && <CreateEvent payload={row.payload}></CreateEvent>}
+                </details>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const Kusa = (props: Props) => {
-  const router = useRouter();
   const user = props.user;
   const imgUrl = `https://grass-graph.appspot.com/images/${user}.png`;
   const siteUrl = `https://tools.swfz.io/kusa/${user}`;
@@ -54,6 +165,11 @@ const Kusa = (props: Props) => {
         </Link>
         <span>&apos;s kusa</span>
         <img src={imgUrl} alt="GitHub Contribution" />
+        <FetchProvider initialInputs={[[fetchFunc, user]]}>
+          <Suspense fallback={<span>Loading...</span>}>
+            <Detail user={user}></Detail>
+          </Suspense>
+        </FetchProvider>
       </div>
     </>
   );
