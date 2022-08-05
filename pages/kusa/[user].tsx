@@ -71,6 +71,15 @@ type IssueCommentEventPayload = {
   };
 };
 
+type ForkEventPayload = {
+  forkee: {
+    url: string;
+    html_url: string;
+    name: string;
+    full_name: string;
+  };
+};
+
 type GitHubRepo = {
   url: string;
   name: string;
@@ -83,7 +92,8 @@ type GitHubEventType =
   | 'CreateEvent'
   | 'DeleteEvent'
   | 'WatchEvent'
-  | 'IssueCommentEvent';
+  | 'IssueCommentEvent'
+  | 'ForkEvent';
 
 type GitHubEvent = {
   id: number;
@@ -201,6 +211,19 @@ const IssueCommentEvent = ({ payload }: { payload: IssueCommentEventPayload }) =
   );
 };
 
+const ForkEvent = ({ payload }: { payload: ForkEventPayload }) => {
+  return (
+    <div>
+      Fork to
+      <span className="text-blue-600 hover:underline">
+        <a href={payload.forkee.html_url} target="_blank" rel="noreferrer">
+          {payload.forkee.full_name}
+        </a>
+      </span>
+    </div>
+  );
+};
+
 const Detail = ({ user }: { user: string }) => {
   const { result, refetch } = useFetch(fetchFunc);
   // console.log(result);
@@ -232,6 +255,7 @@ const Detail = ({ user }: { user: string }) => {
                   {row.type === 'CreateEvent' && <CreateEvent payload={row.payload}></CreateEvent>}
                   {row.type === 'WatchEvent' && <WatchEvent payload={row.payload}></WatchEvent>}
                   {row.type === 'IssueCommentEvent' && <IssueCommentEvent payload={row.payload}></IssueCommentEvent>}
+                  {row.type === 'ForkEvent' && <ForkEvent payload={row.payload}></ForkEvent>}
                 </details>
               </div>
             </div>
