@@ -3373,7 +3373,7 @@ react-dom@18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-hooks-fetch@^0.16.1:
+react-hooks-fetch@0.16.1:
   version "0.16.1"
   resolved "https://registry.yarnpkg.com/react-hooks-fetch/-/react-hooks-fetch-0.16.1.tgz#21a3ffda3060aeb82b6655b49280f42ea4d608c7"
   integrity sha512-f5CQPjtl2gTV4tLv2YooGrbihjLoHqlWZd7+0bM8z14txdHv2r53obFlouPcLnUpY6y3V+hcMyCDhh4A8KIQyg==
