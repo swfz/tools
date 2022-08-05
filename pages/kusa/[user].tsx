@@ -57,12 +57,33 @@ type WatchEventPayload = {
   action: string;
 };
 
+type IssueCommentEventPayload = {
+  action: string;
+  comment: {
+    url: string;
+    html_url: string;
+  };
+  issue: {
+    title: string;
+    number: number;
+    url: string;
+    html_url: string;
+  };
+};
+
 type GitHubRepo = {
   url: string;
   name: string;
 };
 
-type GitHubEventType = 'PullRequestEvent' | 'IssuesEvent' | 'PushEvent' | 'CreateEvent' | 'DeleteEvent' | 'WatchEvent';
+type GitHubEventType =
+  | 'PullRequestEvent'
+  | 'IssuesEvent'
+  | 'PushEvent'
+  | 'CreateEvent'
+  | 'DeleteEvent'
+  | 'WatchEvent'
+  | 'IssueCommentEvent';
 
 type GitHubEvent = {
   id: number;
@@ -167,6 +188,19 @@ const WatchEvent = ({ payload }: { payload: WatchEventPayload }) => {
   return <div>{payload.action}</div>;
 };
 
+const IssueCommentEvent = ({ payload }: { payload: IssueCommentEventPayload }) => {
+  return (
+    <div>
+      <span className="text-blue-600 hover:underline">
+        <a href={payload.comment.html_url} target="_blank" rel="noreferrer">
+          #{payload.issue.number} {payload.issue.title}
+        </a>
+      </span>
+      <span className="ml-1">comment {payload.action}</span>
+    </div>
+  );
+};
+
 const Detail = ({ user }: { user: string }) => {
   const { result, refetch } = useFetch(fetchFunc);
   // console.log(result);
@@ -197,6 +231,7 @@ const Detail = ({ user }: { user: string }) => {
                   {row.type === 'DeleteEvent' && <DeleteEvent payload={row.payload}></DeleteEvent>}
                   {row.type === 'CreateEvent' && <CreateEvent payload={row.payload}></CreateEvent>}
                   {row.type === 'WatchEvent' && <WatchEvent payload={row.payload}></WatchEvent>}
+                  {row.type === 'IssueCommentEvent' && <IssueCommentEvent payload={row.payload}></IssueCommentEvent>}
                 </details>
               </div>
             </div>
