@@ -226,6 +226,7 @@ const Kusa = (props: Props) => {
         </Link>
         <span>&apos;s kusa</span>
         <img src={imgUrl} alt="GitHub Contribution" />
+        {/* @ts-ignore */}
         <FetchProvider initialInputs={[[fetchFunc, user]]}>
           <Suspense fallback={<span>Loading...</span>}>
             <Detail user={user}></Detail>
