@@ -201,15 +201,39 @@ type Props = {
 
 const Contributions = (props: Props) => {
   const [open, setOpen] = useState<boolean>();
-  // console.log(result);
+  const [selectedView, setSelectedView] = useState<string>('simple');
+  const views = [
+    { id: 'simple', name: 'Simple List' },
+    { id: 'repo', name: 'Group By Repo' },
+  ];
 
   const handleSummaryOpen = () => {
     setOpen((prev) => !prev);
   };
   return (
     <div>
+      <h2 className="font-bold col-start-1 col-end-4">Recent {props.user} Events</h2>
+      <nav className="flex flex-col sm:flex-row">
+        {views.map((view) => {
+          return (
+            <>
+              {selectedView == view.id ? (
+                <button className="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+                  {view.name}
+                </button>
+              ) : (
+                <button
+                  onClick={() => setSelectedView(view.id)}
+                  className="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none"
+                >
+                  {view.name}
+                </button>
+              )}
+            </>
+          );
+        })}
+      </nav>
       <div className="grid grid-cols-10">
-        <h2 className="font-bold col-start-1 col-end-4">Recent {props.user} Events</h2>
         <button
           onClick={handleSummaryOpen}
           className="col-start-5 col-end-10 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-2 border border-gray-400 rounded shadow"
