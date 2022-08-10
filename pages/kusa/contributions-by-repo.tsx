@@ -1,5 +1,6 @@
 import React from 'react';
-import { Commit, GitHubEvent, GitHubRepo, PushEventPayload, toHtmlUrl } from './contributions';
+import { ShareIcon } from '../../src/components/icon';
+import { Commit, GitHubEvent, GitHubRepo, PullRequestEventPayload, PushEventPayload, toHtmlUrl } from './contributions';
 
 type Props = {
   result: any;
@@ -10,11 +11,16 @@ type CommitData = Commit & { date: string };
 
 type Summary = {
   // issues: {[key: string]: string[]}
-  // pullRequests: {[key: string]: string}
   commits: {
     [key: string]: {
       repo: GitHubRepo;
       data: CommitData[];
+    };
+  };
+  pullRequests: {
+    [key: string]: {
+      repo: GitHubRepo;
+      data: PullRequestEventPayload[];
     };
   };
   // repositories: {[key: string]: string}
@@ -65,6 +71,62 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
   );
 };
 
+const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
+  return (
+    <>
+      <div>Opened PullRequests in {Object.keys(pullRequests).length} repositories</div>
+      {Object.keys(pullRequests).map((repoName) => {
+        return (
+          <div key={repoName}>
+            <details>
+              <summary>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600 hover:underline"
+                  href={toHtmlUrl(pullRequests[repoName].repo?.url)}
+                >
+                  {repoName}
+                </a>{' '}
+                {pullRequests[repoName].data.length} PullRequests
+              </summary>
+              <ul className="list-none">
+                {pullRequests[repoName].data.map((pr) => {
+                  return (
+                    <li className="ml-8">
+                      <span className="flex items-center">
+                        {pr.pull_request.state === 'closed' ? (
+                          <span className="text-purple-800">
+                            <ShareIcon />
+                          </span>
+                        ) : (
+                          <span className="text-green-800">
+                            <ShareIcon />
+                          </span>
+                        )}
+                        {/* <span>{pr.date.split('T')[0]}</span>{' '} */}
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href={pr.pull_request.html_url}
+                          className="text-blue-600 hover:underline"
+                        >
+                          #{pr.number}
+                        </a>{' '}
+                        {pr.pull_request.title}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
 const ContributionsByRepo = (props: Props) => {
   const summary = props.result.reduce(
     (acc: Summary, row: GitHubEvent) => {
@@ -76,6 +138,16 @@ const ContributionsByRepo = (props: Props) => {
         const commits = { ...acc.commits, [row.repo.name]: { repo: row.repo, data: commitData } };
 
         return { ...acc, commits };
+      }
+      if (row.type === 'PullRequestEvent') {
+        if (acc.pullRequests[row.repo.name]?.data.find((pr) => pr.number === row.payload.number)) {
+          return acc;
+        } else {
+          const prData = [...(acc.pullRequests[row.repo.name]?.data || []), row.payload];
+          const pullRequests = { ...acc.pullRequests, [row.repo.name]: { repo: row.repo, data: prData } };
+
+          return { ...acc, pullRequests };
+        }
       }
       return acc;
     },
@@ -92,6 +164,7 @@ const ContributionsByRepo = (props: Props) => {
   return (
     <>
       <Commits commits={summary.commits}></Commits>
+      <PullRequests pullRequests={summary.pullRequests}></PullRequests>
     </>
   );
 };
