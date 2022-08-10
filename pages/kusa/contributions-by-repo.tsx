@@ -6,22 +6,65 @@ type Props = {
   user: string;
 };
 
-// commits
-// repo
-// pr
-// issue
-//
+type CommitData = Commit & { date: string };
+
 type Summary = {
   // issues: {[key: string]: string[]}
   // pullRequests: {[key: string]: string}
   commits: {
     [key: string]: {
       repo: GitHubRepo;
-      data: Commit & { date: string }[];
+      data: CommitData[];
     };
   };
   // repositories: {[key: string]: string}
 };
+
+const Commits = ({ commits }: { commits: Summary['commits'] }) => {
+  return (
+    <>
+      <div>Created Commmit</div>
+      {Object.keys(commits).map((repoName) => {
+        return (
+          <div key={repoName}>
+            <details>
+              <summary>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600 hover:underline"
+                  href={toHtmlUrl(commits[repoName].repo?.url)}
+                >
+                  {repoName}
+                </a>{' '}
+                {commits[repoName].data.length} Commits
+              </summary>
+              <ul className="list-disc">
+                {commits[repoName].data.map((commit) => {
+                  return (
+                    <li key={commit.sha} className="ml-8">
+                      <span>{commit.date.split('T')[0]}</span>{' '}
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href={toHtmlUrl(commit.url).replace('commits', 'commit')}
+                        className="text-blue-600 hover:underline"
+                      >
+                        {commit.sha.substring(0, 6)}
+                      </a>{' '}
+                      {commit.message}
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
 const ContributionsByRepo = (props: Props) => {
   const summary = props.result.reduce(
     (acc: Summary, row: GitHubEvent) => {
@@ -48,45 +91,7 @@ const ContributionsByRepo = (props: Props) => {
 
   return (
     <>
-      <div>Created Commmit</div>
-      {Object.keys(summary.commits).map((repoName) => {
-        return (
-          <div key={repoName}>
-            <details>
-              <summary>
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 hover:underline"
-                  href={toHtmlUrl(summary.commits[repoName].repo.url)}
-                >
-                  {repoName}
-                </a>{' '}
-                {summary.commits[repoName].data.length} Commits
-              </summary>
-              <ul className="list-disc">
-                {summary.commits[repoName].data.map((commit) => {
-                  return (
-                    <li key={commit.sha} className="ml-8">
-                      <span>{commit.date.split('T')[0]}</span>{' '}
-                      <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href={toHtmlUrl(commit.url).replace('commits', 'commit')}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {commit.sha.substring(0, 6)}
-                      </a>{' '}
-                      {commit.message}
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          </div>
-        );
-      })}
-      {JSON.stringify(summary, null, '\t')}
+      <Commits commits={summary.commits}></Commits>
     </>
   );
 };
