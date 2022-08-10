@@ -142,7 +142,7 @@ const Contributions = (props: Props) => {
       </nav>
 
       {selectedView == 'simple' && <ContributionsSimple result={props.result}></ContributionsSimple>}
-      {selectedView == 'repo' && <ContributionsByRepo result={props.result}></ContributionsByRepo>}
+      {selectedView == 'repo' && <ContributionsByRepo result={props.result} user={props.user}></ContributionsByRepo>}
       {selectedView == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>}
     </div>
   );
