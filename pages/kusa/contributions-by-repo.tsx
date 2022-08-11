@@ -170,7 +170,8 @@ const ContributionsByRepo = (props: Props) => {
   const grouped = props.result.reduce(
     (acc: Summary, row: GitHubEvent) => {
       if (row.type === 'PushEvent') {
-        const targetCommits = row.payload.commits
+        // TODO: GitHubEventの型定義を解決すればこちらも解決する
+        const targetCommits = (row.payload as PushEventPayload).commits
           .filter((c) => c.author.name === props.user)
           .map((c) => ({ ...c, date: row.created_at }));
         const commitData = [...(acc.commits[row.repo.name]?.data || []), ...targetCommits];
