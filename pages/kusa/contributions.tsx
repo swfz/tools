@@ -123,7 +123,7 @@ const Contributions = (props: Props) => {
   const views = [
     { id: 'simple', name: 'Simple List' },
     { id: 'repo', name: 'Group By Repo' },
-    { id: 'event', name: 'Group By Event' },
+    // { id: 'event', name: 'Group By Event' },
   ];
 
   return (
@@ -134,7 +134,7 @@ const Contributions = (props: Props) => {
           return (
             <div key={view.id}>
               {selectedView == view.id ? (
-                <button className="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+                <button className="py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
                   {view.name}
                 </button>
               ) : (
@@ -152,7 +152,7 @@ const Contributions = (props: Props) => {
 
       {selectedView == 'simple' && <ContributionsSimple result={props.result}></ContributionsSimple>}
       {selectedView == 'repo' && <ContributionsByRepo result={props.result} user={props.user}></ContributionsByRepo>}
-      {selectedView == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>}
+      {/* {selectedView == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>} */}
     </div>
   );
 };
