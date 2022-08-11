@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircleIcon, ShareIcon } from '../icon';
+import { CheckCircleIcon, InformationCircleIcon, ShareIcon } from '../icon';
 import {
   Commit,
   GitHubEvent,
@@ -42,7 +42,12 @@ type Summary = {
 const Commits = ({ commits }: { commits: Summary['commits'] }) => {
   return (
     <>
-      <div>Created Commmit</div>
+      <div>
+        <span className="flex">
+          <InformationCircleIcon />
+          <span>Created Commmit</span>
+        </span>
+      </div>
       {Object.keys(commits).map((repoName) => {
         return (
           <div key={repoName}>
@@ -87,7 +92,12 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
 const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
   return (
     <>
-      <div>Opened PullRequests in {Object.keys(pullRequests).length} repositories</div>
+      <div>
+        <span className="flex">
+          <InformationCircleIcon />
+          <span>Opened PullRequests in {Object.keys(pullRequests).length} repositories</span>
+        </span>
+      </div>
       {Object.keys(pullRequests).map((repoName) => {
         return (
           <div key={repoName}>
@@ -142,7 +152,12 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
 const Issues = ({ issues }: { issues: Summary['issues'] }) => {
   return (
     <>
-      <div>Opened Issues in {Object.keys(issues).length} repositories</div>
+      <div>
+        <span className="flex">
+          <InformationCircleIcon />
+          <span>Opened Issues in {Object.keys(issues).length} repositories</span>
+        </span>
+      </div>
       {Object.keys(issues).map((repoName) => {
         return (
           <div key={repoName}>
