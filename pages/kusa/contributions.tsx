@@ -12,6 +12,8 @@ export type PullRequestEventPayload = {
     url: string;
     html_url: string;
     number: number;
+    state: string;
+    updated_at: string;
   };
 };
 
@@ -27,6 +29,10 @@ export type IssuesEventPayload = {
 };
 
 export type Commit = {
+  author: {
+    name: string;
+    email: string;
+  };
   message: string;
   sha: string;
   url: string;
@@ -110,7 +116,7 @@ type Props = {
 };
 
 const Contributions = (props: Props) => {
-  const [selectedView, setSelectedView] = useState<string>('simple');
+  const [selectedView, setSelectedView] = useState<string>('repo');
   const views = [
     { id: 'simple', name: 'Simple List' },
     { id: 'repo', name: 'Group By Repo' },
@@ -123,7 +129,7 @@ const Contributions = (props: Props) => {
       <nav className="flex flex-col sm:flex-row">
         {views.map((view) => {
           return (
-            <>
+            <div key={view.id}>
               {selectedView == view.id ? (
                 <button className="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
                   {view.name}
@@ -136,7 +142,7 @@ const Contributions = (props: Props) => {
                   {view.name}
                 </button>
               )}
-            </>
+            </div>
           );
         })}
       </nav>
