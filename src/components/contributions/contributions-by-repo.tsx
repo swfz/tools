@@ -40,12 +40,16 @@ type Summary = {
 };
 
 const Commits = ({ commits }: { commits: Summary['commits'] }) => {
+  const count = Object.values(commits).reduce((acc, c) => acc + c.data.length, 0);
+
   return (
     <>
       <div>
         <span className="flex">
           <InformationCircleIcon />
-          <span>Created Commmit</span>
+          <span>
+            Created {count} Commmits in {Object.keys(commits).length} repositories
+          </span>
         </span>
       </div>
       {Object.keys(commits).map((repoName) => {
@@ -90,12 +94,16 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
 };
 
 const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
+  const count = Object.values(pullRequests).reduce((acc, prs) => acc + prs.data.length, 0);
+
   return (
     <>
       <div>
         <span className="flex">
           <InformationCircleIcon />
-          <span>Opened PullRequests in {Object.keys(pullRequests).length} repositories</span>
+          <span>
+            Opened {count} PullRequests in {Object.keys(pullRequests).length} repositories
+          </span>
         </span>
       </div>
       {Object.keys(pullRequests).map((repoName) => {
@@ -150,12 +158,16 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
 };
 
 const Issues = ({ issues }: { issues: Summary['issues'] }) => {
+  const count = Object.values(issues).reduce((acc, is) => acc + is.data.length, 0);
+
   return (
     <>
       <div>
         <span className="flex">
           <InformationCircleIcon />
-          <span>Opened Issues in {Object.keys(issues).length} repositories</span>
+          <span>
+            Opened {count} Issues in {Object.keys(issues).length} repositories
+          </span>
         </span>
       </div>
       {Object.keys(issues).map((repoName) => {
