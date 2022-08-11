@@ -178,7 +178,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                           href={issue.issue.html_url}
                           className="text-blue-600 hover:underline"
                         >
-                          #{issue.number}
+                          #{issue.issue.number}
                         </a>{' '}
                         {issue.issue.title}
                       </span>
@@ -234,6 +234,26 @@ const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summ
   }, {} as Summary['pullRequests']);
 };
 
+const ignoreDuplicateIssue = (issues: Summary['issues']): Summary['issues'] => {
+  const uniqByNumberAndLatest = (issues: IssuesEventPayload[]): IssuesEventPayload[] => {
+    const issueMap = issues
+      .sort((a, b) => (a.issue.updated_at > b.issue.updated_at ? 1 : -1))
+      .reduce((acc, issue) => {
+        acc.set(issue.number, issue);
+
+        return acc;
+      }, new Map<number, IssuesEventPayload>());
+
+    return Array.from(issueMap.values());
+  };
+
+  return Object.entries(issues).reduce((acc, [repoName, issuesByRepo]) => {
+    const filteredIssues = uniqByNumberAndLatest(issuesByRepo.data);
+
+    return { ...acc, [repoName]: { ...issuesByRepo, data: filteredIssues } };
+  }, {} as Summary['issues']);
+};
+
 const ContributionsByRepo = (props: Props) => {
   const grouped = props.result.reduce(
     (acc: Summary, row: GitHubEvent) => {
@@ -270,13 +290,11 @@ const ContributionsByRepo = (props: Props) => {
   );
 
   const summary = {
-    issues: grouped.issues,
+    issues: ignoreDuplicateIssue(grouped.issues),
     pullRequests: ignoreDuplicatePullRequest(grouped.pullRequests),
     commits: uniqueAndSortCommits(grouped.commits),
     repositories: grouped.repositories,
   };
-
-  console.log(summary.issues);
 
   return (
     <>

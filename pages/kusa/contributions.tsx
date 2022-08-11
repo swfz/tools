@@ -26,6 +26,7 @@ export type IssuesEventPayload = {
     html_url: string;
     number: number;
     state: 'open' | 'closed';
+    updated_at: string;
   };
 };
 
