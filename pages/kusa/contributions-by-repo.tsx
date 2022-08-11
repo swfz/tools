@@ -93,7 +93,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
               <ul className="list-none">
                 {pullRequests[repoName].data.map((pr) => {
                   return (
-                    <li className="ml-8">
+                    <li key={pr.pull_request.url} className="ml-8">
                       <span className="flex items-center">
                         {pr.pull_request.state === 'closed' ? (
                           <span className="text-purple-800">
