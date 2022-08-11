@@ -47,7 +47,7 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
       <div>
         <span className="flex">
           <InformationCircleIcon />
-          <span>
+          <span className="text-lg font-bold">
             Created {count} Commmits in {Object.keys(commits).length} repositories
           </span>
         </span>
@@ -101,7 +101,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
       <div>
         <span className="flex">
           <InformationCircleIcon />
-          <span>
+          <span className="text-lg font-bold">
             Opened {count} PullRequests in {Object.keys(pullRequests).length} repositories
           </span>
         </span>
@@ -165,7 +165,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
       <div>
         <span className="flex">
           <InformationCircleIcon />
-          <span>
+          <span className="text-lg font-bold">
             Opened {count} Issues in {Object.keys(issues).length} repositories
           </span>
         </span>
