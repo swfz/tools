@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircleIcon, ShareIcon } from '../../src/components/icon';
+import { CheckCircleIcon, ShareIcon } from '../icon';
 import {
   Commit,
   GitHubEvent,

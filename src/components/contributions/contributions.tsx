@@ -119,7 +119,7 @@ type Props = {
 };
 
 const Contributions = (props: Props) => {
-  const [selectedView, setSelectedView] = useState<string>('repo');
+  const [selectedView, setSelectedView] = useState<string>('simple');
   const views = [
     { id: 'simple', name: 'Simple List' },
     { id: 'repo', name: 'Group By Repo' },

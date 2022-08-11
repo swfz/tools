@@ -3,7 +3,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Link from 'next/link';
 import { FetchProvider, useFetch } from 'react-hooks-fetch';
 import { Suspense, useState } from 'react';
-import Contributions from './contributions';
+import Contributions from '../../src/components/contributions/contributions';
 
 type Props = {
   user: string;
