@@ -104,7 +104,6 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                             <ShareIcon />
                           </span>
                         )}
-                        {/* <span>{pr.date.split('T')[0]}</span>{' '} */}
                         <a
                           target="_blank"
                           rel="noreferrer"
@@ -127,8 +126,28 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
   );
 };
 
+const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summary['pullRequests'] => {
+  const uniqByNumberAndLatest = (pullRequests: PullRequestEventPayload[]): PullRequestEventPayload[] => {
+    const prMap = pullRequests
+      .sort((a, b) => (a.pull_request.updated_at > b.pull_request.updated_at ? 1 : -1))
+      .reduce((acc, pr) => {
+        acc.set(pr.pull_request.number, pr);
+
+        return acc;
+      }, new Map<number, PullRequestEventPayload>());
+
+    return Array.from(prMap.values());
+  };
+
+  return Object.entries(pullRequests).reduce((acc, [repoName, prsByRepo]) => {
+    const filteredPrs = uniqByNumberAndLatest(prsByRepo.data);
+
+    return { ...acc, [repoName]: { ...prsByRepo, data: filteredPrs } };
+  }, {} as Summary['pullRequests']);
+};
+
 const ContributionsByRepo = (props: Props) => {
-  const summary = props.result.reduce(
+  const grouped = props.result.reduce(
     (acc: Summary, row: GitHubEvent) => {
       if (row.type === 'PushEvent') {
         const targetCommits = row.payload.commits
@@ -140,14 +159,10 @@ const ContributionsByRepo = (props: Props) => {
         return { ...acc, commits };
       }
       if (row.type === 'PullRequestEvent') {
-        if (acc.pullRequests[row.repo.name]?.data.find((pr) => pr.number === row.payload.number)) {
-          return acc;
-        } else {
-          const prData = [...(acc.pullRequests[row.repo.name]?.data || []), row.payload];
-          const pullRequests = { ...acc.pullRequests, [row.repo.name]: { repo: row.repo, data: prData } };
+        const prPayloads = [...(acc.pullRequests[row.repo.name]?.data || []), row.payload];
+        const pullRequests = { ...acc.pullRequests, [row.repo.name]: { repo: row.repo, data: prPayloads } };
 
-          return { ...acc, pullRequests };
-        }
+        return { ...acc, pullRequests };
       }
       return acc;
     },
@@ -159,7 +174,14 @@ const ContributionsByRepo = (props: Props) => {
     },
   );
 
-  console.log(summary);
+  const summary = {
+    issues: grouped.issues,
+    pullRequests: ignoreDuplicatePullRequest(grouped.pullRequests),
+    commits: grouped.commits,
+    repositories: grouped.repositories,
+  };
+
+  console.log(summary.pullRequests);
 
   return (
     <>
