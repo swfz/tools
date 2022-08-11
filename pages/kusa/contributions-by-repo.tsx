@@ -126,6 +126,26 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
   );
 };
 
+const uniqueAndSortCommits = (commits: Summary['commits']): Summary['commits'] => {
+  const uniqByShaAndLatest = (cs: CommitData[]): CommitData[] => {
+    const commitMap = cs
+      .sort((a, b) => (a.date > b.date ? 1 : -1))
+      .reduce((acc, commit) => {
+        acc.set(commit.sha, commit);
+
+        return acc;
+      }, new Map<string, CommitData>());
+
+    return Array.from(commitMap.values());
+  };
+
+  return Object.entries(commits).reduce((acc, [repoName, commitsByRepo]) => {
+    const uniqueCommits = uniqByShaAndLatest(commitsByRepo.data);
+
+    return { ...acc, [repoName]: { ...commitsByRepo, data: uniqueCommits.reverse() } };
+  }, {} as Summary['commits']);
+};
+
 const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summary['pullRequests'] => {
   const uniqByNumberAndLatest = (pullRequests: PullRequestEventPayload[]): PullRequestEventPayload[] => {
     const prMap = pullRequests
@@ -177,11 +197,11 @@ const ContributionsByRepo = (props: Props) => {
   const summary = {
     issues: grouped.issues,
     pullRequests: ignoreDuplicatePullRequest(grouped.pullRequests),
-    commits: grouped.commits,
+    commits: uniqueAndSortCommits(grouped.commits),
     repositories: grouped.repositories,
   };
 
-  console.log(summary.pullRequests);
+  // console.log(summary.commits);
 
   return (
     <>
