@@ -25,6 +25,7 @@ export type IssuesEventPayload = {
     url: string;
     html_url: string;
     number: number;
+    state: 'open' | 'closed';
   };
 };
 
@@ -70,6 +71,7 @@ export type IssueCommentEventPayload = {
     number: number;
     url: string;
     html_url: string;
+    state: 'open' | 'closed';
   };
 };
 

@@ -1,6 +1,14 @@
 import React from 'react';
-import { ShareIcon } from '../../src/components/icon';
-import { Commit, GitHubEvent, GitHubRepo, PullRequestEventPayload, PushEventPayload, toHtmlUrl } from './contributions';
+import { CheckCircleIcon, ShareIcon } from '../../src/components/icon';
+import {
+  Commit,
+  GitHubEvent,
+  GitHubRepo,
+  IssuesEventPayload,
+  PullRequestEventPayload,
+  PushEventPayload,
+  toHtmlUrl,
+} from './contributions';
 
 type Props = {
   result: any;
@@ -10,7 +18,6 @@ type Props = {
 type CommitData = Commit & { date: string };
 
 type Summary = {
-  // issues: {[key: string]: string[]}
   commits: {
     [key: string]: {
       repo: GitHubRepo;
@@ -21,6 +28,12 @@ type Summary = {
     [key: string]: {
       repo: GitHubRepo;
       data: PullRequestEventPayload[];
+    };
+  };
+  issues: {
+    [key: string]: {
+      repo: GitHubRepo;
+      data: IssuesEventPayload[];
     };
   };
   // repositories: {[key: string]: string}
@@ -126,6 +139,61 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
   );
 };
 
+const Issues = ({ issues }: { issues: Summary['issues'] }) => {
+  return (
+    <>
+      <div>Opened Issues in {Object.keys(issues).length} repositories</div>
+      {Object.keys(issues).map((repoName) => {
+        return (
+          <div key={repoName}>
+            <details>
+              <summary>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600 hover:underline"
+                  href={toHtmlUrl(issues[repoName].repo?.url)}
+                >
+                  {repoName}
+                </a>{' '}
+                {issues[repoName].data.length} Issues
+              </summary>
+              <ul className="list-none">
+                {issues[repoName].data.map((issue) => {
+                  return (
+                    <li key={issue.issue.url}>
+                      <span className="flex items-center">
+                        {issue.issue.state === 'closed' ? (
+                          <span className="text-purple-800">
+                            <CheckCircleIcon />
+                          </span>
+                        ) : (
+                          <span className="text-green-800">
+                            <CheckCircleIcon />
+                          </span>
+                        )}
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href={issue.issue.html_url}
+                          className="text-blue-600 hover:underline"
+                        >
+                          #{issue.number}
+                        </a>{' '}
+                        {issue.issue.title}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </details>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
 const uniqueAndSortCommits = (commits: Summary['commits']): Summary['commits'] => {
   const uniqByShaAndLatest = (cs: CommitData[]): CommitData[] => {
     const commitMap = cs
@@ -185,6 +253,12 @@ const ContributionsByRepo = (props: Props) => {
 
         return { ...acc, pullRequests };
       }
+      if (row.type === 'IssuesEvent') {
+        const issuesPayloads = [...(acc.issues[row.repo.name]?.data || []), row.payload];
+        const issues = { ...acc.issues, [row.repo.name]: { repo: row.repo, data: issuesPayloads } };
+
+        return { ...acc, issues };
+      }
       return acc;
     },
     {
@@ -202,12 +276,13 @@ const ContributionsByRepo = (props: Props) => {
     repositories: grouped.repositories,
   };
 
-  // console.log(summary.commits);
+  console.log(summary.issues);
 
   return (
     <>
       <Commits commits={summary.commits}></Commits>
       <PullRequests pullRequests={summary.pullRequests}></PullRequests>
+      <Issues issues={summary.issues}></Issues>
     </>
   );
 };
