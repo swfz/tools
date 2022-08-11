@@ -188,7 +188,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
               <ul className="list-none">
                 {issues[repoName].data.map((issue) => {
                   return (
-                    <li key={issue.issue.url}>
+                    <li key={issue.issue.url} className="ml-8">
                       <span className="flex items-center">
                         {issue.issue.state === 'closed' ? (
                           <span className="text-purple-800">
