@@ -40,6 +40,10 @@ type Summary = {
     [key: string]: {
       repo: GitHubRepo;
       data: IssuesEventPayload[];
+      stats: {
+        open: number;
+        closed: number;
+      };
     };
   };
   repositories: CreateEventPayload[];
@@ -207,7 +211,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
         return (
           <div key={repoName}>
             <details>
-              <summary>
+              <summary className="grid grid-cols-12">
                 <a
                   target="_blank"
                   rel="noreferrer"
@@ -217,6 +221,24 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                   {repoName}
                 </a>{' '}
                 {issues[repoName].data.length} Issues
+                <span className="col-start-12 col-end-13 col-span-2 flex-row-reverse inline-flex">
+                  {issues[repoName].stats.closed > 0 && (
+                    <span className="inline-flex">
+                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-red-600 rounded-full">
+                        {issues[repoName].stats.closed}
+                      </span>
+                      <span className="text-xs">&nbsp;closed</span>
+                    </span>
+                  )}
+                  {issues[repoName].stats.open > 0 && (
+                    <span className="inline-flex">
+                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-green-700 rounded-full">
+                        {issues[repoName].stats.open}
+                      </span>
+                      <span className="text-xs">&nbsp;open</span>
+                    </span>
+                  )}
+                </span>
               </summary>
               <ul className="list-none">
                 {issues[repoName].data.map((issue) => {
@@ -328,7 +350,7 @@ const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summ
   }, {} as Summary['pullRequests']);
 };
 
-const ignoreDuplicateIssue = (issues: Summary['issues']): Summary['issues'] => {
+const aggregateIssues = (issues: Summary['issues']): Summary['issues'] => {
   const uniqByNumberAndLatest = (issues: IssuesEventPayload[]): IssuesEventPayload[] => {
     const issueMap = issues
       .sort((a, b) => (a.issue.updated_at > b.issue.updated_at ? 1 : -1))
@@ -344,7 +366,10 @@ const ignoreDuplicateIssue = (issues: Summary['issues']): Summary['issues'] => {
   return Object.entries(issues).reduce((acc, [repoName, issuesByRepo]) => {
     const filteredIssues = uniqByNumberAndLatest(issuesByRepo.data);
 
-    return { ...acc, [repoName]: { ...issuesByRepo, data: filteredIssues } };
+    const closed = filteredIssues.filter((i) => i.issue.state === 'closed').length;
+    const open = filteredIssues.filter((i) => i.issue.state === 'open').length;
+
+    return { ...acc, [repoName]: { ...issuesByRepo, data: filteredIssues, stats: { closed, open } } };
   }, {} as Summary['issues']);
 };
 
@@ -390,7 +415,7 @@ const ContributionsByRepo = (props: Props) => {
   );
 
   const summary = {
-    issues: ignoreDuplicateIssue(grouped.issues),
+    issues: aggregateIssues(grouped.issues),
     pullRequests: ignoreDuplicatePullRequest(grouped.pullRequests),
     commits: uniqueAndSortCommits(grouped.commits),
     repositories: grouped.repositories,
