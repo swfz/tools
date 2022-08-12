@@ -128,22 +128,22 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                   </a>{' '}
                   {pullRequests[repoName].data.length} PullRequests
                 </span>
-                <span className="col-start-12 col-end-12 text-right mr-0">
+                <span className="col-start-12 col-end-13 col-span-2 flex-row-reverse inline-flex">
                   {pullRequests[repoName].stats.merged > 0 && (
-                    <>
+                    <span className="inline-flex">
                       <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-purple-700 rounded-full">
                         {pullRequests[repoName].stats.merged}
                       </span>
-                      <span className="text-xs"> merged</span>
-                    </>
+                      <span className="text-xs">&nbsp;merged</span>
+                    </span>
                   )}
                   {pullRequests[repoName].stats.open > 0 && (
-                    <>
+                    <span className="inline-flex">
                       <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-green-700 rounded-full">
                         {pullRequests[repoName].stats.open}
                       </span>
-                      <span className="text-xs"> open</span>
-                    </>
+                      <span className="text-xs">&nbsp;open</span>
+                    </span>
                   )}
                 </span>
               </summary>
