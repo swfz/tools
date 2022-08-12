@@ -294,7 +294,7 @@ const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summ
   return Object.entries(pullRequests).reduce((acc, [repoName, prsByRepo]) => {
     const filteredPrs = uniqByNumberAndLatest(prsByRepo.data);
 
-    return { ...acc, [repoName]: { ...prsByRepo, data: filteredPrs } };
+    return { ...acc, [repoName]: { ...prsByRepo, data: filteredPrs.reverse() } };
   }, {} as Summary['pullRequests']);
 };
 
