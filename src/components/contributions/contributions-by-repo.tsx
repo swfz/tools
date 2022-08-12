@@ -1,7 +1,8 @@
 import React from 'react';
-import { CheckCircleIcon, ShareIcon } from '../icon';
+import { CheckCircleIcon, InformationCircleIcon, ShareIcon } from '../icon';
 import {
   Commit,
+  CreateEventPayload,
   GitHubEvent,
   GitHubRepo,
   IssuesEventPayload,
@@ -36,13 +37,22 @@ type Summary = {
       data: IssuesEventPayload[];
     };
   };
-  // repositories: {[key: string]: string}
+  repositories: CreateEventPayload[];
 };
 
 const Commits = ({ commits }: { commits: Summary['commits'] }) => {
+  const count = Object.values(commits).reduce((acc, c) => acc + c.data.length, 0);
+
   return (
     <>
-      <div>Created Commmit</div>
+      <div>
+        <span className="flex">
+          <InformationCircleIcon />
+          <span className="text-lg font-bold">
+            Created {count} Commmits in {Object.keys(commits).length} repositories
+          </span>
+        </span>
+      </div>
       {Object.keys(commits).map((repoName) => {
         return (
           <div key={repoName}>
@@ -85,9 +95,18 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
 };
 
 const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
+  const count = Object.values(pullRequests).reduce((acc, prs) => acc + prs.data.length, 0);
+
   return (
     <>
-      <div>Opened PullRequests in {Object.keys(pullRequests).length} repositories</div>
+      <div>
+        <span className="flex">
+          <InformationCircleIcon />
+          <span className="text-lg font-bold">
+            Opened {count} PullRequests in {Object.keys(pullRequests).length} repositories
+          </span>
+        </span>
+      </div>
       {Object.keys(pullRequests).map((repoName) => {
         return (
           <div key={repoName}>
@@ -106,8 +125,8 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
               <ul className="list-none">
                 {pullRequests[repoName].data.map((pr) => {
                   return (
-                    <li key={pr.pull_request.url} className="ml-8">
-                      <span className="flex items-center">
+                    <li key={pr.pull_request.url} className="grid grid-cols-12 gap-4">
+                      <span className="col-start-1 col-end-10 flex ml-3">
                         {pr.pull_request.state === 'closed' ? (
                           <span className="text-purple-800">
                             <ShareIcon />
@@ -127,6 +146,13 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                         </a>{' '}
                         {pr.pull_request.title}
                       </span>
+                      <span className="col-start-11 font-bold text-xs text-right">
+                        <span className="text-green-700">+{pr.pull_request.additions}</span>{' '}
+                        <span className="text-red-700">-{pr.pull_request.deletions}</span>
+                      </span>
+                      <span className="col-start-12 text-xs text-right">
+                        {pr.pull_request.updated_at.split('T')[0]}
+                      </span>
                     </li>
                   );
                 })}
@@ -140,9 +166,18 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
 };
 
 const Issues = ({ issues }: { issues: Summary['issues'] }) => {
+  const count = Object.values(issues).reduce((acc, is) => acc + is.data.length, 0);
+
   return (
     <>
-      <div>Opened Issues in {Object.keys(issues).length} repositories</div>
+      <div>
+        <span className="flex">
+          <InformationCircleIcon />
+          <span className="text-lg font-bold">
+            Opened {count} Issues in {Object.keys(issues).length} repositories
+          </span>
+        </span>
+      </div>
       {Object.keys(issues).map((repoName) => {
         return (
           <div key={repoName}>
@@ -161,8 +196,8 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
               <ul className="list-none">
                 {issues[repoName].data.map((issue) => {
                   return (
-                    <li key={issue.issue.url}>
-                      <span className="flex items-center">
+                    <li key={issue.issue.url} className="grid grid-cols-12 gap-4">
+                      <span className="col-start-1 col-end-10 flex ml-3">
                         {issue.issue.state === 'closed' ? (
                           <span className="text-purple-800">
                             <CheckCircleIcon />
@@ -190,6 +225,35 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
           </div>
         );
       })}
+    </>
+  );
+};
+
+const Repositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
+  return (
+    <>
+      <div>
+        <span className="flex">
+          <InformationCircleIcon />
+          <span className="text-lg font-bold">Created {Object.keys(repositories).length} repositories</span>
+        </span>
+      </div>
+      <ul>
+        {repositories.map((repoEvent) => {
+          return (
+            <li key={repoEvent.repo.name}>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={toHtmlUrl(repoEvent.repo.url)}
+                className="text-blue-600 hover:underline"
+              >
+                {repoEvent.repo.name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 };
@@ -279,13 +343,18 @@ const ContributionsByRepo = (props: Props) => {
 
         return { ...acc, issues };
       }
+      if (row.type === 'CreateEvent' && row.payload.ref_type === 'repository') {
+        const repositories = [...acc.repositories, row];
+
+        return { ...acc, repositories };
+      }
       return acc;
     },
     {
       issues: {},
       pullRequests: {},
       commits: {},
-      repositories: {},
+      repositories: [],
     },
   );
 
@@ -301,6 +370,7 @@ const ContributionsByRepo = (props: Props) => {
       <Commits commits={summary.commits}></Commits>
       <PullRequests pullRequests={summary.pullRequests}></PullRequests>
       <Issues issues={summary.issues}></Issues>
+      <Repositories repositories={summary.repositories}></Repositories>
     </>
   );
 };
