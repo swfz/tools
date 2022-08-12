@@ -62,10 +62,13 @@ const Kusa = (props: Props) => {
         <meta name="twitter:image" content={imgUrl} />
       </Head>
       <div>
-        <Link href={toGitHub}>
-          <span className="text-blue-600 no-underline hover:underline cursor-pointer font-bold">{user}</span>
-        </Link>
-        <span>&apos;s kusa</span>
+        <span className="text-4xl font-bold">
+          <a href={toGitHub} target="_blank" rel="noreferrer">
+            <span className="text-blue-600 no-underline hover:underline cursor-pointer font-bold">{user}</span>
+          </a>
+          &apos;s kusa
+        </span>
+
         <img src={imgUrl} alt="GitHub Contribution" />
         {/* @ts-ignore */}
         <FetchProvider initialInputs={[[fetchFunc, user]]}>
