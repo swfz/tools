@@ -303,7 +303,7 @@ const ignoreDuplicateIssue = (issues: Summary['issues']): Summary['issues'] => {
     const issueMap = issues
       .sort((a, b) => (a.issue.updated_at > b.issue.updated_at ? 1 : -1))
       .reduce((acc, issue) => {
-        acc.set(issue.number, issue);
+        acc.set(issue.issue.number, issue);
 
         return acc;
       }, new Map<number, IssuesEventPayload>());
