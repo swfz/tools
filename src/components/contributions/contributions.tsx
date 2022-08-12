@@ -4,19 +4,20 @@ import ContributionsByRepo from './contributions-by-repo';
 import ContributionsByEvent from './contributions-by-event';
 import ContributionsSimple from './contributions-simple';
 
+export type PullRequest = {
+  title: string;
+  url: string;
+  html_url: string;
+  number: number;
+  state: string;
+  updated_at: string;
+  additions: number;
+  deletions: number;
+};
 export type PullRequestEventPayload = {
   action: string;
   number: number;
-  pull_request: {
-    title: string;
-    url: string;
-    html_url: string;
-    number: number;
-    state: string;
-    updated_at: string;
-    additions: number;
-    deletions: number;
-  };
+  pull_request: PullRequest;
 };
 
 export type IssuesEventPayload = {
@@ -87,6 +88,41 @@ export type ForkEventPayload = {
   };
 };
 
+export type Comment = {
+  body: string;
+  created_at: string;
+  html_url: string;
+  pull_request_url: string;
+  updated_at: string;
+  _links: {
+    html: {
+      href: string;
+    };
+    self: {
+      href: string;
+    };
+  };
+};
+
+export type PullRequestReviewCommentEventPayload = {
+  action: 'created';
+  comment: Comment;
+  pull_request: PullRequest;
+};
+
+export type PullRequestReviewEventPayload = {
+  action: 'created';
+  pull_request: PullRequest;
+  review: {
+    body: string;
+    commit_id: string;
+    html_url: string;
+    pull_request_url: string;
+    state: 'commented';
+    submitted_at: string;
+  };
+};
+
 export type GitHubRepo = {
   url: string;
   name: string;
@@ -100,7 +136,9 @@ export type GitHubEventType =
   | 'DeleteEvent'
   | 'WatchEvent'
   | 'IssueCommentEvent'
-  | 'ForkEvent';
+  | 'ForkEvent'
+  | 'PullRequestReviewCommentEvent'
+  | 'PullRequestReviewEvent';
 
 export type GitHubEvent = {
   id: number;
