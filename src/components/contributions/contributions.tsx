@@ -13,6 +13,7 @@ export type PullRequest = {
   updated_at: string;
   additions: number;
   deletions: number;
+  merged: boolean;
 };
 export type PullRequestEventPayload = {
   action: string;
