@@ -95,7 +95,7 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
 };
 
 const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
-  const count = Object.values(pullRequests).reduce((acc, prs) => acc + prs.data.length, 0);
+  const totalCount = Object.values(pullRequests).reduce((acc, prs) => acc + prs.data.length, 0);
 
   return (
     <>
