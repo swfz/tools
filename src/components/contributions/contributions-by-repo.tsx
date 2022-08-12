@@ -323,8 +323,9 @@ const ContributionsByRepo = (props: Props) => {
     (acc: Summary, row: GitHubEvent) => {
       if (row.type === 'PushEvent') {
         // TODO: GitHubEventの型定義を解決すればこちらも解決する
+        // BotUserのコミットはノイズになるので除外する
         const targetCommits = (row.payload as PushEventPayload).commits
-          .filter((c) => c.author.name === props.user)
+          .filter((c) => !c.author.email.match('@users.noreply.github.com'))
           .map((c) => ({ ...c, date: row.created_at }));
         const commitData = [...(acc.commits[row.repo.name]?.data || []), ...targetCommits];
         const commits = { ...acc.commits, [row.repo.name]: { repo: row.repo, data: commitData } };
