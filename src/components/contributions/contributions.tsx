@@ -130,7 +130,7 @@ const Contributions = (props: Props) => {
 
   return (
     <div>
-      <h2 className="font-bold col-start-1 col-end-4">Recent {props.user} Events</h2>
+      <h2 className="text-2xl font-bold col-start-1 col-end-4">Recent {props.user} Events</h2>
       <nav className="flex flex-col sm:flex-row">
         {views.map((view) => {
           return (
