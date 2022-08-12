@@ -29,6 +29,11 @@ type Summary = {
     [key: string]: {
       repo: GitHubRepo;
       data: PullRequestEventPayload[];
+      stats: {
+        merged: number;
+        open: number;
+        count: number;
+      };
     };
   };
   issues: {
@@ -103,7 +108,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
         <span className="flex">
           <InformationCircleIcon />
           <span className="text-lg font-bold">
-            Opened {count} PullRequests in {Object.keys(pullRequests).length} repositories
+            Opened {totalCount} PullRequests in {Object.keys(pullRequests).length} repositories
           </span>
         </span>
       </div>
@@ -111,16 +116,36 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
         return (
           <div key={repoName}>
             <details>
-              <summary>
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 hover:underline"
-                  href={toHtmlUrl(pullRequests[repoName].repo?.url)}
-                >
-                  {repoName}
-                </a>{' '}
-                {pullRequests[repoName].data.length} PullRequests
+              <summary className="grid grid-cols-12">
+                <span className="col-start-1 col-end-11">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 hover:underline"
+                    href={toHtmlUrl(pullRequests[repoName].repo?.url)}
+                  >
+                    {repoName}
+                  </a>{' '}
+                  {pullRequests[repoName].data.length} PullRequests
+                </span>
+                <span className="col-start-12 col-end-12 text-right mr-0">
+                  {pullRequests[repoName].stats.merged > 0 && (
+                    <>
+                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-purple-700 rounded-full">
+                        {pullRequests[repoName].stats.merged}
+                      </span>
+                      <span className="text-xs"> merged</span>
+                    </>
+                  )}
+                  {pullRequests[repoName].stats.open > 0 && (
+                    <>
+                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-green-700 rounded-full">
+                        {pullRequests[repoName].stats.open}
+                      </span>
+                      <span className="text-xs"> open</span>
+                    </>
+                  )}
+                </span>
               </summary>
               <ul className="list-none">
                 {pullRequests[repoName].data.map((pr) => {
@@ -295,8 +320,11 @@ const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summ
 
   return Object.entries(pullRequests).reduce((acc, [repoName, prsByRepo]) => {
     const filteredPrs = uniqByNumberAndLatest(prsByRepo.data);
+    const count = filteredPrs.length;
+    const merged = filteredPrs.reduce((acc, pr) => acc + (pr.pull_request.merged ? 1 : 0), 0);
+    const open = count - merged;
 
-    return { ...acc, [repoName]: { ...prsByRepo, data: filteredPrs.reverse() } };
+    return { ...acc, [repoName]: { ...prsByRepo, data: filteredPrs.reverse(), stats: { count, merged, open } } };
   }, {} as Summary['pullRequests']);
 };
 
