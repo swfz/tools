@@ -2,6 +2,7 @@ import React from 'react';
 import { CheckCircleIcon, InformationCircleIcon, ShareIcon } from '../icon';
 import {
   Commit,
+  CreateEventPayload,
   GitHubEvent,
   GitHubRepo,
   IssuesEventPayload,
@@ -36,7 +37,7 @@ type Summary = {
       data: IssuesEventPayload[];
     };
   };
-  // repositories: {[key: string]: string}
+  repositories: CreateEventPayload[];
 };
 
 const Commits = ({ commits }: { commits: Summary['commits'] }) => {
@@ -228,6 +229,35 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
   );
 };
 
+const Repositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
+  return (
+    <>
+      <div>
+        <span className="flex">
+          <InformationCircleIcon />
+          <span className="text-lg font-bold">Created {Object.keys(repositories).length} repositories</span>
+        </span>
+      </div>
+      <ul>
+        {repositories.map((repoEvent) => {
+          return (
+            <li key={repoEvent.repo.name}>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={toHtmlUrl(repoEvent.repo.url)}
+                className="text-blue-600 hover:underline"
+              >
+                {repoEvent.repo.name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+};
+
 const uniqueAndSortCommits = (commits: Summary['commits']): Summary['commits'] => {
   const uniqByShaAndLatest = (cs: CommitData[]): CommitData[] => {
     const commitMap = cs
@@ -313,13 +343,18 @@ const ContributionsByRepo = (props: Props) => {
 
         return { ...acc, issues };
       }
+      if (row.type === 'CreateEvent' && row.payload.ref_type === 'repository') {
+        const repositories = [...acc.repositories, row];
+
+        return { ...acc, repositories };
+      }
       return acc;
     },
     {
       issues: {},
       pullRequests: {},
       commits: {},
-      repositories: {},
+      repositories: [],
     },
   );
 
@@ -335,6 +370,7 @@ const ContributionsByRepo = (props: Props) => {
       <Commits commits={summary.commits}></Commits>
       <PullRequests pullRequests={summary.pullRequests}></PullRequests>
       <Issues issues={summary.issues}></Issues>
+      <Repositories repositories={summary.repositories}></Repositories>
     </>
   );
 };
