@@ -14,6 +14,8 @@ export type PullRequestEventPayload = {
     number: number;
     state: string;
     updated_at: string;
+    additions: number;
+    deletions: number;
   };
 };
 

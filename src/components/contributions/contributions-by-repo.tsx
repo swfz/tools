@@ -145,6 +145,10 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                         </a>{' '}
                         {pr.pull_request.title}
                       </span>
+                      <span className="col-start-11 font-bold text-xs text-right">
+                        <span className="text-green-700">+{pr.pull_request.additions}</span>{' '}
+                        <span className="text-red-700">-{pr.pull_request.deletions}</span>
+                      </span>
                       <span className="col-start-12 text-xs text-right">
                         {pr.pull_request.updated_at.split('T')[0]}
                       </span>
