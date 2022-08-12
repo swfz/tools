@@ -283,7 +283,9 @@ const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summ
     const prMap = pullRequests
       .sort((a, b) => (a.pull_request.updated_at > b.pull_request.updated_at ? 1 : -1))
       .reduce((acc, pr) => {
-        acc.set(pr.pull_request.number, pr);
+        if (!(pr.pull_request.state === 'closed' && !pr.pull_request.merged)) {
+          acc.set(pr.pull_request.number, pr);
+        }
 
         return acc;
       }, new Map<number, PullRequestEventPayload>());
