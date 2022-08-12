@@ -124,8 +124,8 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
               <ul className="list-none">
                 {pullRequests[repoName].data.map((pr) => {
                   return (
-                    <li key={pr.pull_request.url} className="ml-8">
-                      <span className="flex items-center">
+                    <li key={pr.pull_request.url} className="grid grid-cols-12 gap-4">
+                      <span className="col-start-1 col-end-10 flex ml-3">
                         {pr.pull_request.state === 'closed' ? (
                           <span className="text-purple-800">
                             <ShareIcon />
@@ -144,6 +144,9 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                           #{pr.number}
                         </a>{' '}
                         {pr.pull_request.title}
+                      </span>
+                      <span className="col-start-12 text-xs text-right">
+                        {pr.pull_request.updated_at.split('T')[0]}
                       </span>
                     </li>
                   );
@@ -188,8 +191,8 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
               <ul className="list-none">
                 {issues[repoName].data.map((issue) => {
                   return (
-                    <li key={issue.issue.url} className="ml-8">
-                      <span className="flex items-center">
+                    <li key={issue.issue.url} className="grid grid-cols-12 gap-4">
+                      <span className="col-start-1 col-end-10 flex ml-3">
                         {issue.issue.state === 'closed' ? (
                           <span className="text-purple-800">
                             <CheckCircleIcon />
