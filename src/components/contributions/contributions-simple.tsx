@@ -7,6 +7,8 @@ import type {
   IssueCommentEventPayload,
   IssuesEventPayload,
   PullRequestEventPayload,
+  PullRequestReviewCommentEventPayload,
+  PullRequestReviewEventPayload,
   PushEventPayload,
   WatchEventPayload,
 } from './contributions';
@@ -110,6 +112,40 @@ const ForkEvent = ({ payload }: { payload: ForkEventPayload }) => {
   );
 };
 
+const PullRequestReviewEvent = ({ payload }: { payload: PullRequestReviewEventPayload }) => {
+  return (
+    <div>
+      {payload.review.state}{' '}
+      <span className="text-blue-600 hover:underline">
+        <a target="_blank" rel="noreferrer" href={payload.review.html_url}>
+          {payload.pull_request.title}
+        </a>
+      </span>{' '}
+      at {payload.review.submitted_at}
+    </div>
+  );
+};
+
+const PullRequestReviewCommentEvent = ({ payload }: { payload: PullRequestReviewCommentEventPayload }) => {
+  return (
+    <div>
+      <a className="text-blue-600 hover:underline" target="_blank" rel="noreferrer" href={payload.comment.html_url}>
+        comment
+      </a>{' '}
+      to{' '}
+      <a
+        className="text-blue-600 hover:underline"
+        target="_blank"
+        rel="noreferrer"
+        href={payload.pull_request.html_url}
+      >
+        {payload.pull_request.title}
+      </a>{' '}
+      at {payload.comment.updated_at}
+    </div>
+  );
+};
+
 const ContributionsSimple = (props: Props) => {
   const [open, setOpen] = useState<boolean>();
 
@@ -151,6 +187,12 @@ const ContributionsSimple = (props: Props) => {
                 {row.type === 'WatchEvent' && <WatchEvent payload={row.payload}></WatchEvent>}
                 {row.type === 'IssueCommentEvent' && <IssueCommentEvent payload={row.payload}></IssueCommentEvent>}
                 {row.type === 'ForkEvent' && <ForkEvent payload={row.payload}></ForkEvent>}
+                {row.type === 'PullRequestReviewCommentEvent' && (
+                  <PullRequestReviewCommentEvent payload={row.payload}></PullRequestReviewCommentEvent>
+                )}
+                {row.type === 'PullRequestReviewEvent' && (
+                  <PullRequestReviewEvent payload={row.payload}></PullRequestReviewEvent>
+                )}
               </details>
             </div>
           </div>
