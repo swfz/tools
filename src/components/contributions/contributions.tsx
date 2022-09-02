@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ContributionsByRepo from './contributions-by-repo';
 import ContributionsByEvent from './contributions-by-event';
 import ContributionsSimple from './contributions-simple';
@@ -161,6 +161,44 @@ type Props = {
 
 const Contributions = (props: Props) => {
   const [selectedView, setSelectedView] = useState<string>('simple');
+  const [exclude, setExclude] = useState<boolean>(false);
+  const [apiResult, setApiResult] = useState([]);
+
+  useEffect(() => {
+    if (exclude) {
+      const filtered = props.result.filter((row: GitHubEvent) => {
+        const isRenovateBranch = row.payload.ref_type === 'branch' && row.payload.ref.startsWith('renovate');
+        const isRenovatePR = row.payload.pull_request?.user?.login === 'renovate[bot]';
+        const isRenovatePush =
+          row.payload?.commits?.every((c: Commit) => c.message.includes('update dependency')) ||
+          row.payload?.commits?.every((c: Commit) => c.message.includes('Update dependency')) ||
+          row.payload?.commits?.at(-1).message.includes('renovate');
+
+        const isDependabotBranch = row.payload.ref_type === 'branch' && row.payload.ref.startsWith('dependabot');
+        const isDependabotPR = row.payload.pull_request?.user?.login === 'dependabot[bot]';
+        const isDependabotPush = row.payload?.commits?.every((c: Commit) => c.message.includes('dependabot'));
+
+        return (
+          !isRenovateBranch &&
+          !isRenovatePR &&
+          !isRenovatePush &&
+          !isDependabotBranch &&
+          !isDependabotPR &&
+          !isDependabotPush
+        );
+      });
+      console.log('filtered', filtered);
+
+      setApiResult(filtered);
+    } else {
+      setApiResult(props.result);
+    }
+  }, [exclude]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setExclude(e.target.checked);
+  };
+
   const views = [
     { id: 'simple', name: 'Simple List' },
     { id: 'repo', name: 'Group By Repo' },
@@ -170,6 +208,8 @@ const Contributions = (props: Props) => {
   return (
     <div>
       <h2 className="text-2xl font-bold col-start-1 col-end-4">Recent {props.user} Events</h2>
+      <input type="checkbox" id="exclude" onChange={handleChange} />
+      <label htmlFor="exclude">Exclude events related dependencies update</label>
       <nav className="flex flex-col sm:flex-row">
         {views.map((view) => {
           return (
@@ -191,8 +231,8 @@ const Contributions = (props: Props) => {
         })}
       </nav>
 
-      {selectedView == 'simple' && <ContributionsSimple result={props.result}></ContributionsSimple>}
-      {selectedView == 'repo' && <ContributionsByRepo result={props.result} user={props.user}></ContributionsByRepo>}
+      {selectedView == 'simple' && <ContributionsSimple result={apiResult}></ContributionsSimple>}
+      {selectedView == 'repo' && <ContributionsByRepo result={apiResult} user={props.user}></ContributionsByRepo>}
       {/* {selectedView == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>} */}
     </div>
   );
