@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent } from 'react';
+import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent, StrictMode } from 'react';
 import { event } from '../../src/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '../../src/components/icon';
 
@@ -207,104 +207,106 @@ const Timer: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>Picture in Picture Timer</title>
-      </Head>
-      <div className="divide-y divide-gray-300">
-        <div>
-          <h1 className="text-3xl">Picture in Picture Timer</h1>
-        </div>
-        <div className="p-3">
+      <StrictMode>
+        <Head>
+          <title>Picture in Picture Timer</title>
+        </Head>
+        <div className="divide-y divide-gray-300">
           <div>
-            <div>Picture in Pictureで表示できるタイマー</div>
-            <div>時間、分、秒を指定してタイマーを発動する</div>
-            <div>時間になると背景色が変わります</div>
+            <h1 className="text-3xl">Picture in Picture Timer</h1>
           </div>
-          <div className="p-2 divide-y divide-gray-300">
-            <div id="timer">
-              <canvas id="canvas" width="300" height="100" ref={canvasRef}></canvas>
+          <div className="p-3">
+            <div>
+              <div>Picture in Pictureで表示できるタイマー</div>
+              <div>時間、分、秒を指定してタイマーを発動する</div>
+              <div>時間になると背景色が変わります</div>
             </div>
-            <div className="flex p-1">
-              <span className="flex-1">Hour: </span>
-              <select className="flex-1 rounded" value={formValue.hour} onChange={handleHourChange}>
-                {hours.map((hour) => {
-                  return (
-                    <option key={hour} value={hour}>
-                      {hour.toString().padStart(2, '0')}
-                    </option>
-                  );
-                })}
-              </select>
+            <div className="p-2 divide-y divide-gray-300">
+              <div id="timer">
+                <canvas id="canvas" width="300" height="100" ref={canvasRef}></canvas>
+              </div>
+              <div className="flex p-1">
+                <span className="flex-1">Hour: </span>
+                <select className="flex-1 rounded" value={formValue.hour} onChange={handleHourChange}>
+                  {hours.map((hour) => {
+                    return (
+                      <option key={hour} value={hour}>
+                        {hour.toString().padStart(2, '0')}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="flex p-1">
+                <span className="flex-1">Minute: </span>
+                <select className="flex-1 rounded" value={formValue.min} onChange={handleMinChange}>
+                  {minutes.map((min) => {
+                    return (
+                      <option key={min} value={min}>
+                        {min.toString().padStart(2, '0')}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="flex p-1">
+                <span className="flex-1">Second: </span>
+                <select className="flex-1 rounded" value={formValue.sec} onChange={handleSecChange}>
+                  {seconds.map((sec) => {
+                    return (
+                      <option key={sec} value={sec}>
+                        {sec.toString().padStart(2, '0')}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="flex flex-row p-1">
+                <button
+                  className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                  onClick={startTimer}
+                >
+                  <PlayIcon />
+                  Start
+                </button>
+                <button
+                  className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                  onClick={pauseTimer}
+                >
+                  {paused ? (
+                    <>
+                      <PlayIcon />
+                      Replay
+                    </>
+                  ) : (
+                    <>
+                      <PauseIcon />
+                      Pause
+                    </>
+                  )}
+                </button>
+                <button
+                  className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                  onClick={resetTimer}
+                >
+                  <StopIcon />
+                  Reset
+                </button>
+              </div>
+              <div className="p-1">
+                <button
+                  className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                  onClick={createVideo}
+                >
+                  <DuplicateIcon />
+                  Picture in Picture
+                </button>
+              </div>
+              <video muted={true} onLoadedMetadata={handleVideoEvent} ref={videoRef} className="hidden"></video>
             </div>
-            <div className="flex p-1">
-              <span className="flex-1">Minute: </span>
-              <select className="flex-1 rounded" value={formValue.min} onChange={handleMinChange}>
-                {minutes.map((min) => {
-                  return (
-                    <option key={min} value={min}>
-                      {min.toString().padStart(2, '0')}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="flex p-1">
-              <span className="flex-1">Second: </span>
-              <select className="flex-1 rounded" value={formValue.sec} onChange={handleSecChange}>
-                {seconds.map((sec) => {
-                  return (
-                    <option key={sec} value={sec}>
-                      {sec.toString().padStart(2, '0')}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="flex flex-row p-1">
-              <button
-                className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
-                onClick={startTimer}
-              >
-                <PlayIcon />
-                Start
-              </button>
-              <button
-                className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
-                onClick={pauseTimer}
-              >
-                {paused ? (
-                  <>
-                    <PlayIcon />
-                    Replay
-                  </>
-                ) : (
-                  <>
-                    <PauseIcon />
-                    Pause
-                  </>
-                )}
-              </button>
-              <button
-                className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
-                onClick={resetTimer}
-              >
-                <StopIcon />
-                Reset
-              </button>
-            </div>
-            <div className="p-1">
-              <button
-                className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
-                onClick={createVideo}
-              >
-                <DuplicateIcon />
-                Picture in Picture
-              </button>
-            </div>
-            <video muted={true} onLoadedMetadata={handleVideoEvent} ref={videoRef} className="hidden"></video>
           </div>
         </div>
-      </div>
+      </StrictMode>
     </>
   );
 };
