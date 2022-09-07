@@ -39,7 +39,7 @@ const PullRequestEvent = ({ payload }: { payload: PullRequestEventPayload }) => 
           #{payload.pull_request.number} {payload.pull_request.title}
         </a>
       </span>
-      {payload.action}
+      &nbsp;{payload.action}
     </div>
   );
 };
