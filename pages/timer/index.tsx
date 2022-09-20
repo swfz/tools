@@ -221,7 +221,7 @@ const Timer: NextPage = () => {
               <div>時間、分、秒を指定してタイマーを発動する</div>
               <div>時間になると背景色が変わります</div>
             </div>
-            <div className="p-2 divide-y divide-gray-300">
+            <div className="divide-y divide-gray-300 p-2">
               <div id="timer">
                 <canvas id="canvas" width="300" height="100" ref={canvasRef}></canvas>
               </div>
@@ -263,14 +263,14 @@ const Timer: NextPage = () => {
               </div>
               <div className="flex flex-row p-1">
                 <button
-                  className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={startTimer}
                 >
                   <PlayIcon />
                   Start
                 </button>
                 <button
-                  className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={pauseTimer}
                 >
                   {paused ? (
@@ -286,7 +286,7 @@ const Timer: NextPage = () => {
                   )}
                 </button>
                 <button
-                  className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={resetTimer}
                 >
                   <StopIcon />
@@ -295,7 +295,7 @@ const Timer: NextPage = () => {
               </div>
               <div className="p-1">
                 <button
-                  className="flex items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={createVideo}
                 >
                   <DuplicateIcon />

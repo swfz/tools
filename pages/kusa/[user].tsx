@@ -64,7 +64,7 @@ const Kusa = (props: Props) => {
       <div>
         <span className="text-4xl font-bold">
           <a href={toGitHub} target="_blank" rel="noreferrer">
-            <span className="text-blue-600 no-underline hover:underline cursor-pointer font-bold">{user}</span>
+            <span className="cursor-pointer font-bold text-blue-600 no-underline hover:underline">{user}</span>
           </a>
           &apos;s kusa
         </span>

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ContributionsByRepo from './contributions-by-repo';
 import ContributionsByEvent from './contributions-by-event';
 import ContributionsSimple from './contributions-simple';
@@ -207,7 +206,7 @@ const Contributions = (props: Props) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold col-start-1 col-end-4">Recent {props.user} Events</h2>
+      <h2 className="col-start-1 col-end-4 text-2xl font-bold">Recent {props.user} Events</h2>
       <input type="checkbox" id="exclude" onChange={handleChange} />
       <label htmlFor="exclude">Exclude events related dependencies update</label>
       <nav className="flex flex-col sm:flex-row">
@@ -215,13 +214,13 @@ const Contributions = (props: Props) => {
           return (
             <div key={view.id}>
               {selectedView == view.id ? (
-                <button className="py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+                <button className="block border-b-2 border-blue-500 py-4 px-6 font-medium text-blue-500 hover:text-blue-500 focus:outline-none">
                   {view.name}
                 </button>
               ) : (
                 <button
                   onClick={() => setSelectedView(view.id)}
-                  className="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none"
+                  className="block py-4 px-6 text-gray-600 hover:text-blue-500 focus:outline-none"
                 >
                   {view.name}
                 </button>
