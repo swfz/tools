@@ -145,10 +145,10 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                   </a>{' '}
                   {pullRequests[repoName].data.length} PullRequests
                 </span>
-                <span className="col-start-12 col-end-13 col-span-2 flex-row-reverse inline-flex">
+                <span className="col-span-2 col-start-12 col-end-13 inline-flex flex-row-reverse">
                   {pullRequests[repoName].stats.merged > 0 && (
                     <span className="inline-flex">
-                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-purple-700 rounded-full">
+                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-purple-700 text-xs font-semibold text-gray-200">
                         {pullRequests[repoName].stats.merged}
                       </span>
                       <span className="text-xs">&nbsp;merged</span>
@@ -156,7 +156,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                   )}
                   {pullRequests[repoName].stats.open > 0 && (
                     <span className="inline-flex">
-                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-green-700 rounded-full">
+                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-green-700 text-xs font-semibold text-gray-200">
                         {pullRequests[repoName].stats.open}
                       </span>
                       <span className="text-xs">&nbsp;open</span>
@@ -168,7 +168,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                 {pullRequests[repoName].data.map((pr) => {
                   return (
                     <li key={pr.pull_request.url} className="grid grid-cols-12 gap-4">
-                      <span className="col-start-1 col-end-10 flex ml-3">
+                      <span className="col-start-1 col-end-10 ml-3 flex">
                         {pr.pull_request.merged ? (
                           <span className="text-purple-800">
                             <GitMergeIcon size={20} />
@@ -192,11 +192,11 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                         </a>{' '}
                         {pr.pull_request.title}
                       </span>
-                      <span className="col-start-11 font-bold text-xs text-right">
+                      <span className="col-start-11 text-right text-xs font-bold">
                         <span className="text-green-700">+{pr.pull_request.additions}</span>{' '}
                         <span className="text-red-700">-{pr.pull_request.deletions}</span>
                       </span>
-                      <span className="col-start-12 text-xs text-right">
+                      <span className="col-start-12 text-right text-xs">
                         {pr.pull_request.updated_at.split('T')[0]}
                       </span>
                     </li>
@@ -238,10 +238,10 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                   {repoName}
                 </a>{' '}
                 {issues[repoName].data.length} Issues
-                <span className="col-start-12 col-end-13 col-span-2 flex-row-reverse inline-flex">
+                <span className="col-span-2 col-start-12 col-end-13 inline-flex flex-row-reverse">
                   {issues[repoName].stats.closed > 0 && (
                     <span className="inline-flex">
-                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-red-600 rounded-full">
+                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs font-semibold text-gray-200">
                         {issues[repoName].stats.closed}
                       </span>
                       <span className="text-xs">&nbsp;closed</span>
@@ -249,7 +249,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                   )}
                   {issues[repoName].stats.open > 0 && (
                     <span className="inline-flex">
-                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-green-700 rounded-full">
+                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-green-700 text-xs font-semibold text-gray-200">
                         {issues[repoName].stats.open}
                       </span>
                       <span className="text-xs">&nbsp;open</span>
@@ -261,7 +261,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                 {issues[repoName].data.map((issue) => {
                   return (
                     <li key={issue.issue.url} className="grid grid-cols-12 gap-4">
-                      <span className="col-start-1 col-end-10 flex ml-3">
+                      <span className="col-start-1 col-end-10 ml-3 flex">
                         {issue.issue.state === 'closed' ? (
                           <span className="text-purple-800">
                             <IssueClosedIcon size={20} />
