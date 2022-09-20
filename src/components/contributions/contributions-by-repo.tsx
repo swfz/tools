@@ -1,5 +1,15 @@
 import React from 'react';
-import { CheckCircleIcon, InformationCircleIcon, ShareIcon } from '../icon';
+import {
+  InfoIcon,
+  GitMergeIcon,
+  GitPullRequestIcon,
+  IssueClosedIcon,
+  IssueOpenedIcon,
+  CommitIcon,
+  GitPullRequestClosedIcon,
+  RepoIcon,
+  StarFillIcon,
+} from '@primer/octicons-react';
 import {
   Commit,
   CreateEventPayload,
@@ -8,6 +18,7 @@ import {
   IssuesEventPayload,
   PullRequestEventPayload,
   PushEventPayload,
+  WatchEventPayload,
   toHtmlUrl,
 } from './contributions';
 
@@ -47,6 +58,7 @@ type Summary = {
     };
   };
   repositories: CreateEventPayload[];
+  stared: WatchEventPayload[];
 };
 
 const Commits = ({ commits }: { commits: Summary['commits'] }) => {
@@ -56,7 +68,7 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
     <>
       <div>
         <span className="flex">
-          <InformationCircleIcon />
+          <InfoIcon size={24} />
           <span className="text-lg font-bold">
             Created {count} Commmits in {Object.keys(commits).length} repositories
           </span>
@@ -77,10 +89,11 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
                 </a>{' '}
                 {commits[repoName].data.length} Commits
               </summary>
-              <ul className="list-disc">
+              <ul className="list-none">
                 {commits[repoName].data.map((commit) => {
                   return (
-                    <li key={commit.sha} className="ml-8">
+                    <li key={commit.sha}>
+                      <CommitIcon size={20} />
                       <span>{commit.date.split('T')[0]}</span>{' '}
                       <a
                         target="_blank"
@@ -110,7 +123,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
     <>
       <div>
         <span className="flex">
-          <InformationCircleIcon />
+          <InfoIcon size={24} />
           <span className="text-lg font-bold">
             Opened {totalCount} PullRequests in {Object.keys(pullRequests).length} repositories
           </span>
@@ -132,10 +145,10 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                   </a>{' '}
                   {pullRequests[repoName].data.length} PullRequests
                 </span>
-                <span className="col-start-12 col-end-13 col-span-2 flex-row-reverse inline-flex">
+                <span className="col-span-2 col-start-12 col-end-13 inline-flex flex-row-reverse">
                   {pullRequests[repoName].stats.merged > 0 && (
                     <span className="inline-flex">
-                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-purple-700 rounded-full">
+                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-purple-700 text-xs font-semibold text-gray-200">
                         {pullRequests[repoName].stats.merged}
                       </span>
                       <span className="text-xs">&nbsp;merged</span>
@@ -143,7 +156,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                   )}
                   {pullRequests[repoName].stats.open > 0 && (
                     <span className="inline-flex">
-                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-green-700 rounded-full">
+                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-green-700 text-xs font-semibold text-gray-200">
                         {pullRequests[repoName].stats.open}
                       </span>
                       <span className="text-xs">&nbsp;open</span>
@@ -155,14 +168,18 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                 {pullRequests[repoName].data.map((pr) => {
                   return (
                     <li key={pr.pull_request.url} className="grid grid-cols-12 gap-4">
-                      <span className="col-start-1 col-end-10 flex ml-3">
-                        {pr.pull_request.state === 'closed' ? (
+                      <span className="col-start-1 col-end-10 ml-3 flex">
+                        {pr.pull_request.merged ? (
                           <span className="text-purple-800">
-                            <ShareIcon />
+                            <GitMergeIcon size={20} />
+                          </span>
+                        ) : pr.pull_request.state === 'closed' ? (
+                          <span className="text-red-800">
+                            <GitPullRequestClosedIcon size={20} />
                           </span>
                         ) : (
                           <span className="text-green-800">
-                            <ShareIcon />
+                            <GitPullRequestIcon size={20} />
                           </span>
                         )}
                         <a
@@ -175,11 +192,11 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                         </a>{' '}
                         {pr.pull_request.title}
                       </span>
-                      <span className="col-start-11 font-bold text-xs text-right">
+                      <span className="col-start-11 text-right text-xs font-bold">
                         <span className="text-green-700">+{pr.pull_request.additions}</span>{' '}
                         <span className="text-red-700">-{pr.pull_request.deletions}</span>
                       </span>
-                      <span className="col-start-12 text-xs text-right">
+                      <span className="col-start-12 text-right text-xs">
                         {pr.pull_request.updated_at.split('T')[0]}
                       </span>
                     </li>
@@ -201,7 +218,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
     <>
       <div>
         <span className="flex">
-          <InformationCircleIcon />
+          <InfoIcon size={24} />
           <span className="text-lg font-bold">
             Opened {count} Issues in {Object.keys(issues).length} repositories
           </span>
@@ -221,10 +238,10 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                   {repoName}
                 </a>{' '}
                 {issues[repoName].data.length} Issues
-                <span className="col-start-12 col-end-13 col-span-2 flex-row-reverse inline-flex">
+                <span className="col-span-2 col-start-12 col-end-13 inline-flex flex-row-reverse">
                   {issues[repoName].stats.closed > 0 && (
                     <span className="inline-flex">
-                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-red-600 rounded-full">
+                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs font-semibold text-gray-200">
                         {issues[repoName].stats.closed}
                       </span>
                       <span className="text-xs">&nbsp;closed</span>
@@ -232,7 +249,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                   )}
                   {issues[repoName].stats.open > 0 && (
                     <span className="inline-flex">
-                      <span className="inline-flex justify-center items-center ml-2 w-4 h-4 text-xs font-semibold text-gray-200 bg-green-700 rounded-full">
+                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-green-700 text-xs font-semibold text-gray-200">
                         {issues[repoName].stats.open}
                       </span>
                       <span className="text-xs">&nbsp;open</span>
@@ -244,14 +261,14 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                 {issues[repoName].data.map((issue) => {
                   return (
                     <li key={issue.issue.url} className="grid grid-cols-12 gap-4">
-                      <span className="col-start-1 col-end-10 flex ml-3">
+                      <span className="col-start-1 col-end-10 ml-3 flex">
                         {issue.issue.state === 'closed' ? (
                           <span className="text-purple-800">
-                            <CheckCircleIcon />
+                            <IssueClosedIcon size={20} />
                           </span>
                         ) : (
                           <span className="text-green-800">
-                            <CheckCircleIcon />
+                            <IssueOpenedIcon size={20} />
                           </span>
                         )}
                         <a
@@ -281,7 +298,7 @@ const Repositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
     <>
       <div>
         <span className="flex">
-          <InformationCircleIcon />
+          <InfoIcon size={24} />
           <span className="text-lg font-bold">Created {Object.keys(repositories).length} repositories</span>
         </span>
       </div>
@@ -289,6 +306,39 @@ const Repositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
         {repositories.map((repoEvent) => {
           return (
             <li key={repoEvent.repo.name}>
+              <RepoIcon size={20} />
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={toHtmlUrl(repoEvent.repo.url)}
+                className="text-blue-600 hover:underline"
+              >
+                {repoEvent.repo.name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+};
+
+const StaredRepositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
+  return (
+    <>
+      <div>
+        <span className="flex">
+          <InfoIcon size={24} />
+          <span className="text-lg font-bold">Stared {Object.keys(repositories).length} repositories</span>
+        </span>
+      </div>
+      <ul>
+        {repositories.map((repoEvent) => {
+          return (
+            <li key={repoEvent.repo.name}>
+              <span className="text-yellow-500">
+                <StarFillIcon size={20} />
+              </span>
               <a
                 target="_blank"
                 rel="noreferrer"
@@ -404,6 +454,11 @@ const ContributionsByRepo = (props: Props) => {
 
         return { ...acc, repositories };
       }
+      if (row.type === 'WatchEvent' && row.payload.action === 'started') {
+        const stared = [...acc.stared, row];
+
+        return { ...acc, stared };
+      }
       return acc;
     },
     {
@@ -411,6 +466,7 @@ const ContributionsByRepo = (props: Props) => {
       pullRequests: {},
       commits: {},
       repositories: [],
+      stared: [],
     },
   );
 
@@ -419,6 +475,7 @@ const ContributionsByRepo = (props: Props) => {
     pullRequests: ignoreDuplicatePullRequest(grouped.pullRequests),
     commits: uniqueAndSortCommits(grouped.commits),
     repositories: grouped.repositories,
+    stared: grouped.stared,
   };
 
   return (
@@ -427,6 +484,7 @@ const ContributionsByRepo = (props: Props) => {
       <PullRequests pullRequests={summary.pullRequests}></PullRequests>
       <Issues issues={summary.issues}></Issues>
       <Repositories repositories={summary.repositories}></Repositories>
+      <StaredRepositories repositories={summary.stared}></StaredRepositories>
     </>
   );
 };
