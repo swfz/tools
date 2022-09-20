@@ -158,7 +158,7 @@ const ContributionsSimple = (props: Props) => {
       <div className="grid grid-cols-10">
         <button
           onClick={handleSummaryOpen}
-          className="col-start-5 col-end-10 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-2 border border-gray-400 rounded shadow"
+          className="col-start-5 col-end-10 rounded border border-gray-400 bg-white py-1 px-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
         >
           {open ? 'Fold up' : 'Open'} All Details
         </button>

@@ -103,7 +103,7 @@ const Schedule: NextPage = () => {
         <div>
           <div>
             <span>単位時間(分)</span>
-            <select className="py-0 pr-8 rounded" value={unit} onChange={handleUnitChange}>
+            <select className="rounded py-0 pr-8" value={unit} onChange={handleUnitChange}>
               {units.map((u) => {
                 return (
                   <option key={u} value={u}>
@@ -187,7 +187,7 @@ const Schedule: NextPage = () => {
             </tbody>
           </table>
           <button
-            className="flex sticky left-0 items-center py-2 px-4 mx-1 font-semibold text-gray-800 bg-white hover:bg-gray-100 rounded border border-gray-400 shadow"
+            className="sticky left-0 mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
             onClick={addItem}
           >
             +

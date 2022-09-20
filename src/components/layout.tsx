@@ -14,8 +14,8 @@ function Layout({ children }: { children: ReactNode }) {
       <div
         className={
           isOpen
-            ? 'h-screen sticky top-0 bg-gray-300 p-4 shrink-0 w-64'
-            : 'w-10 overflow-x-hidden h-screen sticky top-0 bg-gray-300'
+            ? 'sticky top-0 h-screen w-64 shrink-0 bg-gray-300 p-4'
+            : 'sticky top-0 h-screen w-10 overflow-x-hidden bg-gray-300'
         }
       >
         <div className="flex justify-center font-mono text-3xl">
@@ -27,7 +27,7 @@ function Layout({ children }: { children: ReactNode }) {
         <ul className="flex flex-col p-2">
           <li className="inline-block h-8 hover:text-pink-800">
             <Link href="/timer" passHref>
-              <span className="flex items-center cursor-pointer">
+              <span className="flex cursor-pointer items-center">
                 <ClockIcon />
                 <span className={isOpen ? '' : 'hidden'}>Picture in Piscture Timer</span>
               </span>
@@ -35,7 +35,7 @@ function Layout({ children }: { children: ReactNode }) {
           </li>
           <li className="inline-block h-8 hover:text-pink-800">
             <Link href="/timeline" passHref>
-              <span className="flex items-center cursor-pointer">
+              <span className="flex cursor-pointer items-center">
                 <AdjustmentsIcon />
                 <span className={isOpen ? '' : 'hidden'}>Hourly Timeline Editor</span>
               </span>
@@ -43,7 +43,7 @@ function Layout({ children }: { children: ReactNode }) {
           </li>
           <li className="inline-block h-8 hover:text-pink-800">
             <Link href="/kusa" passHref>
-              <span className="flex items-center cursor-pointer">
+              <span className="flex cursor-pointer items-center">
                 <GridIcon />
                 <span className={isOpen ? '' : 'hidden'}>GitHub kusa</span>
               </span>
@@ -56,7 +56,7 @@ function Layout({ children }: { children: ReactNode }) {
         <svg
           onClick={togglOpen}
           xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
+          className="h-6 w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
