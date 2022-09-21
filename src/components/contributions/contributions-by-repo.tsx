@@ -27,6 +27,8 @@ import {
   CommentIcon,
 } from '@primer/octicons-react';
 
+import Commits from './by-repo/commits';
+
 type Props = {
   result: any;
   user: string;
@@ -34,7 +36,7 @@ type Props = {
 
 type CommitData = Commit & { date: string };
 
-type Summary = {
+export type Summary = {
   commits: {
     [key: string]: {
       repo: GitHubRepo;
@@ -75,61 +77,6 @@ type Summary = {
       )[];
     };
   };
-};
-
-const Commits = ({ commits }: { commits: Summary['commits'] }) => {
-  const count = Object.values(commits).reduce((acc, c) => acc + c.data.length, 0);
-
-  return (
-    <>
-      <div>
-        <span className="flex">
-          <InfoIcon size={24} />
-          <span className="text-lg font-bold">
-            Created {count} Commmits in {Object.keys(commits).length} repositories
-          </span>
-        </span>
-      </div>
-      {Object.keys(commits).map((repoName) => {
-        return (
-          <div key={repoName}>
-            <details>
-              <summary>
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 hover:underline"
-                  href={toHtmlUrl(commits[repoName].repo?.url)}
-                >
-                  {repoName}
-                </a>{' '}
-                {commits[repoName].data.length} Commits
-              </summary>
-              <ul className="list-none">
-                {commits[repoName].data.map((commit) => {
-                  return (
-                    <li key={commit.sha}>
-                      <CommitIcon size={20} />
-                      <span>{commit.date.split('T')[0]}</span>{' '}
-                      <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href={toHtmlUrl(commit.url).replace('commits', 'commit')}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {commit.sha.substring(0, 6)}
-                      </a>{' '}
-                      {commit.message}
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          </div>
-        );
-      })}
-    </>
-  );
 };
 
 const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
