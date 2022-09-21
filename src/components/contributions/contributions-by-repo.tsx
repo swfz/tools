@@ -2,9 +2,17 @@ import React from 'react';
 import {
   PullRequestReviewCommentEventPayload,
   IssueCommentEventPayload,
-  PullRequest,
   PullRequestReviewEventPayload,
   CommitCommentEventPayload,
+  Commit,
+  CreateEventPayload,
+  GitHubEvent,
+  GitHubRepo,
+  IssuesEventPayload,
+  PullRequestEventPayload,
+  PushEventPayload,
+  WatchEventPayload,
+  toHtmlUrl,
 } from './contributions';
 import {
   InfoIcon,
@@ -18,17 +26,6 @@ import {
   StarFillIcon,
   CommentIcon,
 } from '@primer/octicons-react';
-import {
-  Commit,
-  CreateEventPayload,
-  GitHubEvent,
-  GitHubRepo,
-  IssuesEventPayload,
-  PullRequestEventPayload,
-  PushEventPayload,
-  WatchEventPayload,
-  toHtmlUrl,
-} from './contributions';
 
 type Props = {
   result: any;
