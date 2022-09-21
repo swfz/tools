@@ -144,7 +144,8 @@ export type GitHubEventType =
   | 'IssueCommentEvent'
   | 'ForkEvent'
   | 'PullRequestReviewCommentEvent'
-  | 'PullRequestReviewEvent';
+  | 'PullRequestReviewEvent'
+  | 'CommitCommentEvent';
 
 export type GitHubEvent = {
   id: number;
