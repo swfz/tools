@@ -21,7 +21,6 @@ import {
   IssueClosedIcon,
   IssueOpenedIcon,
   CommitIcon,
-  RepoIcon,
   StarFillIcon,
   CommentIcon,
 } from '@primer/octicons-react';
@@ -29,6 +28,7 @@ import {
 import Commits from './by-repo/commits';
 import PullRequests from './by-repo/pullrequests';
 import Issues from './by-repo/issues';
+import Repositories from './by-repo/repositories';
 
 type Props = {
   result: any;
@@ -78,36 +78,6 @@ export type Summary = {
       )[];
     };
   };
-};
-
-const Repositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
-  return (
-    <>
-      <div>
-        <span className="flex">
-          <InfoIcon size={24} />
-          <span className="text-lg font-bold">Created {Object.keys(repositories).length} repositories</span>
-        </span>
-      </div>
-      <ul>
-        {repositories.map((repoEvent) => {
-          return (
-            <li key={repoEvent.repo.name}>
-              <RepoIcon size={20} />
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={toHtmlUrl(repoEvent.repo.url)}
-                className="text-blue-600 hover:underline"
-              >
-                {repoEvent.repo.name}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </>
-  );
 };
 
 const StaredRepositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
