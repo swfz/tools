@@ -66,10 +66,7 @@ export type WatchEventPayload = {
 
 export type IssueCommentEventPayload = {
   action: string;
-  comment: {
-    url: string;
-    html_url: string;
-  };
+  comment: Comment;
   issue: {
     title: string;
     number: number;
@@ -91,10 +88,14 @@ export type ForkEventPayload = {
 export type Comment = {
   body: string;
   created_at: string;
-  html_url: string;
-  pull_request_url: string;
   updated_at: string;
-  _links: {
+  line?: number;
+  path?: string;
+  position?: number;
+  commit_id?: string;
+  html_url: string;
+  pull_request_url?: string;
+  _links?: {
     html: {
       href: string;
     };
@@ -121,6 +122,11 @@ export type PullRequestReviewEventPayload = {
     state: 'commented';
     submitted_at: string;
   };
+};
+
+export type CommitCommentEventPayload = {
+  comment: Comment;
+  public: boolean;
 };
 
 export type GitHubRepo = {
