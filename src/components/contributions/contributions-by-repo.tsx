@@ -69,11 +69,6 @@ type Summary = {
   stared: WatchEventPayload[];
   comments: {
     [key: string]: {
-      type:
-        | 'PullRequestReviewCommentEventPayload'
-        | 'IssueCommentEventPayload'
-        | 'PullRequestReviewEvent'
-        | 'CommitCommentEvent';
       repo: GitHubRepo;
       data: (
         | PullRequestReviewCommentEventPayload
@@ -379,6 +374,45 @@ const StaredRepositories = ({ repositories }: { repositories: GitHubEvent[] }) =
   );
 };
 
+const withIssue = (
+  value:
+    | PullRequestReviewCommentEventPayload
+    | IssueCommentEventPayload
+    | PullRequestReviewEventPayload
+    | CommitCommentEventPayload,
+): value is IssueCommentEventPayload => {
+  return 'issue' in value;
+};
+const withPr = (
+  value:
+    | PullRequestReviewCommentEventPayload
+    | IssueCommentEventPayload
+    | PullRequestReviewEventPayload
+    | CommitCommentEventPayload,
+): value is PullRequestReviewCommentEventPayload | PullRequestReviewEventPayload => {
+  return 'pull_request' in value;
+};
+
+const withPrReview = (
+  value:
+    | PullRequestReviewCommentEventPayload
+    | IssueCommentEventPayload
+    | PullRequestReviewEventPayload
+    | CommitCommentEventPayload,
+): value is PullRequestReviewEventPayload => {
+  return 'review' in value;
+};
+
+const withCommit = (
+  value:
+    | PullRequestReviewCommentEventPayload
+    | IssueCommentEventPayload
+    | PullRequestReviewEventPayload
+    | CommitCommentEventPayload,
+): value is CommitCommentEventPayload => {
+  return !('issue' in value) && !('pull_request' in value);
+};
+
 const Comments = ({ comments }: { comments: Summary['comments'] }) => {
   const count = Object.values(comments).reduce((acc, c) => acc + c.data.length, 0);
   return (
@@ -410,26 +444,34 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
               </summary>
               <ul className="list-none">
                 {comments[repoName].data.map((c) => {
-                  const content = c.issue || c.pull_request || c.comment;
-                  const htmlUrl = c.review ? c.review.html_url : c.comment.html_url;
+                  const htmlUrl = withPrReview(c) ? c.review.html_url : c.comment.html_url;
+                  const numberOrId = withCommit(c)
+                    ? c.comment.commit_id
+                    : withIssue(c)
+                    ? c.issue.number
+                    : withPr(c)
+                    ? c.pull_request.number
+                    : '';
+                  const title = withIssue(c) ? c.issue.title : withPr(c) ? c.pull_request.title : '';
+
                   return (
                     <li key={htmlUrl} className="grid grid-cols-12 gap-4">
                       <span className="col-start-1 col-end-10 ml-3 flex">
                         <CommentIcon size={20} />
                         <a target="_blank" rel="noreferrer" href={htmlUrl} className="text-blue-600 hover:underline">
-                          {c.issue && c.issue.state === 'open' ? (
+                          {withIssue(c) && c.issue && c.issue.state === 'open' ? (
                             <span className="text-green-800">
                               <IssueOpenedIcon size={20} />
                             </span>
-                          ) : c.issue && c.issue.state === 'closed' ? (
+                          ) : withIssue(c) && c.issue && c.issue.state === 'closed' ? (
                             <span className="text-red-800">
                               <IssueClosedIcon size={20} />
                             </span>
-                          ) : c.pull_request && c.pull_request.state === 'closed' ? (
+                          ) : withPr(c) && c.pull_request && c.pull_request.state === 'closed' ? (
                             <span className="text-purple-800">
                               <GitMergeIcon size={20} />
                             </span>
-                          ) : c.pull_request && c.pull_request.state !== 'closed' ? (
+                          ) : withPr(c) && c.pull_request && c.pull_request.state !== 'closed' ? (
                             <span className="text-green-800">
                               <GitPullRequestIcon size={20} />
                             </span>
@@ -438,9 +480,9 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
                               <CommitIcon size={20} />
                             </span>
                           )}
-                          {content.number ? `#${content.number}` : content.commit_id}
+                          {numberOrId}
                         </a>{' '}
-                        {content.title ? content.title : ''}
+                        {title}
                       </span>
                     </li>
                   );
@@ -566,7 +608,7 @@ const ContributionsByRepo = (props: Props) => {
         const commentsPayloads = [...(acc.comments[row.repo.name]?.data || []), row.payload];
         const comments = {
           ...acc.comments,
-          [row.repo.name]: { type: row.type, repo: row.repo, data: commentsPayloads },
+          [row.repo.name]: { repo: row.repo, data: commentsPayloads },
         };
 
         return { ...acc, comments };

@@ -92,6 +92,7 @@ export type Comment = {
   line?: number;
   path?: string;
   position?: number;
+  commit_id?: string;
   html_url: string;
   pull_request_url?: string;
   _links?: {
