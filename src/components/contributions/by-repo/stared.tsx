@@ -1,6 +1,6 @@
 import React from 'react';
 import { InfoIcon, StarFillIcon } from '@primer/octicons-react';
-import { toHtmlUrl,GitHubEvent } from '../contributions';
+import { toHtmlUrl, GitHubEvent } from '../contributions';
 
 const StaredRepositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
   return (
