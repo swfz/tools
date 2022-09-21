@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type {
+  CommitCommentEventPayload,
   CreateEventPayload,
   DeleteEventPayload,
   ForkEventPayload,
@@ -146,6 +147,18 @@ const PullRequestReviewCommentEvent = ({ payload }: { payload: PullRequestReview
   );
 };
 
+const CommitCommentEvent = ({ payload }: { payload: CommitCommentEventPayload }) => {
+  return (
+    <div>
+      commented to{' '}
+      <a className="text-blue-600 hover:underline" target="_blank" rel="noreferrer" href={payload.comment.html_url}>
+        {payload.comment.commit_id}
+      </a>{' '}
+      at {payload.comment.updated_at}
+    </div>
+  );
+};
+
 const ContributionsSimple = (props: Props) => {
   const [open, setOpen] = useState<boolean>();
 
@@ -193,6 +206,7 @@ const ContributionsSimple = (props: Props) => {
                 {row.type === 'PullRequestReviewEvent' && (
                   <PullRequestReviewEvent payload={row.payload}></PullRequestReviewEvent>
                 )}
+                {row.type === 'CommitCommentEvent' && <CommitCommentEvent payload={row.payload}></CommitCommentEvent>}
               </details>
             </div>
           </div>
