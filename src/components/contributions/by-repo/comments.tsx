@@ -1,7 +1,7 @@
 import React from 'react';
 import { Summary } from '../contributions-by-repo';
-import { toHtmlUrl } from '../contributions';
 import {
+  toHtmlUrl,
   PullRequestReviewCommentEventPayload,
   IssueCommentEventPayload,
   PullRequestReviewEventPayload,
