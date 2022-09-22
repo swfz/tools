@@ -34,7 +34,7 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
               <ul className="list-none">
                 {commits[repoName].data.map((commit) => {
                   return (
-                    <li key={commit.sha}>
+                    <li key={commit.sha} className="[&:nth-child(odd)]:bg-gray-100">
                       <CommitIcon size={20} />
                       <span>{commit.date.split('T')[0]}</span>{' '}
                       <a

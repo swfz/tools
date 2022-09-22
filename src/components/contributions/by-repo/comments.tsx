@@ -98,7 +98,7 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
                   const title = withIssue(c) ? c.issue.title : withPr(c) ? c.pull_request.title : '';
 
                   return (
-                    <li key={htmlUrl} className="grid grid-cols-12 gap-4">
+                    <li key={htmlUrl} className="grid grid-cols-12 gap-4 [&:nth-child(odd)]:bg-gray-100">
                       <span className="col-start-1 col-end-10 ml-3 flex">
                         <CommentIcon size={20} />
                         <a target="_blank" rel="noreferrer" href={htmlUrl} className="text-blue-600 hover:underline">
