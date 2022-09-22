@@ -216,18 +216,18 @@ const Contributions = (props: Props) => {
       <h2 className="col-start-1 col-end-4 text-2xl font-bold">Recent {props.user} Events</h2>
       <input type="checkbox" id="exclude" onChange={handleChange} />
       <label htmlFor="exclude">Exclude events related dependencies update</label>
-      <nav className="flex flex-col sm:flex-row">
+      <nav className="flex flex-row sm:flex-row">
         {views.map((view) => {
           return (
             <div key={view.id}>
               {selectedView == view.id ? (
-                <button className="block border-b-2 border-blue-500 py-4 px-6 font-medium text-blue-500 hover:text-blue-500 focus:outline-none">
+                <button className="border-b-2 border-blue-500 py-4 px-6 font-medium text-blue-500 hover:text-blue-500 focus:outline-none">
                   {view.name}
                 </button>
               ) : (
                 <button
                   onClick={() => setSelectedView(view.id)}
-                  className="block py-4 px-6 text-gray-600 hover:text-blue-500 focus:outline-none"
+                  className="py-4 px-6 text-gray-600 hover:text-blue-500 focus:outline-none"
                 >
                   {view.name}
                 </button>
