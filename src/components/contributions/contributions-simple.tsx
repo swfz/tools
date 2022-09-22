@@ -178,7 +178,7 @@ const ContributionsSimple = (props: Props) => {
       </div>
       {props.result.map((row: GitHubEvent) => {
         return (
-          <div key={row.id} className="grid grid-cols-10 gap-4 text-sm">
+          <div key={row.id} className="grid grid-cols-10 gap-4 text-sm  [&:nth-child(odd)]:bg-gray-100">
             <div className="col-start-1 col-end-1">{row.created_at.split('T')[0]}</div>
             <div className="col-start-2 col-end-4 text-blue-600 hover:underline">
               {row.repo.url ? (

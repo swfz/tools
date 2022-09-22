@@ -21,15 +21,17 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
           <div key={repoName}>
             <details>
               <summary className="grid grid-cols-12">
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 hover:underline"
-                  href={toHtmlUrl(issues[repoName].repo?.url)}
-                >
-                  {repoName}
-                </a>{' '}
-                {issues[repoName].data.length} Issues
+                <span className="col-start-1 col-end-11">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 hover:underline"
+                    href={toHtmlUrl(issues[repoName].repo?.url)}
+                  >
+                    {repoName}
+                  </a>{' '}
+                  {issues[repoName].data.length} Issues
+                </span>
                 <span className="col-span-2 col-start-12 col-end-13 inline-flex flex-row-reverse">
                   {issues[repoName].stats.closed > 0 && (
                     <span className="inline-flex">
@@ -52,7 +54,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
               <ul className="list-none">
                 {issues[repoName].data.map((issue) => {
                   return (
-                    <li key={issue.issue.url} className="grid grid-cols-12 gap-4">
+                    <li key={issue.issue.url} className="grid grid-cols-12 gap-4 [&:nth-child(odd)]:bg-gray-100">
                       <span className="col-start-1 col-end-10 ml-3 flex">
                         {issue.issue.state === 'closed' ? (
                           <span className="text-purple-800">

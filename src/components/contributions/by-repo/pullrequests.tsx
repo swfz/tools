@@ -54,7 +54,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
               <ul className="list-none">
                 {pullRequests[repoName].data.map((pr) => {
                   return (
-                    <li key={pr.pull_request.url} className="grid grid-cols-12 gap-4">
+                    <li key={pr.pull_request.url} className="grid grid-cols-12 gap-4 [&:nth-child(odd)]:bg-gray-100">
                       <span className="col-start-1 col-end-10 ml-3 flex">
                         {pr.pull_request.merged ? (
                           <span className="text-purple-800">
