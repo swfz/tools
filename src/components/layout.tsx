@@ -15,19 +15,25 @@ function Layout({ children }: { children: ReactNode }) {
     <div className="flex">
       <div
         className={
-          isOpen
-            ? 'sticky top-0 h-screen w-64 shrink-0 bg-gray-300 p-4'
-            : 'sticky top-0 h-screen w-10 overflow-x-hidden bg-gray-300'
+          isWide
+            ? isOpen
+              ? 'sticky top-0 h-screen w-64 shrink-0 bg-gray-300 p-4'
+              : 'sticky top-0 h-screen w-10 overflow-x-hidden bg-gray-300'
+            : isOpen
+            ? 'top-0 h-screen w-32 shrink-0 bg-gray-300 p-0'
+            : 'top-0 h-screen w-10 bg-gray-300 p-0'
         }
       >
-        <div className="flex justify-center font-mono text-3xl">
+        <div className={isWide ? 'flex justify-center font-mono text-3xl' : 'text-sm flex justify-center font-mono'}>
           <span className={isOpen ? '' : 'hidden'}>
             <Link href="/">swfz tools</Link>
           </span>
           &nbsp;
         </div>
         <ul className="flex flex-col p-2">
-          <li className="inline-block h-8 hover:text-pink-800">
+          <li
+            className={isWide ? 'inline-block h-8 hover:text-pink-800' : 'inline-block h-8 text-xs hover:text-pink-800'}
+          >
             <Link href="/timer" passHref>
               <span className="flex cursor-pointer items-center">
                 <ClockIcon />
@@ -35,7 +41,9 @@ function Layout({ children }: { children: ReactNode }) {
               </span>
             </Link>
           </li>
-          <li className="inline-block h-8 hover:text-pink-800">
+          <li
+            className={isWide ? 'inline-block h-8 hover:text-pink-800' : 'inline-block h-8 text-xs hover:text-pink-800'}
+          >
             <Link href="/timeline" passHref>
               <span className="flex cursor-pointer items-center">
                 <AdjustmentsIcon />
@@ -43,7 +51,9 @@ function Layout({ children }: { children: ReactNode }) {
               </span>
             </Link>
           </li>
-          <li className="inline-block h-8 hover:text-pink-800">
+          <li
+            className={isWide ? 'inline-block h-8 hover:text-pink-800' : 'inline-block h-8 text-xs hover:text-pink-800'}
+          >
             <Link href="/kusa" passHref>
               <span className="flex cursor-pointer items-center">
                 <GridIcon />
@@ -66,7 +76,7 @@ function Layout({ children }: { children: ReactNode }) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </div>
-      <div className="p-8">{children}</div>
+      <div className={isWide ? 'p-8' : ''}>{children}</div>
     </div>
   );
 }
