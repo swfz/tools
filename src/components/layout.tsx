@@ -21,7 +21,7 @@ function Layout({ children }: { children: ReactNode }) {
               : 'sticky top-0 h-screen w-10 overflow-x-hidden bg-gray-300'
             : isOpen
             ? 'top-0 h-screen w-32 shrink-0 bg-gray-300 p-0'
-            : 'top-0 h-screen w-10 bg-gray-300 p-0'
+            : 'top-0 h-screen w-0 bg-gray-300 p-0'
         }
       >
         <div className={isWide ? 'flex justify-center font-mono text-3xl' : 'text-sm flex justify-center font-mono'}>
