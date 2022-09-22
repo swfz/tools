@@ -152,9 +152,9 @@ const CommitCommentEvent = ({ payload }: { payload: CommitCommentEventPayload })
     <div>
       commented to{' '}
       <a className="text-blue-600 hover:underline" target="_blank" rel="noreferrer" href={payload.comment.html_url}>
-        {payload.comment.commit_id}
+        {payload.comment.commit_id?.substring(0, 6)}
       </a>{' '}
-      at {payload.comment.updated_at}
+      at {payload.comment.updated_at.split('T')[1].replace('Z', '')}
     </div>
   );
 };
