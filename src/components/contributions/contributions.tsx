@@ -215,7 +215,9 @@ const Contributions = (props: Props) => {
     <div>
       <h2 className="col-start-1 col-end-4 text-2xl font-bold">Recent {props.user} Events</h2>
       <input type="checkbox" id="exclude" onChange={handleChange} />
-      <label htmlFor="exclude">Exclude events related dependencies update</label>
+      <label htmlFor="exclude" className="text-xs">
+        Exclude events related dependencies update
+      </label>
       <nav className="flex flex-row sm:flex-row">
         {views.map((view) => {
           return (
