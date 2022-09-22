@@ -178,9 +178,9 @@ const ContributionsSimple = (props: Props) => {
       </div>
       {props.result.map((row: GitHubEvent) => {
         return (
-          <div key={row.id} className="grid grid-cols-10 gap-4">
+          <div key={row.id} className="grid grid-cols-10 gap-4 text-sm">
             <div className="col-start-1 col-end-1">{row.created_at.split('T')[0]}</div>
-            <div className="col-start-2 col-end-4 whitespace-nowrap text-blue-600 hover:underline">
+            <div className="col-start-2 col-end-4 text-blue-600 hover:underline">
               {row.repo.url ? (
                 <a href={toHtmlUrl(row.repo.url)} target="_blank" rel="noreferrer">
                   {row.repo.name}
@@ -189,7 +189,7 @@ const ContributionsSimple = (props: Props) => {
                 <>{row.repo.name}</>
               )}
             </div>
-            <div className="col-start-5 col-end-10">
+            <div className="col-start-5 col-end-10 text-sm">
               <details open={open}>
                 <summary>{row.type}</summary>
                 {row.type === 'PullRequestEvent' && <PullRequestEvent payload={row.payload}></PullRequestEvent>}
