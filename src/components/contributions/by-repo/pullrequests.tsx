@@ -51,11 +51,11 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                   )}
                 </span>
               </summary>
-              <ul className="list-none">
+              <ul className="list-none text-sm">
                 {pullRequests[repoName].data.map((pr) => {
                   return (
-                    <li key={pr.pull_request.url} className="grid grid-cols-12 gap-4 [&:nth-child(odd)]:bg-gray-100">
-                      <span className="col-start-1 col-end-10 ml-3 flex">
+                    <li key={pr.pull_request.url} className="flex flex-wrap odd:bg-gray-100">
+                      <span className="sm:basis-2/12">
                         {pr.pull_request.merged ? (
                           <span className="text-purple-800">
                             <GitMergeIcon size={20} />
@@ -69,22 +69,21 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                             <GitPullRequestIcon size={20} />
                           </span>
                         )}
+                        {pr.pull_request.updated_at.split('T')[0]}
                         <a
                           target="_blank"
                           rel="noreferrer"
                           href={pr.pull_request.html_url}
                           className="text-blue-600 hover:underline"
                         >
+                          {' '}
                           #{pr.number}
-                        </a>{' '}
-                        {pr.pull_request.title}
+                        </a>
                       </span>
-                      <span className="col-start-11 text-right text-xs font-bold">
+                      <span className="sm:basis-8/12">{pr.pull_request.title}</span>
+                      <span className="content-end text-xs font-bold sm:basis-2/12 sm:text-right">
                         <span className="text-green-700">+{pr.pull_request.additions}</span>{' '}
                         <span className="text-red-700">-{pr.pull_request.deletions}</span>
-                      </span>
-                      <span className="col-start-12 text-right text-xs">
-                        {pr.pull_request.updated_at.split('T')[0]}
                       </span>
                     </li>
                   );

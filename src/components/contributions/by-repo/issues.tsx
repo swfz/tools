@@ -51,11 +51,11 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                   )}
                 </span>
               </summary>
-              <ul className="list-none">
+              <ul className="list-none text-sm">
                 {issues[repoName].data.map((issue) => {
                   return (
-                    <li key={issue.issue.url} className="grid grid-cols-12 gap-4 [&:nth-child(odd)]:bg-gray-100">
-                      <span className="col-start-1 col-end-10 ml-3 flex">
+                    <li key={issue.issue.url} className="flex flex-wrap odd:bg-gray-100">
+                      <span className="ml-3">
                         {issue.issue.state === 'closed' ? (
                           <span className="text-purple-800">
                             <IssueClosedIcon size={20} />

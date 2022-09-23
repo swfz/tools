@@ -85,22 +85,24 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
                   {comments[repoName].data.length} Comments
                 </span>
               </summary>
-              <ul className="list-none">
+              <ul className="list-none text-sm">
                 {comments[repoName].data.map((c) => {
                   const htmlUrl = withPrReview(c) ? c.review.html_url : c.comment.html_url;
+                  const updatedAt = withPrReview(c) ? c.review.submitted_at : c.comment.updated_at;
                   const numberOrId = withCommit(c)
-                    ? c.comment.commit_id
+                    ? c.comment.commit_id?.substring(0, 6)
                     : withIssue(c)
-                    ? c.issue.number
+                    ? `#${c.issue.number}`
                     : withPr(c)
-                    ? c.pull_request.number
+                    ? `#${c.pull_request.number}`
                     : '';
-                  const title = withIssue(c) ? c.issue.title : withPr(c) ? c.pull_request.title : '';
+                  const title = withIssue(c) ? c.issue.title : withPr(c) ? c.pull_request.title : 'Commented';
 
                   return (
-                    <li key={htmlUrl} className="grid grid-cols-12 gap-4 [&:nth-child(odd)]:bg-gray-100">
-                      <span className="col-start-1 col-end-10 ml-3 flex">
+                    <li key={htmlUrl} className="flwx-wrap flex odd:bg-gray-100">
+                      <span className="ml-3">
                         <CommentIcon size={20} />
+                        {updatedAt.split('T')[0]}
                         <a target="_blank" rel="noreferrer" href={htmlUrl} className="text-blue-600 hover:underline">
                           {withIssue(c) && c.issue && c.issue.state === 'open' ? (
                             <span className="text-green-800">
