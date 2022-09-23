@@ -100,7 +100,7 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
 
                   return (
                     <li key={htmlUrl} className="flwx-wrap flex odd:bg-gray-100">
-                      <span>
+                      <span className="ml-3">
                         <CommentIcon size={20} />
                         {updatedAt.split('T')[0]}
                         <a target="_blank" rel="noreferrer" href={htmlUrl} className="text-blue-600 hover:underline">
