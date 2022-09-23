@@ -85,7 +85,7 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
                   {comments[repoName].data.length} Comments
                 </span>
               </summary>
-              <ul className="list-none">
+              <ul className="list-none text-sm">
                 {comments[repoName].data.map((c) => {
                   const htmlUrl = withPrReview(c) ? c.review.html_url : c.comment.html_url;
                   const updatedAt = withPrReview(c) ? c.review.submitted_at : c.comment.updated_at;

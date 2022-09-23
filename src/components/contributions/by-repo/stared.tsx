@@ -11,7 +11,7 @@ const StaredRepositories = ({ repositories }: { repositories: GitHubEvent[] }) =
           <span className="text-lg font-bold">Stared {Object.keys(repositories).length} repositories</span>
         </span>
       </div>
-      <ul>
+      <ul className="text-sm">
         {repositories.map((repoEvent) => {
           return (
             <li key={repoEvent.repo.name}>

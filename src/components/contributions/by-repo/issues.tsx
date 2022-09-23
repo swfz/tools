@@ -51,7 +51,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                   )}
                 </span>
               </summary>
-              <ul className="list-none">
+              <ul className="list-none text-sm">
                 {issues[repoName].data.map((issue) => {
                   return (
                     <li key={issue.issue.url} className="flex flex-wrap odd:bg-gray-100">
