@@ -31,21 +31,23 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
                 </a>{' '}
                 {commits[repoName].data.length} Commits
               </summary>
-              <ul className="list-none">
+              <ul className="list-none text-sm">
                 {commits[repoName].data.map((commit) => {
                   return (
-                    <li key={commit.sha} className="[&:nth-child(odd)]:bg-gray-100">
-                      <CommitIcon size={20} />
-                      <span>{commit.date.split('T')[0]}</span>{' '}
-                      <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href={toHtmlUrl(commit.url).replace('commits', 'commit')}
-                        className="text-blue-600 hover:underline"
-                      >
-                        {commit.sha.substring(0, 6)}
-                      </a>{' '}
-                      {commit.message}
+                    <li key={commit.sha} className="flex flex-wrap odd:bg-gray-100">
+                      <span className="basis-full sm:basis-1/6">
+                        <CommitIcon size={20} />
+                        {commit.date.split('T')[0]}{' '}
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href={toHtmlUrl(commit.url).replace('commits', 'commit')}
+                          className="text-blue-600 hover:underline"
+                        >
+                          {commit.sha.substring(0, 6)}
+                        </a>{' '}
+                      </span>
+                      <span className="basis-full sm:basis-5/6">{commit.message}</span>
                     </li>
                   );
                 })}
