@@ -168,19 +168,19 @@ const ContributionsSimple = (props: Props) => {
 
   return (
     <div>
-      <div className="grid grid-cols-10">
+      <div className="flex justify-start sm:justify-end">
         <button
           onClick={handleSummaryOpen}
-          className="col-start-5 col-end-10 rounded border border-gray-400 bg-white py-1 px-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+          className="basis-full rounded border border-gray-400 bg-white py-1 px-2 font-semibold text-gray-800 shadow hover:bg-gray-100 sm:basis-1/2"
         >
           {open ? 'Fold up' : 'Open'} All Details
         </button>
       </div>
       {props.result.map((row: GitHubEvent) => {
         return (
-          <div key={row.id} className="grid grid-cols-10 gap-4 text-sm  [&:nth-child(odd)]:bg-gray-100">
-            <div className="col-start-1 col-end-1">{row.created_at.split('T')[0]}</div>
-            <div className="col-start-2 col-end-4 text-blue-600 hover:underline">
+          <div key={row.id} className="flex flex-wrap text-sm odd:bg-gray-100">
+            <div className="basis-1/4 sm:basis-1/12">{row.created_at.split('T')[0]}</div>
+            <div className="basis-3/4 text-blue-600 hover:underline sm:basis-4/12">
               {row.repo.url ? (
                 <a href={toHtmlUrl(row.repo.url)} target="_blank" rel="noreferrer">
                   {row.repo.name}
@@ -189,7 +189,7 @@ const ContributionsSimple = (props: Props) => {
                 <>{row.repo.name}</>
               )}
             </div>
-            <div className="col-start-5 col-end-10 text-sm">
+            <div className="basis-full text-sm sm:basis-7/12">
               <details open={open}>
                 <summary>{row.type}</summary>
                 {row.type === 'PullRequestEvent' && <PullRequestEvent payload={row.payload}></PullRequestEvent>}
