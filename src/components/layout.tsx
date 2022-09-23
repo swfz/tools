@@ -4,7 +4,7 @@ import { useMedia } from 'react-use';
 import { ClockIcon, AdjustmentsIcon, GridIcon } from './icon';
 
 function Layout({ children }: { children: ReactNode }) {
-  const isWide = useMedia('(min-width: 600px)');
+  const isWide = useMedia('(min-width: 680px)');
   const [isOpen, setIsOpen] = useState(isWide);
 
   const togglOpen = (event: MouseEvent<SVGElement>) => {
@@ -15,25 +15,19 @@ function Layout({ children }: { children: ReactNode }) {
     <div className="flex">
       <div
         className={
-          isWide
-            ? isOpen
-              ? 'sticky top-0 h-screen w-64 shrink-0 bg-gray-300 p-4'
-              : 'sticky top-0 h-screen w-10 overflow-x-hidden bg-gray-300'
-            : isOpen
-            ? 'top-0 h-screen w-32 shrink-0 bg-gray-300 p-0'
-            : 'top-0 h-screen w-0 bg-gray-300 p-0'
+          isOpen
+            ? 'top-0 h-screen shrink-0 bg-gray-300 sm:sticky sm:w-64 sm:p-4'
+            : 'top-0 h-screen w-0 overflow-x-hidden bg-gray-300 sm:sticky sm:w-10'
         }
       >
-        <div className={isWide ? 'flex justify-center font-mono text-3xl' : 'text-sm flex justify-center font-mono'}>
+        <div className={'flex justify-center font-mono text-sm sm:text-3xl'}>
           <span className={isOpen ? '' : 'hidden'}>
             <Link href="/">swfz tools</Link>
           </span>
           &nbsp;
         </div>
         <ul className="flex flex-col p-2">
-          <li
-            className={isWide ? 'inline-block h-8 hover:text-pink-800' : 'inline-block h-8 text-xs hover:text-pink-800'}
-          >
+          <li className={'inline-block h-8 text-xs hover:text-pink-800 sm:text-base'}>
             <Link href="/timer" passHref>
               <span className="flex cursor-pointer items-center">
                 <ClockIcon />
@@ -41,9 +35,7 @@ function Layout({ children }: { children: ReactNode }) {
               </span>
             </Link>
           </li>
-          <li
-            className={isWide ? 'inline-block h-8 hover:text-pink-800' : 'inline-block h-8 text-xs hover:text-pink-800'}
-          >
+          <li className={'inline-block h-8 text-xs hover:text-pink-800 sm:text-base'}>
             <Link href="/timeline" passHref>
               <span className="flex cursor-pointer items-center">
                 <AdjustmentsIcon />
@@ -51,9 +43,7 @@ function Layout({ children }: { children: ReactNode }) {
               </span>
             </Link>
           </li>
-          <li
-            className={isWide ? 'inline-block h-8 hover:text-pink-800' : 'inline-block h-8 text-xs hover:text-pink-800'}
-          >
+          <li className={'inline-block h-8 text-xs hover:text-pink-800 sm:text-base'}>
             <Link href="/kusa" passHref>
               <span className="flex cursor-pointer items-center">
                 <GridIcon />
@@ -76,7 +66,7 @@ function Layout({ children }: { children: ReactNode }) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </div>
-      <div className={isWide ? 'p-8' : ''}>{children}</div>
+      <div className="sm:p-8">{children}</div>
     </div>
   );
 }
