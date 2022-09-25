@@ -16,7 +16,7 @@ function Layout({ children }: { children: ReactNode }) {
       <div
         className={
           isOpen
-            ? 'top-0 h-screen shrink-0 bg-gray-300 sm:sticky sm:w-64 sm:p-4'
+            ? 'top-0 h-screen sticky shrink-0 bg-gray-300 sm:sticky sm:w-64 sm:p-4'
             : 'top-0 h-screen w-0 overflow-x-hidden bg-gray-300 sm:sticky sm:w-10'
         }
       >
@@ -55,18 +55,20 @@ function Layout({ children }: { children: ReactNode }) {
         <div className="absolute bottom-0"></div>
       </div>
       <div>
-        <svg
-          onClick={togglOpen}
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+        <div className="sticky top-0 bg-white">
+          <svg
+            onClick={togglOpen}
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </div>
+        <div className="sm:p-8">{children}</div>
       </div>
-      <div className="sm:p-8">{children}</div>
     </div>
   );
 }
