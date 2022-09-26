@@ -1,11 +1,15 @@
 import Link from 'next/link';
-import { useState, ReactNode, MouseEvent } from 'react';
+import { useState, ReactNode, MouseEvent, useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { ClockIcon, AdjustmentsIcon, GridIcon } from './icon';
 
 function Layout({ children }: { children: ReactNode }) {
   const isWide = useMedia('(min-width: 640px)', false);
   const [isOpen, setIsOpen] = useState(isWide);
+
+  useEffect(() => {
+    setIsOpen(isWide);
+  }, [isWide]);
 
   const togglOpen = (event: MouseEvent<SVGElement>) => {
     setIsOpen((prev) => !prev);
