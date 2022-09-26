@@ -4,11 +4,11 @@ import { useMedia } from 'react-use';
 import { ClockIcon, AdjustmentsIcon, GridIcon } from './icon';
 
 function Layout({ children }: { children: ReactNode }) {
-  const isWide = useMedia('(min-width: 640px)');
+  const isWide = useMedia('(min-width: 640px)', false);
   const [isOpen, setIsOpen] = useState(isWide);
 
   const togglOpen = (event: MouseEvent<SVGElement>) => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   return (
