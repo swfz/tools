@@ -17,11 +17,13 @@ type Props = {
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<Props>> => {
-  if (typeof context.params?.user === 'string') {
-    const res = await fetch(`https://github-contributions-api.deno.dev/${context.params?.user}.json`);
+  const user = context.params?.user;
+
+  if (typeof user === 'string') {
+    const res = await fetch(`https://github-contributions-api.deno.dev/${user}.json`);
     const json = await res.json();
 
-    const recentContributions = json.contributions
+    const [todayContribution, yesterdayContribution] = json.contributions
       .flat()
       .reverse()
       .slice(0, 2)
@@ -33,11 +35,7 @@ export const getServerSideProps = async (
       });
 
     return {
-      props: {
-        user: context.params?.user,
-        todayContribution: recentContributions[0],
-        yesterdayContribution: recentContributions[1],
-      },
+      props: { user, todayContribution, yesterdayContribution },
     };
   } else {
     return {
