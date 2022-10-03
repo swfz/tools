@@ -18,5 +18,5 @@ const Template: ComponentStory<typeof ContributionsSimple> = (args) => <Contribu
 export const SimpleView = Template.bind({});
 
 SimpleView.args = {
-  result: sampleResponse
+  result: sampleResponse,
 };
