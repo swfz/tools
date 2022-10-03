@@ -26,7 +26,9 @@ Display.args = {
         name: 'swfz/tools',
         url: 'https://github.com/swfz/tools',
       },
+      type: 'CreateEvent',
       created_at: '2022-10-02 10:00:00',
+      payload: {}
     },
     {
       id: 2,
@@ -34,7 +36,9 @@ Display.args = {
         name: 'swfz/til',
         url: 'https://github.com/swfz/til',
       },
+      type: 'CreateEvent',
       created_at: '2022-10-03 10:00:00',
+      payload: {}
     },
   ],
   /*👇 The args you need here will depend on your component */
