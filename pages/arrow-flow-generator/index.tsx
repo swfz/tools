@@ -54,37 +54,54 @@ const ArrowFlowGenerator: NextPage = () => {
     <>
       <div>
         <p>よくあるこんな画像を作成するためのジェネレータ</p>
-        <p>必要な数だけ項目を追加する</p>
+        <p>必要な数だけ項目を追加してください</p>
+
+        <button
+          className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
+          onClick={handleAddButtonClick}
+        >
+          +Add Item
+        </button>
+
         {items.map((item) => {
           return (
-            <span key={item.id} className="flex flex-row">
-              <label htmlFor="name">Name: </label>
+            <span key={item.id} className="flex flex-row py-1 odd:bg-slate-100">
+              <label className="ml-2 font-bold text-gray-700" htmlFor="name">
+                Name:{' '}
+              </label>
               <input
-                className="block w-32 appearance-none rounded border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+                className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
                 onChange={handleInput(item, 'name')}
                 type="text"
                 placeholder="Name"
                 id="name"
               />
-              <label htmlFor="fill">Fill: </label>
+              <label className="ml-2 font-bold text-gray-700" htmlFor="fill">
+                Fill:{' '}
+              </label>
               <input onChange={handleInput(item, 'fill')} value={item.fill} type="color" id="fill" />
-              <label htmlFor="stroke">Stroke: </label>
+              <label className="ml-2 font-bold text-gray-700" htmlFor="stroke">
+                Stroke:{' '}
+              </label>
               <input onChange={handleInput(item, 'stroke')} value={item.stroke} type="color" id="stroke" />
-              <label htmlFor="textColor">Text: </label>
+              <label className="ml-2 font-bold text-gray-700" htmlFor="textColor">
+                Text:{' '}
+              </label>
               <input onChange={handleInput(item, 'textColor')} value={item.textColor} type="color" id="textColor" />
-              <label htmlFor="textSize">Text Size: </label>
-              <input onChange={handleInput(item, 'textSize')} type="number" value={item.textSize} id="textSize" />
+              <label className="ml-2 font-bold text-gray-700" htmlFor="textSize">
+                Text Size:{' '}
+              </label>
+              <input
+                className="block h-6 w-16 appearance-none border border-gray-500 bg-white leading-none text-gray-700 focus:outline-none"
+                onChange={handleInput(item, 'textSize')}
+                type="number"
+                value={item.textSize}
+                id="textSize"
+              />
             </span>
           );
         })}
-        <span className="flex flex-row">
-          <button
-            className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
-            onClick={handleAddButtonClick}
-          >
-            Add
-          </button>
-        </span>
+
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" width={1200} height={500}>
             <defs>
@@ -121,7 +138,7 @@ const ArrowFlowGenerator: NextPage = () => {
             {items.map((item, i) => {
               const x =
                 i === 0 ? leftTopPadding + 10 + i * itemWidth : leftTopPadding + 10 + i * itemWidth + protrusionWidth;
-              const y = leftTopPadding + (itemHeight / 2);
+              const y = leftTopPadding + itemHeight / 2;
               return (
                 <text key={item.id} x={x} y={y} fontFamily="sans-serif" fontSize={item.textSize} fill={item.textColor}>
                   {item.name}
