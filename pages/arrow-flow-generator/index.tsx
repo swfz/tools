@@ -191,7 +191,6 @@ const ArrowFlowGenerator: NextPage = () => {
               />
             </defs>
             {items.map((item, i) => {
-              console.log(item);
               const x = leftTopPadding + i * itemWidth;
               const y = leftTopPadding;
               const href = i === 0 ? '#first' : i === items.length - 1 ? '#last' : '#middle';
