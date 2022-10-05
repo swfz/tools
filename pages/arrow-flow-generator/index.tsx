@@ -10,6 +10,10 @@ interface Item {
   textSize: number;
   textColor: string;
 }
+interface Size {
+  width: number;
+  height: number;
+}
 
 const ArrowFlowGenerator: NextPage = () => {
   const generateDefaultItem = () => ({
@@ -24,6 +28,7 @@ const ArrowFlowGenerator: NextPage = () => {
   const initialItems = [...Array(3)].map(() => generateDefaultItem());
   const [items, setItems] = useState<Item[]>(initialItems);
   const svgRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState<Size>({ width: 800, height: 300 });
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
     setItems((prevItems) => {
@@ -42,6 +47,12 @@ const ArrowFlowGenerator: NextPage = () => {
 
         return newItems;
       });
+    };
+  };
+
+  const handleSize = (propName: string) => {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSize((prev) => ({ ...prev, [propName]: event.target.value }));
     };
   };
 
@@ -84,6 +95,31 @@ const ArrowFlowGenerator: NextPage = () => {
           Download
         </button>
 
+        <div className="flwx-row flex">
+          <label className="ml-2 font-bold text-gray-700" htmlFor="name">
+            Width:
+          </label>
+          <input
+            className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+            onChange={handleSize('width')}
+            value={size.width}
+            type="number"
+            placeholder="SVG Width"
+            id="width"
+          />
+          <label className="ml-2 font-bold text-gray-700" htmlFor="name">
+            Height:
+          </label>
+          <input
+            className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+            onChange={handleSize('height')}
+            value={size.height}
+            type="number"
+            placeholder="SVG Height"
+            id="height"
+          />
+        </div>
+
         {items.map((item) => {
           return (
             <span key={item.id} className="flex flex-row py-1 odd:bg-slate-100">
@@ -123,13 +159,13 @@ const ArrowFlowGenerator: NextPage = () => {
           );
         })}
 
-        <div ref={svgRef}>
+        <div ref={svgRef} className="border">
           <svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
-            width={1200}
-            height={500}
+            width={size.width}
+            height={size.height}
           >
             <defs>
               <polygon
