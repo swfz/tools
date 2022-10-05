@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useState, ReactNode, MouseEvent, useEffect } from 'react';
 import { useMedia } from 'react-use';
-import { ClockIcon, AdjustmentsIcon, GridIcon } from './icon';
+import { ClockIcon, AdjustmentsIcon, GridIcon, ChevronDoubleIcon } from './icon';
 
 function Layout({ children }: { children: ReactNode }) {
   const isWide = useMedia('(min-width: 640px)', false);
@@ -20,7 +20,7 @@ function Layout({ children }: { children: ReactNode }) {
       <div
         className={
           isOpen
-            ? 'top-0 h-screen sticky shrink-0 bg-gray-300 sm:sticky sm:w-64 sm:p-4'
+            ? 'sticky top-0 h-screen shrink-0 bg-gray-300 sm:sticky sm:w-64 sm:p-4'
             : 'top-0 h-screen w-0 overflow-x-hidden bg-gray-300 sm:sticky sm:w-10'
         }
       >
@@ -52,6 +52,14 @@ function Layout({ children }: { children: ReactNode }) {
               <span className="flex cursor-pointer items-center">
                 <GridIcon />
                 <span className={isOpen ? '' : 'hidden'}>GitHub kusa</span>
+              </span>
+            </Link>
+          </li>
+          <li className={'inline-block h-8 text-xs hover:text-pink-800 sm:text-base'}>
+            <Link href="/arrow-flow-generator" passHref>
+              <span className="flex cursor-pointer items-center">
+                <ChevronDoubleIcon />
+                <span className={isOpen ? '' : 'hidden'}>Arrow Flow Generator</span>
               </span>
             </Link>
           </li>
