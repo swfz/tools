@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { v4 as uuid } from 'uuid';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, useRef } from 'react';
 
 interface Item {
   id: string;
@@ -23,6 +23,7 @@ const ArrowFlowGenerator: NextPage = () => {
 
   const initialItems = [...Array(3)].map(() => generateDefaultItem());
   const [items, setItems] = useState<Item[]>(initialItems);
+  const svgRef = useRef<HTMLDivElement>(null);
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
     setItems((prevItems) => {
@@ -44,6 +45,19 @@ const ArrowFlowGenerator: NextPage = () => {
     };
   };
 
+  const handleDownload = () => {
+    if (svgRef.current) {
+      const buffer = Buffer.from(svgRef.current?.innerHTML);
+      const blob = new Blob([buffer], { type: 'image/svg+xml' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'arrow-flow.svg';
+      a.click();
+      a.remove();
+    }
+  };
+
   const leftTopPadding = 10;
   const topSideWidth = 150;
   const protrusionWidth = 30;
@@ -61,6 +75,13 @@ const ArrowFlowGenerator: NextPage = () => {
           onClick={handleAddButtonClick}
         >
           +Add Item
+        </button>
+
+        <button
+          className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
+          onClick={handleDownload}
+        >
+          Download
         </button>
 
         {items.map((item) => {
@@ -102,8 +123,14 @@ const ArrowFlowGenerator: NextPage = () => {
           );
         })}
 
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" width={1200} height={500}>
+        <div ref={svgRef}>
+          <svg
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            width={1200}
+            height={500}
+          >
             <defs>
               <polygon
                 id="first"
