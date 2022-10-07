@@ -137,21 +137,23 @@ const ArrowFlowGenerator: NextPage = () => {
         <p>よくあるこんな画像を作成するためのジェネレータ</p>
         <p>必要な数だけ項目を追加してください</p>
 
-        <button
-          className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
-          onClick={handleAddButtonClick}
-        >
-          +Add Item
-        </button>
+        <div className="mt-3">
+          <button
+            className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
+            onClick={handleAddButtonClick}
+          >
+            +Add Item
+          </button>
 
-        <button
-          className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
-          onClick={handleDownload}
-        >
-          Download
-        </button>
+          <button
+            className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
+            onClick={handleDownload}
+          >
+            Download
+          </button>
+        </div>
 
-        <div className="flwx-row flex">
+        <div className="flwx-row mt-3 flex">
           <label className="ml-2 font-bold text-gray-700" htmlFor="width">
             Width:
           </label>
