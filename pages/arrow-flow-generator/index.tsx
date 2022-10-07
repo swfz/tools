@@ -15,6 +15,51 @@ interface Size {
   height: number;
 }
 
+const InputItem = ({
+  item,
+  handleInput,
+}: {
+  item: Item;
+  handleInput: (targetItem: Item, column: string) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  return (
+    <span key={item.id} className="flex flex-row py-1 odd:bg-slate-100">
+      <label className="ml-2 font-bold text-gray-700" htmlFor="name">
+        Name:{' '}
+      </label>
+      <input
+        className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+        onChange={handleInput(item, 'name')}
+        type="text"
+        placeholder="Name"
+        id="name"
+      />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="fill">
+        Fill:{' '}
+      </label>
+      <input onChange={handleInput(item, 'fill')} value={item.fill} type="color" id="fill" />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="stroke">
+        Stroke:{' '}
+      </label>
+      <input onChange={handleInput(item, 'stroke')} value={item.stroke} type="color" id="stroke" />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="textColor">
+        Text:{' '}
+      </label>
+      <input onChange={handleInput(item, 'textColor')} value={item.textColor} type="color" id="textColor" />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="textSize">
+        Text Size:{' '}
+      </label>
+      <input
+        className="block h-6 w-16 appearance-none border border-gray-500 bg-white leading-none text-gray-700 focus:outline-none"
+        onChange={handleInput(item, 'textSize')}
+        type="number"
+        value={item.textSize}
+        id="textSize"
+      />
+    </span>
+  );
+};
+
 const ArrowFlowGenerator: NextPage = () => {
   const generateDefaultItem = () => ({
     id: uuid(),
@@ -27,6 +72,7 @@ const ArrowFlowGenerator: NextPage = () => {
 
   const initialItems = [...Array(3)].map(() => generateDefaultItem());
   const [items, setItems] = useState<Item[]>(initialItems);
+  const [batch, setBatch] = useState<Item>(generateDefaultItem());
   const svgRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<Size>({ width: 800, height: 300 });
 
@@ -34,6 +80,16 @@ const ArrowFlowGenerator: NextPage = () => {
     setItems((prevItems) => {
       return [...prevItems, generateDefaultItem()];
     });
+  };
+
+  const handleAllInput = (batchItem: Item, column: string) => {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      setBatch({ ...batchItem, [column]: event?.target?.value });
+
+      setItems((beforeItems) => {
+        return beforeItems.map((item) => ({ ...item, [column]: event?.target?.value }));
+      });
+    };
   };
 
   const handleInput = (targetItem: Item, column: string) => {
@@ -120,43 +176,12 @@ const ArrowFlowGenerator: NextPage = () => {
           />
         </div>
 
+        <div className="mt-3 bg-gray-300">
+          <span className="font-bold">Batch Setting</span>
+          <InputItem item={batch} handleInput={handleAllInput}></InputItem>
+        </div>
         {items.map((item) => {
-          return (
-            <span key={item.id} className="flex flex-row py-1 odd:bg-slate-100">
-              <label className="ml-2 font-bold text-gray-700" htmlFor="name">
-                Name:{' '}
-              </label>
-              <input
-                className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-                onChange={handleInput(item, 'name')}
-                type="text"
-                placeholder="Name"
-                id="name"
-              />
-              <label className="ml-2 font-bold text-gray-700" htmlFor="fill">
-                Fill:{' '}
-              </label>
-              <input onChange={handleInput(item, 'fill')} value={item.fill} type="color" id="fill" />
-              <label className="ml-2 font-bold text-gray-700" htmlFor="stroke">
-                Stroke:{' '}
-              </label>
-              <input onChange={handleInput(item, 'stroke')} value={item.stroke} type="color" id="stroke" />
-              <label className="ml-2 font-bold text-gray-700" htmlFor="textColor">
-                Text:{' '}
-              </label>
-              <input onChange={handleInput(item, 'textColor')} value={item.textColor} type="color" id="textColor" />
-              <label className="ml-2 font-bold text-gray-700" htmlFor="textSize">
-                Text Size:{' '}
-              </label>
-              <input
-                className="block h-6 w-16 appearance-none border border-gray-500 bg-white leading-none text-gray-700 focus:outline-none"
-                onChange={handleInput(item, 'textSize')}
-                type="number"
-                value={item.textSize}
-                id="textSize"
-              />
-            </span>
-          );
+          return <InputItem item={item} handleInput={handleInput}></InputItem>;
         })}
 
         <div ref={svgRef} className="border">
