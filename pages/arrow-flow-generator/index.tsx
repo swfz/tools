@@ -220,7 +220,7 @@ const ArrowFlowGenerator: NextPage = () => {
   return (
     <>
       <div>
-        <p>よくあるこんな画像を作成するためのジェネレータ</p>
+        <p>よくあるこんな画像(SVG)を作成するためのジェネレータ</p>
         <p>必要な数だけ項目を追加してください</p>
 
         <div className="mt-3">
