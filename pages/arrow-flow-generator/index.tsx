@@ -60,6 +60,41 @@ const InputItem = ({
   );
 };
 
+const SvgSize = ({
+  size,
+  handleSize,
+}: {
+  size: Size;
+  handleSize: (propName: string) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  return (
+    <>
+      <label className="ml-2 font-bold text-gray-700" htmlFor="width">
+        SVG Width:
+      </label>
+      <input
+        className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+        onChange={handleSize('width')}
+        value={size.width}
+        type="number"
+        placeholder="SVG Width"
+        id="width"
+      />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="height">
+        SVG Height:
+      </label>
+      <input
+        className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+        onChange={handleSize('height')}
+        value={size.height}
+        type="number"
+        placeholder="SVG Height"
+        id="height"
+      />
+    </>
+  );
+};
+
 const ArrowFlow = ({ size, items }: { size: Size; items: Item[] }) => {
   const leftTopPadding = 10;
   const topSideWidth = 150;
@@ -205,28 +240,7 @@ const ArrowFlowGenerator: NextPage = () => {
         </div>
 
         <div className="flwx-row mt-3 flex">
-          <label className="ml-2 font-bold text-gray-700" htmlFor="width">
-            Width:
-          </label>
-          <input
-            className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-            onChange={handleSize('width')}
-            value={size.width}
-            type="number"
-            placeholder="SVG Width"
-            id="width"
-          />
-          <label className="ml-2 font-bold text-gray-700" htmlFor="height">
-            Height:
-          </label>
-          <input
-            className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-            onChange={handleSize('height')}
-            value={size.height}
-            type="number"
-            placeholder="SVG Height"
-            id="height"
-          />
+          <SvgSize size={size} handleSize={handleSize}></SvgSize>
         </div>
 
         <div className="mt-3 bg-gray-300">
