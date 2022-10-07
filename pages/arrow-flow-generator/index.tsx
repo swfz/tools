@@ -60,6 +60,64 @@ const InputItem = ({
   );
 };
 
+const ArrowFlow = ({ size, items }: { size: Size; items: Item[] }) => {
+  const leftTopPadding = 10;
+  const topSideWidth = 150;
+  const protrusionWidth = 30;
+  const itemHeight = 200;
+  const itemWidth = 160;
+
+  return (
+    <svg
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width={size.width}
+      height={size.height}
+    >
+      <defs>
+        <polygon
+          id="first"
+          points={`0,0 ${topSideWidth},0 ${topSideWidth + protrusionWidth},${
+            itemHeight / 2
+          } ${topSideWidth},${itemHeight} 0,${itemHeight}`}
+          strokeWidth="3"
+        />
+        <polygon
+          id="middle"
+          points={`0,0 ${topSideWidth},0 ${topSideWidth + protrusionWidth},${
+            itemHeight / 2
+          } ${topSideWidth},${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
+          strokeWidth="3"
+        />
+        <polygon
+          id="last"
+          points={`0,0 ${topSideWidth + protrusionWidth},0 ${
+            topSideWidth + protrusionWidth
+          },${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
+          strokeWidth="3"
+        />
+      </defs>
+      {items.map((item, i) => {
+        const x = leftTopPadding + i * itemWidth;
+        const y = leftTopPadding;
+        const href = i === 0 ? '#first' : i === items.length - 1 ? '#last' : '#middle';
+        return <use key={item.id} x={x} y={y} xlinkHref={href} fill={item.fill} stroke={item.stroke}></use>;
+      })}
+
+      {items.map((item, i) => {
+        const x = i === 0 ? leftTopPadding + 10 + i * itemWidth : leftTopPadding + 10 + i * itemWidth + protrusionWidth;
+        const y = leftTopPadding + itemHeight / 2;
+        return (
+          <text key={item.id} x={x} y={y} fontFamily="sans-serif" fontSize={item.textSize} fill={item.textColor}>
+            {item.text}
+          </text>
+        );
+      })}
+    </svg>
+  );
+};
+
 const ArrowFlowGenerator: NextPage = () => {
   const generateDefaultItem = () => ({
     id: uuid(),
@@ -124,13 +182,6 @@ const ArrowFlowGenerator: NextPage = () => {
       a.remove();
     }
   };
-
-  const leftTopPadding = 10;
-  const topSideWidth = 150;
-  const protrusionWidth = 30;
-  const itemHeight = 200;
-  const itemWidth = 160;
-
   return (
     <>
       <div>
@@ -187,54 +238,7 @@ const ArrowFlowGenerator: NextPage = () => {
         })}
 
         <div ref={svgRef} className="border">
-          <svg
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            width={size.width}
-            height={size.height}
-          >
-            <defs>
-              <polygon
-                id="first"
-                points={`0,0 ${topSideWidth},0 ${topSideWidth + protrusionWidth},${
-                  itemHeight / 2
-                } ${topSideWidth},${itemHeight} 0,${itemHeight}`}
-                strokeWidth="3"
-              />
-              <polygon
-                id="middle"
-                points={`0,0 ${topSideWidth},0 ${topSideWidth + protrusionWidth},${
-                  itemHeight / 2
-                } ${topSideWidth},${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
-                strokeWidth="3"
-              />
-              <polygon
-                id="last"
-                points={`0,0 ${topSideWidth + protrusionWidth},0 ${
-                  topSideWidth + protrusionWidth
-                },${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
-                strokeWidth="3"
-              />
-            </defs>
-            {items.map((item, i) => {
-              const x = leftTopPadding + i * itemWidth;
-              const y = leftTopPadding;
-              const href = i === 0 ? '#first' : i === items.length - 1 ? '#last' : '#middle';
-              return <use key={item.id} x={x} y={y} xlinkHref={href} fill={item.fill} stroke={item.stroke}></use>;
-            })}
-
-            {items.map((item, i) => {
-              const x =
-                i === 0 ? leftTopPadding + 10 + i * itemWidth : leftTopPadding + 10 + i * itemWidth + protrusionWidth;
-              const y = leftTopPadding + itemHeight / 2;
-              return (
-                <text key={item.id} x={x} y={y} fontFamily="sans-serif" fontSize={item.textSize} fill={item.textColor}>
-                  {item.text}
-                </text>
-              );
-            })}
-          </svg>
+          <ArrowFlow size={size} items={items}></ArrowFlow>
         </div>
       </div>
     </>
