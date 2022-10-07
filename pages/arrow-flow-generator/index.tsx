@@ -23,7 +23,7 @@ const InputItem = ({
   handleInput: (targetItem: Item, column: string) => (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
-    <span key={item.id} className="flex flex-row py-1 odd:bg-slate-100">
+    <span className="flex flex-row py-1 odd:bg-slate-100">
       <label className="ml-2 font-bold text-gray-700" htmlFor="text">
         Text:{' '}
       </label>
@@ -78,7 +78,7 @@ const ArrowFlowGenerator: NextPage = () => {
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
     setItems((prevItems) => {
-      return [...prevItems, generateDefaultItem()];
+      return [...prevItems, { ...batch, id: uuid() }];
     });
   };
 
@@ -181,7 +181,7 @@ const ArrowFlowGenerator: NextPage = () => {
           <InputItem item={batch} handleInput={handleAllInput}></InputItem>
         </div>
         {items.map((item) => {
-          return <InputItem item={item} handleInput={handleInput}></InputItem>;
+          return <InputItem key={item.id} item={item} handleInput={handleInput}></InputItem>;
         })}
 
         <div ref={svgRef} className="border">
