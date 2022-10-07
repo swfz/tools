@@ -4,7 +4,7 @@ import { MouseEvent, useState, useRef } from 'react';
 
 interface Item {
   id: string;
-  name: string;
+  text: string;
   fill: string;
   stroke: string;
   textSize: number;
@@ -24,15 +24,15 @@ const InputItem = ({
 }) => {
   return (
     <span key={item.id} className="flex flex-row py-1 odd:bg-slate-100">
-      <label className="ml-2 font-bold text-gray-700" htmlFor="name">
-        Name:{' '}
+      <label className="ml-2 font-bold text-gray-700" htmlFor="text">
+        Text:{' '}
       </label>
       <input
         className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-        onChange={handleInput(item, 'name')}
+        onChange={handleInput(item, 'text')}
         type="text"
-        placeholder="Name"
-        id="name"
+        placeholder="Text"
+        id="text"
       />
       <label className="ml-2 font-bold text-gray-700" htmlFor="fill">
         Fill:{' '}
@@ -43,7 +43,7 @@ const InputItem = ({
       </label>
       <input onChange={handleInput(item, 'stroke')} value={item.stroke} type="color" id="stroke" />
       <label className="ml-2 font-bold text-gray-700" htmlFor="textColor">
-        Text:{' '}
+        Text Color:{' '}
       </label>
       <input onChange={handleInput(item, 'textColor')} value={item.textColor} type="color" id="textColor" />
       <label className="ml-2 font-bold text-gray-700" htmlFor="textSize">
@@ -63,7 +63,7 @@ const InputItem = ({
 const ArrowFlowGenerator: NextPage = () => {
   const generateDefaultItem = () => ({
     id: uuid(),
-    name: 'sample',
+    text: 'sample',
     fill: '#3399EE',
     stroke: '#666666',
     textSize: 20,
@@ -152,7 +152,7 @@ const ArrowFlowGenerator: NextPage = () => {
         </button>
 
         <div className="flwx-row flex">
-          <label className="ml-2 font-bold text-gray-700" htmlFor="name">
+          <label className="ml-2 font-bold text-gray-700" htmlFor="width">
             Width:
           </label>
           <input
@@ -163,7 +163,7 @@ const ArrowFlowGenerator: NextPage = () => {
             placeholder="SVG Width"
             id="width"
           />
-          <label className="ml-2 font-bold text-gray-700" htmlFor="name">
+          <label className="ml-2 font-bold text-gray-700" htmlFor="height">
             Height:
           </label>
           <input
@@ -228,7 +228,7 @@ const ArrowFlowGenerator: NextPage = () => {
               const y = leftTopPadding + itemHeight / 2;
               return (
                 <text key={item.id} x={x} y={y} fontFamily="sans-serif" fontSize={item.textSize} fill={item.textColor}>
-                  {item.name}
+                  {item.text}
                 </text>
               );
             })}
