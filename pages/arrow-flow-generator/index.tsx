@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import { v4 as uuid } from 'uuid';
 import { MouseEvent, useState, useRef } from 'react';
+import Head from 'next/head';
 
 interface Item {
   id: string;
@@ -219,40 +220,49 @@ const ArrowFlowGenerator: NextPage = () => {
   };
   return (
     <>
-      <div>
-        <p>よくあるこんな画像(SVG)を作成するためのジェネレータ</p>
-        <p>必要な数だけ項目を追加してください</p>
-
-        <div className="mt-3">
-          <button
-            className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
-            onClick={handleAddButtonClick}
-          >
-            +Add Item
-          </button>
-
-          <button
-            className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
-            onClick={handleDownload}
-          >
-            Download
-          </button>
+      <Head>
+        <title>Arrow Flow Generator</title>
+      </Head>
+      <div className="divide-y divide-gray-300">
+        <div>
+          <h1 className="text-3xl">Arrow Flow Generator</h1>
         </div>
-
-        <div className="flwx-row mt-3 flex">
-          <SvgSize size={size} handleSize={handleSize}></SvgSize>
+        <div>
+          <p>よくあるこんな画像(SVG)を作成するためのジェネレータ</p>
+          <p>必要な数だけ項目を追加してください</p>
         </div>
+        <div>
+          <div className="mt-3">
+            <button
+              className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
+              onClick={handleAddButtonClick}
+            >
+              +Add Item
+            </button>
 
-        <div className="mt-3 bg-gray-300">
-          <span className="font-bold">Batch Setting</span>
-          <InputItem item={batch} handleInput={handleAllInput}></InputItem>
-        </div>
-        {items.map((item) => {
-          return <InputItem key={item.id} item={item} handleInput={handleInput}></InputItem>;
-        })}
+            <button
+              className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
+              onClick={handleDownload}
+            >
+              Download
+            </button>
+          </div>
 
-        <div ref={svgRef} className="border">
-          <ArrowFlow size={size} items={items}></ArrowFlow>
+          <div className="flwx-row mt-3 flex">
+            <SvgSize size={size} handleSize={handleSize}></SvgSize>
+          </div>
+
+          <div className="mt-3 bg-gray-300">
+            <span className="font-bold">Batch Setting</span>
+            <InputItem item={batch} handleInput={handleAllInput}></InputItem>
+          </div>
+          {items.map((item) => {
+            return <InputItem key={item.id} item={item} handleInput={handleInput}></InputItem>;
+          })}
+
+          <div ref={svgRef} className="border">
+            <ArrowFlow size={size} items={items}></ArrowFlow>
+          </div>
         </div>
       </div>
     </>
