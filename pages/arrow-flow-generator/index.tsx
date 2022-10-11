@@ -8,12 +8,14 @@ interface Item {
   text: string;
   fill: string;
   stroke: string;
+  strokeSize: number;
   textSize: number;
   textColor: string;
 }
-interface Size {
+interface Options {
   width: number;
   height: number;
+  lastIsArrow: boolean;
 }
 
 const InputItem = ({
@@ -43,6 +45,16 @@ const InputItem = ({
         Stroke:{' '}
       </label>
       <input onChange={handleInput(item, 'stroke')} value={item.stroke} type="color" id="stroke" />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="textSize">
+        Stroke Size:{' '}
+      </label>
+      <input
+        className="block h-6 w-16 appearance-none border border-gray-500 bg-white leading-none text-gray-700 focus:outline-none"
+        onChange={handleInput(item, 'strokeSize')}
+        type="number"
+        value={item.strokeSize}
+        id="strokeSize"
+      />
       <label className="ml-2 font-bold text-gray-700" htmlFor="textColor">
         Text Color:{' '}
       </label>
@@ -61,12 +73,12 @@ const InputItem = ({
   );
 };
 
-const SvgSize = ({
-  size,
-  handleSize,
+const InputOptions = ({
+  options,
+  handleOptions,
 }: {
-  size: Size;
-  handleSize: (propName: string) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+  options: Options;
+  handleOptions: (propName: string) => (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <>
@@ -75,8 +87,8 @@ const SvgSize = ({
       </label>
       <input
         className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-        onChange={handleSize('width')}
-        value={size.width}
+        onChange={handleOptions('width')}
+        value={options.width}
         type="number"
         placeholder="SVG Width"
         id="width"
@@ -86,30 +98,46 @@ const SvgSize = ({
       </label>
       <input
         className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-        onChange={handleSize('height')}
-        value={size.height}
+        onChange={handleOptions('height')}
+        value={options.height}
         type="number"
         placeholder="SVG Height"
         id="height"
       />
+      <br />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="last-is-arrow">
+        Last Item is Arrow Shape:
+      </label>
+      <input type="checkbox" id="last-is-arrow" onChange={handleOptions('lastIsArrow')} className="mt-1" />
     </>
   );
 };
 
-const ArrowFlow = ({ size, items }: { size: Size; items: Item[] }) => {
+const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
   const leftTopPadding = 10;
   const topSideWidth = 150;
   const protrusionWidth = 30;
   const itemHeight = 200;
   const itemWidth = 160;
 
+  const hrefFromOptions = (index: number, options: Options): '#first' | '#middle' | '#last' => {
+    if (index === 0) {
+      return '#first';
+    }
+    if (index === items.length - 1 && !options.lastIsArrow) {
+      return '#last';
+    }
+
+    return '#middle';
+  };
+
   return (
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={size.width}
-      height={size.height}
+      width={options.width}
+      height={options.height}
     >
       <defs>
         <polygon
@@ -117,28 +145,35 @@ const ArrowFlow = ({ size, items }: { size: Size; items: Item[] }) => {
           points={`0,0 ${topSideWidth},0 ${topSideWidth + protrusionWidth},${
             itemHeight / 2
           } ${topSideWidth},${itemHeight} 0,${itemHeight}`}
-          strokeWidth="3"
         />
         <polygon
           id="middle"
           points={`0,0 ${topSideWidth},0 ${topSideWidth + protrusionWidth},${
             itemHeight / 2
           } ${topSideWidth},${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
-          strokeWidth="3"
         />
         <polygon
           id="last"
           points={`0,0 ${topSideWidth + protrusionWidth},0 ${
             topSideWidth + protrusionWidth
           },${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
-          strokeWidth="3"
         />
       </defs>
       {items.map((item, i) => {
         const x = leftTopPadding + i * itemWidth;
         const y = leftTopPadding;
-        const href = i === 0 ? '#first' : i === items.length - 1 ? '#last' : '#middle';
-        return <use key={item.id} x={x} y={y} xlinkHref={href} fill={item.fill} stroke={item.stroke}></use>;
+        const href = hrefFromOptions(i, options);
+        return (
+          <use
+            key={item.id}
+            x={x}
+            y={y}
+            xlinkHref={href}
+            fill={item.fill}
+            stroke={item.stroke}
+            strokeWidth={item.strokeSize}
+          ></use>
+        );
       })}
 
       {items.map((item, i) => {
@@ -160,6 +195,7 @@ const ArrowFlowGenerator: NextPage = () => {
     text: 'sample',
     fill: '#3399EE',
     stroke: '#666666',
+    strokeSize: 3,
     textSize: 20,
     textColor: '#FFFFFF',
   });
@@ -168,7 +204,7 @@ const ArrowFlowGenerator: NextPage = () => {
   const [items, setItems] = useState<Item[]>(initialItems);
   const [batch, setBatch] = useState<Item>(generateDefaultItem());
   const svgRef = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState<Size>({ width: 800, height: 300 });
+  const [options, setOptions] = useState<Options>({ width: 800, height: 300, lastIsArrow: false });
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
     setItems((prevItems) => {
@@ -200,9 +236,10 @@ const ArrowFlowGenerator: NextPage = () => {
     };
   };
 
-  const handleSize = (propName: string) => {
+  const handleOptions = (propName: string) => {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSize((prev) => ({ ...prev, [propName]: event.target.value }));
+      const value = propName === 'lastIsArrow' ? event.target.checked : event.target.value;
+      setOptions((prev) => ({ ...prev, [propName]: value }));
     };
   };
 
@@ -249,7 +286,7 @@ const ArrowFlowGenerator: NextPage = () => {
           </div>
 
           <div className="flwx-row mt-3 flex">
-            <SvgSize size={size} handleSize={handleSize}></SvgSize>
+            <InputOptions options={options} handleOptions={handleOptions}></InputOptions>
           </div>
 
           <div className="mt-3 bg-gray-300">
@@ -261,7 +298,7 @@ const ArrowFlowGenerator: NextPage = () => {
           })}
 
           <div ref={svgRef} className="border">
-            <ArrowFlow size={size} items={items}></ArrowFlow>
+            <ArrowFlow options={options} items={items}></ArrowFlow>
           </div>
         </div>
       </div>
