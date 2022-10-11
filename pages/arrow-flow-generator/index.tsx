@@ -8,6 +8,7 @@ interface Item {
   text: string;
   fill: string;
   stroke: string;
+  strokeSize: number;
   textSize: number;
   textColor: string;
 }
@@ -43,6 +44,16 @@ const InputItem = ({
         Stroke:{' '}
       </label>
       <input onChange={handleInput(item, 'stroke')} value={item.stroke} type="color" id="stroke" />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="textSize">
+        Stroke Size:{' '}
+      </label>
+      <input
+        className="block h-6 w-16 appearance-none border border-gray-500 bg-white leading-none text-gray-700 focus:outline-none"
+        onChange={handleInput(item, 'strokeSize')}
+        type="number"
+        value={item.strokeSize}
+        id="strokeSize"
+      />
       <label className="ml-2 font-bold text-gray-700" htmlFor="textColor">
         Text Color:{' '}
       </label>
@@ -117,28 +128,35 @@ const ArrowFlow = ({ size, items }: { size: Size; items: Item[] }) => {
           points={`0,0 ${topSideWidth},0 ${topSideWidth + protrusionWidth},${
             itemHeight / 2
           } ${topSideWidth},${itemHeight} 0,${itemHeight}`}
-          strokeWidth="3"
         />
         <polygon
           id="middle"
           points={`0,0 ${topSideWidth},0 ${topSideWidth + protrusionWidth},${
             itemHeight / 2
           } ${topSideWidth},${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
-          strokeWidth="3"
         />
         <polygon
           id="last"
           points={`0,0 ${topSideWidth + protrusionWidth},0 ${
             topSideWidth + protrusionWidth
           },${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
-          strokeWidth="3"
         />
       </defs>
       {items.map((item, i) => {
         const x = leftTopPadding + i * itemWidth;
         const y = leftTopPadding;
         const href = i === 0 ? '#first' : i === items.length - 1 ? '#last' : '#middle';
-        return <use key={item.id} x={x} y={y} xlinkHref={href} fill={item.fill} stroke={item.stroke}></use>;
+        return (
+          <use
+            key={item.id}
+            x={x}
+            y={y}
+            xlinkHref={href}
+            fill={item.fill}
+            stroke={item.stroke}
+            strokeWidth={item.strokeSize}
+          ></use>
+        );
       })}
 
       {items.map((item, i) => {
@@ -160,6 +178,7 @@ const ArrowFlowGenerator: NextPage = () => {
     text: 'sample',
     fill: '#3399EE',
     stroke: '#666666',
+    strokeSize: 3,
     textSize: 20,
     textColor: '#FFFFFF',
   });
