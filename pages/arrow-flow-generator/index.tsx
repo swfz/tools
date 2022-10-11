@@ -15,6 +15,7 @@ interface Item {
 interface Options {
   width: number;
   height: number;
+  lastIsArrow: boolean;
 }
 
 const InputItem = ({
@@ -103,6 +104,11 @@ const InputOptions = ({
         placeholder="SVG Height"
         id="height"
       />
+      <br />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="last-is-arrow">
+        Last Item is Arrow Shape:
+      </label>
+      <input type="checkbox" id="last-is-arrow" onChange={handleOptions('lastIsArrow')} className="mt-1" />
     </>
   );
 };
@@ -113,6 +119,17 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
   const protrusionWidth = 30;
   const itemHeight = 200;
   const itemWidth = 160;
+
+  const hrefFromOptions = (index: number, options: Options): '#first' | '#middle' | '#last' => {
+    if (index === 0) {
+      return '#first';
+    }
+    if (index === items.length - 1 && !options.lastIsArrow) {
+      return '#last';
+    }
+
+    return '#middle';
+  };
 
   return (
     <svg
@@ -145,7 +162,7 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
       {items.map((item, i) => {
         const x = leftTopPadding + i * itemWidth;
         const y = leftTopPadding;
-        const href = i === 0 ? '#first' : i === items.length - 1 ? '#last' : '#middle';
+        const href = hrefFromOptions(i, options);
         return (
           <use
             key={item.id}
@@ -187,7 +204,7 @@ const ArrowFlowGenerator: NextPage = () => {
   const [items, setItems] = useState<Item[]>(initialItems);
   const [batch, setBatch] = useState<Item>(generateDefaultItem());
   const svgRef = useRef<HTMLDivElement>(null);
-  const [options, setOptions] = useState<Options>({ width: 800, height: 300 });
+  const [options, setOptions] = useState<Options>({ width: 800, height: 300, lastIsArrow: false });
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
     setItems((prevItems) => {
@@ -221,7 +238,8 @@ const ArrowFlowGenerator: NextPage = () => {
 
   const handleOptions = (propName: string) => {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
-      setOptions((prev) => ({ ...prev, [propName]: event.target.value }));
+      const value = propName === 'lastIsArrow' ? event.target.checked : event.target.value;
+      setOptions((prev) => ({ ...prev, [propName]: value }));
     };
   };
 
