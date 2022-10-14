@@ -8,6 +8,7 @@ type Props = {
   user: string;
   todayContributionCount: number;
   yesterdayContributionCount: number;
+  currentStreak: number;
 };
 
 export const getServerSideProps = async (
@@ -25,9 +26,10 @@ export const getServerSideProps = async (
       .map((c: { contributionCount: number }) => c.contributionCount);
 
     const [todayContributionCount, yesterdayContributionCount] = contributions;
+    const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
 
     return {
-      props: { user, todayContributionCount, yesterdayContributionCount },
+      props: { user, todayContributionCount, yesterdayContributionCount, currentStreak },
     };
   } else {
     return {
@@ -55,7 +57,7 @@ const Kusa = (props: Props) => {
   const imgUrl = `https://grass-graph.appspot.com/images/${user}.png`;
   const siteUrl = `https://tools.swfz.io/kusa/${user}`;
   const title = `GitHub Contributions(kusa) in ${user}`;
-  const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}`;
+  const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}, Streak: ${props.currentStreak}`;
   const toGitHub = `https://github.com/${user}`;
 
   return (
