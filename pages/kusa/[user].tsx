@@ -4,14 +4,11 @@ import { FetchProvider, useFetch } from 'react-hooks-fetch';
 import { Suspense } from 'react';
 import Contributions from '../../src/components/contributions/contributions';
 
-type Contribution = {
-  date: string;
-  count: number;
-};
 type Props = {
   user: string;
-  todayContribution: Contribution;
-  yesterdayContribution: Contribution;
+  todayContributionCount: number;
+  yesterdayContributionCount: number;
+  currentStreak: number;
 };
 
 export const getServerSideProps = async (
@@ -23,19 +20,16 @@ export const getServerSideProps = async (
     const res = await fetch(`https://github-contributions-api.deno.dev/${user}.json`);
     const json = await res.json();
 
-    const [todayContribution, yesterdayContribution] = json.contributions
+    const contributions = json.contributions
       .flat()
       .reverse()
-      .slice(0, 2)
-      .map((c: { date: string; contributionCount: number }) => {
-        return {
-          date: c.date,
-          count: c.contributionCount,
-        };
-      });
+      .map((c: { contributionCount: number }) => c.contributionCount);
+
+    const [todayContributionCount, yesterdayContributionCount] = contributions;
+    const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
 
     return {
-      props: { user, todayContribution, yesterdayContribution },
+      props: { user, todayContributionCount, yesterdayContributionCount, currentStreak },
     };
   } else {
     return {
@@ -63,7 +57,7 @@ const Kusa = (props: Props) => {
   const imgUrl = `https://grass-graph.appspot.com/images/${user}.png`;
   const siteUrl = `https://tools.swfz.io/kusa/${user}`;
   const title = `GitHub Contributions(kusa) in ${user}`;
-  const desc = `Today: ${props.todayContribution.count}, Yesterday: ${props.yesterdayContribution.count}`;
+  const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}, Streak: ${props.currentStreak}`;
   const toGitHub = `https://github.com/${user}`;
 
   return (
