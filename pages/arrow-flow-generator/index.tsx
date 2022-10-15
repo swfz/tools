@@ -18,6 +18,7 @@ interface Options {
   lastIsArrow: boolean;
   space: number;
   itemHeight: number;
+  itemWidth: number;
 }
 
 const InputItem = ({
@@ -144,6 +145,22 @@ const InputOptions = ({
         </div>
 
         <div className="flex flex-row">
+          <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="itemWidth">
+            Item Width:
+          </label>
+          <span className="basis-3/4">
+            <input
+              className="block h-6 w-16 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+              onChange={handleOptions('itemWidth')}
+              value={options.itemWidth}
+              type="number"
+              placeholder="Item Width"
+              id="itemWidth"
+            />
+          </span>
+        </div>
+
+        <div className="flex flex-row">
           <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="itemHeight">
             Item Height:
           </label>
@@ -174,11 +191,11 @@ const InputOptions = ({
 
 const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
   const leftTopPadding = 10;
-  const topSideWidth = 150;
+  const topSideWidth = options.itemWidth;
   const protrusionWidth = 30;
   const itemHeight = options.itemHeight;
   const space = options.space;
-  const itemWidth = 150 + space;
+  const itemWidth = options.itemWidth + space;
 
   const hrefFromOptions = (index: number, options: Options): '#first' | '#middle' | '#last' => {
     if (index === 0) {
@@ -270,6 +287,7 @@ const ArrowFlowGenerator: NextPage = () => {
     lastIsArrow: false,
     space: 10,
     itemHeight: 200,
+    itemWidth: 150,
   });
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
