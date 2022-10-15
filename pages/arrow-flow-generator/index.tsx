@@ -16,6 +16,7 @@ interface Options {
   width: number;
   height: number;
   lastIsArrow: boolean;
+  space: number;
 }
 
 const InputItem = ({
@@ -104,6 +105,17 @@ const InputOptions = ({
         placeholder="SVG Height"
         id="height"
       />
+      <label className="ml-2 font-bold text-gray-700" htmlFor="height">
+        Space Size:
+      </label>
+      <input
+        className="block h-6 w-16 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+        onChange={handleOptions('space')}
+        value={options.space}
+        type="number"
+        placeholder="Space Size"
+        id="space"
+      />
       <br />
       <label className="ml-2 font-bold text-gray-700" htmlFor="last-is-arrow">
         Last Item is Arrow Shape:
@@ -118,7 +130,8 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
   const topSideWidth = 150;
   const protrusionWidth = 30;
   const itemHeight = 200;
-  const itemWidth = 160;
+  const space = options.space;
+  const itemWidth = 150 + space;
 
   const hrefFromOptions = (index: number, options: Options): '#first' | '#middle' | '#last' => {
     if (index === 0) {
@@ -204,7 +217,7 @@ const ArrowFlowGenerator: NextPage = () => {
   const [items, setItems] = useState<Item[]>(initialItems);
   const [batch, setBatch] = useState<Item>(generateDefaultItem());
   const svgRef = useRef<HTMLDivElement>(null);
-  const [options, setOptions] = useState<Options>({ width: 800, height: 300, lastIsArrow: false });
+  const [options, setOptions] = useState<Options>({ width: 800, height: 300, lastIsArrow: false, space: 10 });
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
     setItems((prevItems) => {
@@ -238,7 +251,7 @@ const ArrowFlowGenerator: NextPage = () => {
 
   const handleOptions = (propName: string) => {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = propName === 'lastIsArrow' ? event.target.checked : event.target.value;
+      const value = propName === 'lastIsArrow' ? event.target.checked : parseInt(event.target.value);
       setOptions((prev) => ({ ...prev, [propName]: value }));
     };
   };
