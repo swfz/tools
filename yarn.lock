@@ -3816,7 +3816,7 @@
     "@typescript-eslint/types" "5.23.0"
     eslint-visitor-keys "^3.0.0"
 
-"@vercel/og@^0.0.18":
+"@vercel/og@0.0.18":
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/@vercel/og/-/og-0.0.18.tgz#4ee97eaf1f1fc2350447d3b43a1e4ee0c970de64"
   integrity sha512-cEid22FkiNrgJ/HtawA6V3+x2jhP+KqwwNG97afFsFmZ/oPsh3Bm01NzCVSpeR96/aPaT2/59pbFXGxulxgp7g==
