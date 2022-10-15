@@ -104,6 +104,7 @@ const InputOptions = ({
         placeholder="SVG Width"
         id="width"
       />
+
       <label className="ml-2 font-bold text-gray-700" htmlFor="height">
         SVG Height:
       </label>
@@ -115,7 +116,8 @@ const InputOptions = ({
         placeholder="SVG Height"
         id="height"
       />
-      <label className="ml-2 font-bold text-gray-700" htmlFor="height">
+
+      <label className="ml-2 font-bold text-gray-700" htmlFor="space">
         Space Size:
       </label>
       <input
@@ -126,7 +128,7 @@ const InputOptions = ({
         placeholder="Space Size"
         id="space"
       />
-      <br />
+
       <label className="ml-2 font-bold text-gray-700" htmlFor="last-is-arrow">
         Last Item is Arrow Shape:
       </label>
