@@ -28,7 +28,7 @@ const InputItem = ({
 }) => {
   return (
     <span className="flex flex-row py-1 odd:bg-slate-100">
-      <label className="ml-2 font-bold text-gray-700" htmlFor="text">
+      <label className="ml-2 font-bold text-gray-700" htmlFor={`text-${item.id}`}>
         Text:{' '}
       </label>
       <input
@@ -36,17 +36,20 @@ const InputItem = ({
         onChange={handleInput(item, 'text')}
         type="text"
         placeholder="Text"
-        id="text"
+        id={`text-${item.id}`}
       />
-      <label className="ml-2 font-bold text-gray-700" htmlFor="fill">
+
+      <label className="ml-2 font-bold text-gray-700" htmlFor={`fill-${item.id}`}>
         Fill:{' '}
       </label>
-      <input onChange={handleInput(item, 'fill')} value={item.fill} type="color" id="fill" />
-      <label className="ml-2 font-bold text-gray-700" htmlFor="stroke">
+      <input onChange={handleInput(item, 'fill')} value={item.fill} type="color" id={`fill-${item.id}`} />
+
+      <label className="ml-2 font-bold text-gray-700" htmlFor={`stroke-${item.id}`}>
         Stroke:{' '}
       </label>
-      <input onChange={handleInput(item, 'stroke')} value={item.stroke} type="color" id="stroke" />
-      <label className="ml-2 font-bold text-gray-700" htmlFor="textSize">
+      <input onChange={handleInput(item, 'stroke')} value={item.stroke} type="color" id={`stroke-${item.id}`} />
+
+      <label className="ml-2 font-bold text-gray-700" htmlFor={`strokeSize-${item.id}`}>
         Stroke Size:{' '}
       </label>
       <input
@@ -54,13 +57,20 @@ const InputItem = ({
         onChange={handleInput(item, 'strokeSize')}
         type="number"
         value={item.strokeSize}
-        id="strokeSize"
+        id={`strokeSize-${item.id}`}
       />
-      <label className="ml-2 font-bold text-gray-700" htmlFor="textColor">
+
+      <label className="ml-2 font-bold text-gray-700" htmlFor={`textColor-${item.id}`}>
         Text Color:{' '}
       </label>
-      <input onChange={handleInput(item, 'textColor')} value={item.textColor} type="color" id="textColor" />
-      <label className="ml-2 font-bold text-gray-700" htmlFor="textSize">
+      <input
+        onChange={handleInput(item, 'textColor')}
+        value={item.textColor}
+        type="color"
+        id={`textColor-${item.id}`}
+      />
+
+      <label className="ml-2 font-bold text-gray-700" htmlFor={`textSize-${item.id}`}>
         Text Size:{' '}
       </label>
       <input
@@ -68,7 +78,7 @@ const InputItem = ({
         onChange={handleInput(item, 'textSize')}
         type="number"
         value={item.textSize}
-        id="textSize"
+        id={`textSize-${item.id}`}
       />
     </span>
   );
@@ -94,6 +104,7 @@ const InputOptions = ({
         placeholder="SVG Width"
         id="width"
       />
+
       <label className="ml-2 font-bold text-gray-700" htmlFor="height">
         SVG Height:
       </label>
@@ -105,7 +116,8 @@ const InputOptions = ({
         placeholder="SVG Height"
         id="height"
       />
-      <label className="ml-2 font-bold text-gray-700" htmlFor="height">
+
+      <label className="ml-2 font-bold text-gray-700" htmlFor="space">
         Space Size:
       </label>
       <input
@@ -116,7 +128,7 @@ const InputOptions = ({
         placeholder="Space Size"
         id="space"
       />
-      <br />
+
       <label className="ml-2 font-bold text-gray-700" htmlFor="last-is-arrow">
         Last Item is Arrow Shape:
       </label>
@@ -298,7 +310,7 @@ const ArrowFlowGenerator: NextPage = () => {
             </button>
           </div>
 
-          <div className="flwx-row mt-3 flex">
+          <div className="flex-row mt-3 flex">
             <InputOptions options={options} handleOptions={handleOptions}></InputOptions>
           </div>
 
