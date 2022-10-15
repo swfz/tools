@@ -93,46 +93,64 @@ const InputOptions = ({
 }) => {
   return (
     <>
-      <label className="ml-2 font-bold text-gray-700" htmlFor="width">
-        SVG Width:
-      </label>
-      <input
-        className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-        onChange={handleOptions('width')}
-        value={options.width}
-        type="number"
-        placeholder="SVG Width"
-        id="width"
-      />
+      <div className="flex flex-col">
+        <div className="flex flex-row">
+          <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="width">
+            SVG Width:
+          </label>
+          <span className="basis-3/4">
+            <input
+              className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+              onChange={handleOptions('width')}
+              value={options.width}
+              type="number"
+              placeholder="SVG Width"
+              id="width"
+            />
+          </span>
+        </div>
 
-      <label className="ml-2 font-bold text-gray-700" htmlFor="height">
-        SVG Height:
-      </label>
-      <input
-        className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-        onChange={handleOptions('height')}
-        value={options.height}
-        type="number"
-        placeholder="SVG Height"
-        id="height"
-      />
+        <div className="flex flex-row">
+          <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="height">
+            SVG Height:
+          </label>
+          <span className="basis-3/4">
+            <input
+              className="block h-6 w-32 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+              onChange={handleOptions('height')}
+              value={options.height}
+              type="number"
+              placeholder="SVG Height"
+              id="height"
+            />
+          </span>
+        </div>
 
-      <label className="ml-2 font-bold text-gray-700" htmlFor="space">
-        Space Size:
-      </label>
-      <input
-        className="block h-6 w-16 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
-        onChange={handleOptions('space')}
-        value={options.space}
-        type="number"
-        placeholder="Space Size"
-        id="space"
-      />
+        <div className="flex flex-row">
+          <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="space">
+            Item Space Size:
+          </label>
+          <span className="basis-3/4">
+            <input
+              className="block h-6 w-16 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+              onChange={handleOptions('space')}
+              value={options.space}
+              type="number"
+              placeholder="Space Size"
+              id="space"
+            />
+          </span>
+        </div>
 
-      <label className="ml-2 font-bold text-gray-700" htmlFor="last-is-arrow">
-        Last Item is Arrow Shape:
-      </label>
-      <input type="checkbox" id="last-is-arrow" onChange={handleOptions('lastIsArrow')} className="mt-1" />
+        <div className="flex flex-row">
+          <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="last-is-arrow">
+            Last Item is Arrow Shape:
+          </label>
+          <span className="basis-3/4">
+            <input type="checkbox" id="last-is-arrow" onChange={handleOptions('lastIsArrow')} className="mt-1" />
+          </span>
+        </div>
+      </div>
     </>
   );
 };
@@ -294,7 +312,7 @@ const ArrowFlowGenerator: NextPage = () => {
           <p>必要な数だけ項目を追加してください</p>
         </div>
         <div>
-          <div className="mt-3">
+          <div className="my-3">
             <button
               className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
               onClick={handleAddButtonClick}
@@ -310,9 +328,7 @@ const ArrowFlowGenerator: NextPage = () => {
             </button>
           </div>
 
-          <div className="flex-row mt-3 flex">
-            <InputOptions options={options} handleOptions={handleOptions}></InputOptions>
-          </div>
+          <InputOptions options={options} handleOptions={handleOptions}></InputOptions>
 
           <div className="mt-3 bg-gray-300">
             <span className="font-bold">Batch Setting</span>
