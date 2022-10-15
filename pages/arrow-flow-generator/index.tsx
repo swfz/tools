@@ -17,6 +17,7 @@ interface Options {
   height: number;
   lastIsArrow: boolean;
   space: number;
+  itemHeight: number;
 }
 
 const InputItem = ({
@@ -143,6 +144,22 @@ const InputOptions = ({
         </div>
 
         <div className="flex flex-row">
+          <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="itemHeight">
+            Item Height:
+          </label>
+          <span className="basis-3/4">
+            <input
+              className="block h-6 w-16 appearance-none border border-gray-500 bg-white px-1 py-0 leading-none text-gray-700 focus:outline-none"
+              onChange={handleOptions('itemHeight')}
+              value={options.itemHeight}
+              type="number"
+              placeholder="Item Height"
+              id="itemHeight"
+            />
+          </span>
+        </div>
+
+        <div className="flex flex-row">
           <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="last-is-arrow">
             Last Item is Arrow Shape:
           </label>
@@ -159,7 +176,7 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
   const leftTopPadding = 10;
   const topSideWidth = 150;
   const protrusionWidth = 30;
-  const itemHeight = 200;
+  const itemHeight = options.itemHeight;
   const space = options.space;
   const itemWidth = 150 + space;
 
@@ -221,7 +238,7 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
 
       {items.map((item, i) => {
         const x = i === 0 ? leftTopPadding + 10 + i * itemWidth : leftTopPadding + 10 + i * itemWidth + protrusionWidth;
-        const y = leftTopPadding + itemHeight / 2;
+        const y = leftTopPadding + itemHeight / 2 + item.textSize / 4;
         return (
           <text key={item.id} x={x} y={y} fontFamily="sans-serif" fontSize={item.textSize} fill={item.textColor}>
             {item.text}
@@ -247,7 +264,13 @@ const ArrowFlowGenerator: NextPage = () => {
   const [items, setItems] = useState<Item[]>(initialItems);
   const [batch, setBatch] = useState<Item>(generateDefaultItem());
   const svgRef = useRef<HTMLDivElement>(null);
-  const [options, setOptions] = useState<Options>({ width: 800, height: 300, lastIsArrow: false, space: 10 });
+  const [options, setOptions] = useState<Options>({
+    width: 800,
+    height: 300,
+    lastIsArrow: false,
+    space: 10,
+    itemHeight: 200,
+  });
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
     setItems((prevItems) => {
