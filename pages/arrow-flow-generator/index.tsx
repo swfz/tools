@@ -238,7 +238,7 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
 
       {items.map((item, i) => {
         const x = i === 0 ? leftTopPadding + 10 + i * itemWidth : leftTopPadding + 10 + i * itemWidth + protrusionWidth;
-        const y = leftTopPadding + itemHeight / 2;
+        const y = leftTopPadding + itemHeight / 2 + item.textSize / 4;
         return (
           <text key={item.id} x={x} y={y} fontFamily="sans-serif" fontSize={item.textSize} fill={item.textColor}>
             {item.text}
