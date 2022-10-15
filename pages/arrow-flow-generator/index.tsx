@@ -308,7 +308,7 @@ const ArrowFlowGenerator: NextPage = () => {
             </button>
           </div>
 
-          <div className="flwx-row mt-3 flex">
+          <div className="flex-row mt-3 flex">
             <InputOptions options={options} handleOptions={handleOptions}></InputOptions>
           </div>
 
