@@ -32,4 +32,4 @@
 [tagpr]
 	vPrefix = true
 	releaseBranch = main
-	versionFile = sample-github-public-event.json
+	versionFile = package.json
