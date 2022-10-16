@@ -54,7 +54,7 @@ const Detail = ({ user }: { user: string }) => {
 
 const Kusa = (props: Props) => {
   const user = props.user;
-  const imgUrl = `https://grass-graph.appspot.com/images/${user}.png`;
+  const imgUrl = `https://grass-graph.appspot.com/images/${user}.png?${Date.now()}`;
   const siteUrl = `https://tools.swfz.io/kusa/${user}`;
   const title = `GitHub Contributions(kusa) in ${user}`;
   const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}, Streak: ${props.currentStreak}`;
