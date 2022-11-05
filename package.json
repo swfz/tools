@@ -38,7 +38,7 @@
     "@storybook/testing-library": "0.0.13",
     "@types/gtag.js": "0.0.12",
     "@types/node": "18.11.8",
-    "@types/react": "18.0.24",
+    "@types/react": "18.0.25",
     "@types/uuid": "8.3.4",
     "autoprefixer": "10.4.13",
     "babel-loader": "9.1.0",
