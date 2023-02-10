@@ -1,6 +1,7 @@
 import React from 'react';
 import { InfoIcon, RepoIcon } from '@primer/octicons-react';
-import { toHtmlUrl, GitHubEvent } from '../contributions';
+import { toHtmlUrl } from '../contributions';
+import { GitHubEvent } from '../types';
 
 const Repositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
   return (

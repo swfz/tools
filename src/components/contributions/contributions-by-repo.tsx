@@ -1,18 +1,12 @@
 import React from 'react';
 import {
-  PullRequestReviewCommentEventPayload,
-  IssueCommentEventPayload,
-  PullRequestReviewEventPayload,
-  CommitCommentEventPayload,
-  Commit,
-  CreateEventPayload,
   GitHubEvent,
-  GitHubRepo,
   IssuesEventPayload,
   PullRequestEventPayload,
   PushEventPayload,
-  WatchEventPayload,
-} from './contributions';
+  CommitData,
+  Summary,
+} from './types';
 
 import Commits from './by-repo/commits';
 import PullRequests from './by-repo/pullrequests';
@@ -24,51 +18,6 @@ import Comments from './by-repo/comments';
 type Props = {
   result: any;
   user: string;
-};
-
-type CommitData = Commit & { date: string };
-
-export type Summary = {
-  commits: {
-    [key: string]: {
-      repo: GitHubRepo;
-      data: CommitData[];
-    };
-  };
-  pullRequests: {
-    [key: string]: {
-      repo: GitHubRepo;
-      data: PullRequestEventPayload[];
-      stats: {
-        merged: number;
-        open: number;
-        count: number;
-      };
-    };
-  };
-  issues: {
-    [key: string]: {
-      repo: GitHubRepo;
-      data: IssuesEventPayload[];
-      stats: {
-        open: number;
-        closed: number;
-      };
-    };
-  };
-  repositories: CreateEventPayload[];
-  stared: WatchEventPayload[];
-  comments: {
-    [key: string]: {
-      repo: GitHubRepo;
-      data: (
-        | PullRequestReviewCommentEventPayload
-        | IssueCommentEventPayload
-        | PullRequestReviewEventPayload
-        | CommitCommentEventPayload
-      )[];
-    };
-  };
 };
 
 const uniqueAndSortCommits = (commits: Summary['commits']): Summary['commits'] => {

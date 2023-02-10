@@ -1,6 +1,6 @@
 import React from 'react';
 import { CommitIcon, InfoIcon } from '@primer/octicons-react';
-import { Summary } from '../contributions-by-repo';
+import { Summary } from '../types';
 import { toHtmlUrl } from '../contributions';
 
 const Commits = ({ commits }: { commits: Summary['commits'] }) => {

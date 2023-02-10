@@ -12,7 +12,7 @@ import type {
   PullRequestReviewEventPayload,
   PushEventPayload,
   WatchEventPayload,
-} from './contributions';
+} from './types';
 import { toHtmlUrl } from './contributions';
 
 type Props = {
