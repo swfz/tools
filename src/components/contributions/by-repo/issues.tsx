@@ -1,5 +1,5 @@
 import React from 'react';
-import { Summary } from '../contributions-by-repo';
+import { Summary } from '../types';
 import { toHtmlUrl } from '../contributions';
 import { InfoIcon, IssueClosedIcon, IssueOpenedIcon } from '@primer/octicons-react';
 
