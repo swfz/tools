@@ -14,7 +14,7 @@ type Props = {
 };
 
 const Contributions = (props: Props) => {
-  const [selectedView, setSelectedView] = useState<string>('simple');
+  const [selectedTab, setSelectedTab] = useState<string>('simple');
   const [exclude, setExclude] = useState<boolean>(false);
   const [apiResult, setApiResult] = useState([]);
 
@@ -53,10 +53,10 @@ const Contributions = (props: Props) => {
     setExclude(e.target.checked);
   };
 
-  const views = [
-    { id: 'simple', name: 'Simple List' },
-    { id: 'repo', name: 'Group By Repo' },
-    // { id: 'event', name: 'Group By Event' },
+  const tabs = [
+    { name: 'simple', displayName: 'Simple List' },
+    { name: 'repo', displayName: 'Group By Repo' },
+    // { name: 'event', displayName: 'Group By Event' },
   ];
 
   return (
@@ -67,19 +67,19 @@ const Contributions = (props: Props) => {
         Exclude events related dependencies update
       </label>
       <nav className="flex flex-row sm:flex-row">
-        {views.map((view) => {
+        {tabs.map((tab) => {
           return (
-            <div key={view.id}>
-              {selectedView == view.id ? (
+            <div key={tab.name}>
+              {selectedTab == tab.name ? (
                 <button className="border-b-2 border-blue-500 py-4 px-6 font-medium text-blue-500 hover:text-blue-500 focus:outline-none">
-                  {view.name}
+                  {tab.displayName}
                 </button>
               ) : (
                 <button
-                  onClick={() => setSelectedView(view.id)}
+                  onClick={() => setSelectedTab(tab.name)}
                   className="py-4 px-6 text-gray-600 hover:text-blue-500 focus:outline-none"
                 >
-                  {view.name}
+                  {tab.displayName}
                 </button>
               )}
             </div>
@@ -87,9 +87,9 @@ const Contributions = (props: Props) => {
         })}
       </nav>
 
-      {selectedView == 'simple' && <ContributionsSimple result={apiResult}></ContributionsSimple>}
-      {selectedView == 'repo' && <ContributionsByRepo result={apiResult} user={props.user}></ContributionsByRepo>}
-      {/* {selectedView == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>} */}
+      {selectedTab == 'simple' && <ContributionsSimple result={apiResult}></ContributionsSimple>}
+      {selectedTab == 'repo' && <ContributionsByRepo result={apiResult} user={props.user}></ContributionsByRepo>}
+      {/* {selectedTab == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>} */}
     </div>
   );
 };
