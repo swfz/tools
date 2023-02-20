@@ -1,5 +1,5 @@
 import React from 'react';
-import { toHtmlUrl } from '../contributions';
+import { toHtmlUrl } from '../../../lib/to-html-url';
 import {
   PullRequestReviewCommentEventPayload,
   IssueCommentEventPayload,

@@ -1,4 +1,4 @@
-import { toHtmlUrl } from '../contributions';
+import { toHtmlUrl } from '../to-html-url';
 
 describe('toHtmlUrl', () => {
   test('check replace', () => {
