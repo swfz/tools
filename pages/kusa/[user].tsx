@@ -16,26 +16,22 @@ export const getServerSideProps = async (
 ): Promise<GetServerSidePropsResult<Props>> => {
   const user = context.params?.user;
 
-  if (typeof user === 'string') {
-    const res = await fetch(`https://github-contributions-api.deno.dev/${user}.json`);
-    const json = await res.json();
-
-    const contributions = json.contributions
-      .flat()
-      .reverse()
-      .map((c: { contributionCount: number }) => c.contributionCount);
-
-    const [todayContributionCount, yesterdayContributionCount] = contributions;
-    const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
-
-    return {
-      props: { user, todayContributionCount, yesterdayContributionCount, currentStreak },
-    };
-  } else {
-    return {
-      notFound: true,
-    };
+  if (typeof user !== 'string') {
+    return { notFound: true };
   }
+
+  const res = await fetch(`https://github-contributions-api.deno.dev/${user}.json`);
+  const json = await res.json();
+
+  const contributions = json.contributions
+    .flat()
+    .reverse()
+    .map((c: { contributionCount: number }) => c.contributionCount);
+
+  const [todayContributionCount, yesterdayContributionCount] = contributions;
+  const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
+
+  return { props: { user, todayContributionCount, yesterdayContributionCount, currentStreak } };
 };
 
 const fetchFunc = async (userId: string) => {
