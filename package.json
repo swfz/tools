@@ -10,7 +10,8 @@
     "format": "prettier --write --ignore-path .gitignore './**/*.{js,ts,tsx,json,css}'",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest"
+    "test": "jest --watch",
+    "test:ci": "jest"
   },
   "dependencies": {
     "@primer/octicons-react": "17.12.0",
