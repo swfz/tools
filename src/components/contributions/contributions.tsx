@@ -4,10 +4,6 @@ import ContributionsByEvent from './contributions-by-event';
 import ContributionsSimple from './contributions-simple';
 import { Commit, GitHubEvent } from './types';
 
-export const toHtmlUrl = (url: string) => {
-  return url.replace('api.github.com/repos', 'github.com');
-};
-
 type Props = {
   result: any;
   user: string;

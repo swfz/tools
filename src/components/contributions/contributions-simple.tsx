@@ -13,7 +13,7 @@ import type {
   PushEventPayload,
   WatchEventPayload,
 } from './types';
-import { toHtmlUrl } from './contributions';
+import { toHtmlUrl } from '../../lib/to-html-url';
 
 type Props = {
   result: any;

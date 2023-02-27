@@ -1,6 +1,6 @@
 import React from 'react';
 import { Summary } from '../types';
-import { toHtmlUrl } from '../contributions';
+import { toHtmlUrl } from '../../../lib/to-html-url';
 import { GitMergeIcon, GitPullRequestClosedIcon, GitPullRequestIcon, InfoIcon } from '@primer/octicons-react';
 
 const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
