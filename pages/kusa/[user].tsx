@@ -38,7 +38,6 @@ const fetchFunc = async (userId: string) => {
   const res = await fetch(`https://api.github.com/users/${userId}/events?per_page=100&page=1`);
   const data = await res.json();
 
-  console.log(data);
   return data;
 };
 

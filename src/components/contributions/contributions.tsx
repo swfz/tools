@@ -41,7 +41,6 @@ const Contributions = (props: Props) => {
           !isDependabotPush
         );
       });
-      console.log('filtered', filtered);
 
       setApiResult(filtered);
     } else {
