@@ -17,7 +17,7 @@ import Comments from './by-repo/comments';
 
 type Props = {
   result: any;
-  user: string;
+  username: string;
 };
 
 const uniqueAndSortCommits = (commits: Summary['commits']): Summary['commits'] => {

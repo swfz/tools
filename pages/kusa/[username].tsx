@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import Contributions from '../../src/components/contributions/contributions';
 
 type Props = {
-  user: string;
+  username: string;
   todayContributionCount: number;
   yesterdayContributionCount: number;
   currentStreak: number;
@@ -14,13 +14,13 @@ type Props = {
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<Props>> => {
-  const user = context.params?.user;
+  const username = context.params?.username;
 
-  if (typeof user !== 'string') {
+  if (typeof username !== 'string') {
     return { notFound: true };
   }
 
-  const res = await fetch(`https://github-contributions-api.deno.dev/${user}.json`);
+  const res = await fetch(`https://github-contributions-api.deno.dev/${username}.json`);
   const json = await res.json();
 
   const contributions = json.contributions
@@ -31,29 +31,29 @@ export const getServerSideProps = async (
   const [todayContributionCount, yesterdayContributionCount] = contributions;
   const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
 
-  return { props: { user, todayContributionCount, yesterdayContributionCount, currentStreak } };
+  return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak } };
 };
 
-const fetchFunc = async (userId: string) => {
-  const res = await fetch(`https://api.github.com/users/${userId}/events?per_page=100&page=1`);
+const fetchFunc = async (username: string) => {
+  const res = await fetch(`https://api.github.com/users/${username}/events?per_page=100&page=1`);
   const data = await res.json();
 
   return data;
 };
 
-const Detail = ({ user }: { user: string }) => {
+const Detail = ({ username }: { username: string }) => {
   const { result, refetch } = useFetch(fetchFunc);
 
-  return <Contributions result={result} user={user}></Contributions>;
+  return <Contributions result={result} username={username}></Contributions>;
 };
 
 const Kusa = (props: Props) => {
-  const user = props.user;
-  const imgUrl = `https://grass-graph.appspot.com/images/${user}.png?${Date.now()}`;
-  const siteUrl = `https://tools.swfz.io/kusa/${user}`;
-  const title = `GitHub Contributions(kusa) in ${user}`;
+  const username = props.username;
+  const imgUrl = `https://grass-graph.appspot.com/images/${username}.png?${Date.now()}`;
+  const siteUrl = `https://tools.swfz.io/kusa/${username}`;
+  const title = `GitHub Contributions(kusa) in ${username}`;
   const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}, Streak: ${props.currentStreak}`;
-  const toGitHub = `https://github.com/${user}`;
+  const toGitHub = `https://github.com/${username}`;
 
   return (
     <>
@@ -73,7 +73,7 @@ const Kusa = (props: Props) => {
       <div>
         <span className="text-4xl font-bold">
           <a href={toGitHub} target="_blank" rel="noreferrer">
-            <span className="cursor-pointer font-bold text-blue-600 no-underline hover:underline">{user}</span>
+            <span className="cursor-pointer font-bold text-blue-600 no-underline hover:underline">{username}</span>
           </a>
           &apos;s kusa
         </span>
@@ -81,9 +81,9 @@ const Kusa = (props: Props) => {
         <img src={imgUrl} alt="GitHub Contribution" />
         <span>{desc}</span>
         {/* @ts-ignore */}
-        <FetchProvider initialInputs={[[fetchFunc, user]]}>
+        <FetchProvider initialInputs={[[fetchFunc, username]]}>
           <Suspense fallback={<span>Loading...</span>}>
-            <Detail user={user}></Detail>
+            <Detail username={username}></Detail>
           </Suspense>
         </FetchProvider>
       </div>

@@ -6,7 +6,7 @@ import { Commit, GitHubEvent } from './types';
 
 type Props = {
   result: any;
-  user: string;
+  username: string;
 };
 
 const Contributions = (props: Props) => {
@@ -56,7 +56,7 @@ const Contributions = (props: Props) => {
 
   return (
     <div>
-      <h2 className="col-start-1 col-end-4 text-2xl font-bold">Recent {props.user} Events</h2>
+      <h2 className="col-start-1 col-end-4 text-2xl font-bold">Recent {props.username} Events</h2>
       <input type="checkbox" id="exclude" onChange={handleChange} />
       <label htmlFor="exclude" className="text-xs">
         Exclude events related dependencies update
@@ -83,7 +83,7 @@ const Contributions = (props: Props) => {
       </nav>
 
       {selectedTab == 'simple' && <ContributionsSimple result={apiResult}></ContributionsSimple>}
-      {selectedTab == 'repo' && <ContributionsByRepo result={apiResult} user={props.user}></ContributionsByRepo>}
+      {selectedTab == 'repo' && <ContributionsByRepo result={apiResult} username={props.username}></ContributionsByRepo>}
       {/* {selectedTab == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>} */}
     </div>
   );
