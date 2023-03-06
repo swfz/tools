@@ -14,6 +14,7 @@ import type {
   WatchEventPayload,
 } from './types';
 import { toHtmlUrl } from '../../lib/to-html-url';
+import { iso8601DateParse } from '../../lib/iso8601-date-parse';
 
 type Props = {
   result: any;
@@ -179,7 +180,7 @@ const ContributionsSimple = (props: Props) => {
       {props.result.map((row: GitHubEvent) => {
         return (
           <div key={row.id} className="flex flex-wrap text-sm odd:bg-gray-100">
-            <div className="basis-1/4 sm:basis-1/12">{row.created_at.split('T')[0]}</div>
+            <div className="basis-1/4 sm:basis-1/12">{iso8601DateParse(row.created_at)}</div>
             <div className="basis-3/4 text-blue-600 hover:underline sm:basis-4/12">
               {row.repo.url ? (
                 <a href={toHtmlUrl(row.repo.url)} target="_blank" rel="noreferrer">
