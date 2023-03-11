@@ -16,6 +16,7 @@ import {
   IssueClosedIcon,
   IssueOpenedIcon,
 } from '@primer/octicons-react';
+import { iso8601DateExtract } from '../../../lib/iso8601-date-extract';
 
 const withIssue = (
   value:
@@ -102,7 +103,7 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
                     <li key={htmlUrl} className="flwx-wrap flex odd:bg-gray-100">
                       <span className="ml-3">
                         <CommentIcon size={20} />
-                        {updatedAt.split('T')[0]}
+                        {iso8601DateExtract(updatedAt)}
                         <a target="_blank" rel="noreferrer" href={htmlUrl} className="text-blue-600 hover:underline">
                           {withIssue(c) && c.issue && c.issue.state === 'open' ? (
                             <span className="text-green-800">
