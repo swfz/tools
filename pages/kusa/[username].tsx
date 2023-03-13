@@ -1,14 +1,14 @@
-import Head from 'next/head';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { FetchProvider, useFetch } from 'react-hooks-fetch';
 import { Suspense } from 'react';
+import Head from '../../src/components/kusa/head';
+import Title from '../../src/components/kusa/title';
 import Contributions from '../../src/components/contributions/contributions';
+import { toGrassGraphImageUrl } from '../../src/lib/to-grass-graph-image-url';
 
 type Props = {
   username: string;
-  todayContributionCount: number;
-  yesterdayContributionCount: number;
-  currentStreak: number;
+  description: string;
 };
 
 export const getServerSideProps = async (
@@ -30,8 +30,9 @@ export const getServerSideProps = async (
 
   const [todayContributionCount, yesterdayContributionCount] = contributions;
   const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
+  const description = `Today: ${todayContributionCount}, Yesterday: ${yesterdayContributionCount}, Streak: ${currentStreak}`;
 
-  return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak } };
+  return { props: { username, description } };
 };
 
 const fetchFunc = async (username: string) => {
@@ -49,37 +50,15 @@ const Detail = ({ username }: { username: string }) => {
 
 const Kusa = (props: Props) => {
   const username = props.username;
-  const imgUrl = `https://grass-graph.appspot.com/images/${username}.png?${Date.now()}`;
-  const siteUrl = `https://tools.swfz.io/kusa/${username}`;
-  const title = `GitHub Contributions(kusa) in ${username}`;
-  const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}, Streak: ${props.currentStreak}`;
-  const toGitHub = `https://github.com/${username}`;
 
   return (
     <>
-      <Head>
-        <title>Kusa</title>
-        <meta property="og:url" content={siteUrl} />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={desc} />
-        <meta property="og:site_name" content="swfz tools" />
-        <meta property="og:image" content={imgUrl} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content={imgUrl} />
-      </Head>
+      <Head username={username} description={props.description} />
       <div>
-        <span className="text-4xl font-bold">
-          <a href={toGitHub} target="_blank" rel="noreferrer">
-            <span className="cursor-pointer font-bold text-blue-600 no-underline hover:underline">{username}</span>
-          </a>
-          &apos;s kusa
-        </span>
+        <Title username={username} />
 
-        <img src={imgUrl} alt="GitHub Contribution" />
-        <span>{desc}</span>
+        <img src={toGrassGraphImageUrl(username)} alt="GitHub Contribution" />
+        <span>{props.description}</span>
         {/* @ts-ignore */}
         <FetchProvider initialInputs={[[fetchFunc, username]]}>
           <Suspense fallback={<span>Loading...</span>}>
