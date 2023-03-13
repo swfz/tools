@@ -1,8 +1,8 @@
 import React from 'react';
 import { Summary } from '../types';
-import { toHtmlUrl } from '../../../lib/to-html-url';
+import { toHtmlUrl } from '../../../../lib/to-html-url';
 import { GitMergeIcon, GitPullRequestClosedIcon, GitPullRequestIcon, InfoIcon } from '@primer/octicons-react';
-import { iso8601DateExtract } from '../../../lib/iso8601-date-extract';
+import { iso8601DateExtract } from '../../../../lib/iso8601-date-extract';
 
 const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
   const totalCount = Object.values(pullRequests).reduce((acc, prs) => acc + prs.data.length, 0);

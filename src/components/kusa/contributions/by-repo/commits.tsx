@@ -1,8 +1,8 @@
 import React from 'react';
 import { CommitIcon, InfoIcon } from '@primer/octicons-react';
 import { Summary } from '../types';
-import { toHtmlUrl } from '../../../lib/to-html-url';
-import { iso8601DateExtract } from '../../../lib/iso8601-date-extract';
+import { toHtmlUrl } from '../../../../lib/to-html-url';
+import { iso8601DateExtract } from '../../../../lib/iso8601-date-extract';
 
 const Commits = ({ commits }: { commits: Summary['commits'] }) => {
   const count = Object.values(commits).reduce((acc, c) => acc + c.data.length, 0);
