@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import ContributionsByRepo from './contributions-by-repo';
-import sampleResponse from '../../../sample-github-public-event.json';
+import sampleResponse from '../../../../sample-github-public-event.json';
 
 export default {
   /* 👇 The title prop is optional.

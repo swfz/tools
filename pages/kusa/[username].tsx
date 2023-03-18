@@ -3,7 +3,7 @@ import { FetchProvider, useFetch } from 'react-hooks-fetch';
 import { Suspense } from 'react';
 import Head from '../../src/components/kusa/head';
 import Title from '../../src/components/kusa/title';
-import Contributions from '../../src/components/contributions/contributions';
+import Contributions from '../../src/components/kusa/contributions/contributions';
 import { toGrassGraphImageUrl } from '../../src/lib/to-grass-graph-image-url';
 
 type Props = {

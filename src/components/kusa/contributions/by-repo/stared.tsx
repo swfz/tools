@@ -1,22 +1,24 @@
 import React from 'react';
-import { InfoIcon, RepoIcon } from '@primer/octicons-react';
-import { toHtmlUrl } from '../../../lib/to-html-url';
+import { InfoIcon, StarFillIcon } from '@primer/octicons-react';
+import { toHtmlUrl } from '../../../../lib/to-html-url';
 import { GitHubEvent } from '../types';
 
-const Repositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
+const StaredRepositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
   return (
     <>
       <div>
         <span className="flex">
           <InfoIcon size={24} />
-          <span className="text-lg font-bold">Created {Object.keys(repositories).length} repositories</span>
+          <span className="text-lg font-bold">Stared {Object.keys(repositories).length} repositories</span>
         </span>
       </div>
       <ul className="text-sm">
         {repositories.map((repoEvent) => {
           return (
             <li key={repoEvent.repo.name}>
-              <RepoIcon size={20} />
+              <span className="text-yellow-500">
+                <StarFillIcon size={20} />
+              </span>
               <a
                 target="_blank"
                 rel="noreferrer"
@@ -33,4 +35,4 @@ const Repositories = ({ repositories }: { repositories: GitHubEvent[] }) => {
   );
 };
 
-export default Repositories;
+export default StaredRepositories;
