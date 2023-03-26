@@ -1,6 +1,6 @@
 import React from 'react';
 import { Summary } from '../types';
-import { toHtmlUrl } from '../../../../lib/to-html-url';
+import { toHtmlUrl } from '@lib/to-html-url';
 import { InfoIcon, IssueClosedIcon, IssueOpenedIcon } from '@primer/octicons-react';
 
 const Issues = ({ issues }: { issues: Summary['issues'] }) => {
