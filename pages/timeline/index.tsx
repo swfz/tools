@@ -4,7 +4,7 @@ import { useState, ChangeEvent } from 'react';
 import { v4 as uuid } from 'uuid';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { event as gaEvent } from '../../src/lib/gtag';
+import { event as gaEvent } from '@lib/gtag';
 
 dayjs.extend(isBetween);
 

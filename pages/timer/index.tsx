@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent, StrictMode } from 'react';
-import { event } from '../../src/lib/gtag';
-import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '../../src/components/icon';
+import { event } from '@lib/gtag';
+import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@components/icon';
 
 interface formValues {
   hour: number;

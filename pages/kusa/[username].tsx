@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { FetchProvider, useFetch } from 'react-hooks-fetch';
 import { Suspense } from 'react';
-import Contributions from '../../src/components/kusa/contributions/contributions';
+import Contributions from '@components/kusa/contributions/contributions';
 
 type Props = {
   username: string;
