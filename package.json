@@ -24,7 +24,7 @@
     "react-dom": "18.2.0",
     "react-hooks-fetch": "0.16.1",
     "react-use": "17.4.0",
-    "sharp": "0.31.3",
+    "sharp": "0.32.0",
     "uuid": "9.0.0"
   },
   "devDependencies": {
