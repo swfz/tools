@@ -83,7 +83,7 @@ const Contributions = (props: Props) => {
       </nav>
 
       {selectedTab == 'simple' && <ContributionsSimple result={apiResult}></ContributionsSimple>}
-      {selectedTab == 'repo' && <ContributionsByRepo result={apiResult} username={props.username}></ContributionsByRepo>}
+      {selectedTab == 'repo' && <ContributionsByRepo result={apiResult}></ContributionsByRepo>}
       {/* {selectedTab == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>} */}
     </div>
   );
