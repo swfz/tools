@@ -2,7 +2,7 @@ import React from 'react';
 import { CommitIcon, InfoIcon } from '@primer/octicons-react';
 import { Summary } from '../types';
 import { toHtmlUrl } from '@lib/to-html-url';
-import { iso8601DateExtract } from '@lib/iso8601-date-extract';
+import { iso8601DateTimeExtract } from '@lib/iso8601-date-time-extract';
 
 const Commits = ({ commits }: { commits: Summary['commits'] }) => {
   const count = Object.values(commits).reduce((acc, c) => acc + c.data.length, 0);
@@ -38,7 +38,7 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
                     <li key={commit.sha} className="flex flex-wrap odd:bg-gray-100">
                       <span className="basis-full sm:basis-1/6">
                         <CommitIcon size={20} />
-                        {iso8601DateExtract(commit.date)}{' '}
+                        {iso8601DateTimeExtract(commit.date)}{' '}
                         <a
                           target="_blank"
                           rel="noreferrer"
