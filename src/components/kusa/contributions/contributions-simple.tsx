@@ -14,7 +14,7 @@ import type {
   WatchEventPayload,
 } from './types';
 import { toHtmlUrl } from '@lib/to-html-url';
-import { iso8601DateExtract } from '@lib/iso8601-date-extract';
+import { iso8601DateTimeExtract } from '@lib/iso8601-date-time-extract';
 
 type Props = {
   result: any;
@@ -155,7 +155,7 @@ const CommitCommentEvent = ({ payload }: { payload: CommitCommentEventPayload })
       <a className="text-blue-600 hover:underline" target="_blank" rel="noreferrer" href={payload.comment.html_url}>
         {payload.comment.commit_id?.substring(0, 6)}
       </a>{' '}
-      at {payload.comment.updated_at.split('T')[1].replace('Z', '')}
+      at {iso8601DateTimeExtract(payload.comment.updated_at, 1)}
     </div>
   );
 };
@@ -180,7 +180,7 @@ const ContributionsSimple = (props: Props) => {
       {props.result.map((row: GitHubEvent) => {
         return (
           <div key={row.id} className="flex flex-wrap text-sm odd:bg-gray-100">
-            <div className="basis-1/4 sm:basis-1/12">{iso8601DateExtract(row.created_at)}</div>
+            <div className="basis-1/4 sm:basis-1/12">{iso8601DateTimeExtract(row.created_at)}</div>
             <div className="basis-3/4 text-blue-600 hover:underline sm:basis-4/12">
               {row.repo.url ? (
                 <a href={toHtmlUrl(row.repo.url)} target="_blank" rel="noreferrer">

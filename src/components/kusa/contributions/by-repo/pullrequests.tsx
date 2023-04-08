@@ -2,7 +2,7 @@ import React from 'react';
 import { Summary } from '../types';
 import { toHtmlUrl } from '@lib/to-html-url';
 import { GitMergeIcon, GitPullRequestClosedIcon, GitPullRequestIcon, InfoIcon } from '@primer/octicons-react';
-import { iso8601DateExtract } from '@lib/iso8601-date-extract';
+import { iso8601DateTimeExtract } from '@lib/iso8601-date-time-extract';
 
 const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] }) => {
   const totalCount = Object.values(pullRequests).reduce((acc, prs) => acc + prs.data.length, 0);
@@ -70,7 +70,7 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                             <GitPullRequestIcon size={20} />
                           </span>
                         )}
-                        {iso8601DateExtract(pr.pull_request.updated_at)}
+                        {iso8601DateTimeExtract(pr.pull_request.updated_at)}
                         <a
                           target="_blank"
                           rel="noreferrer"
