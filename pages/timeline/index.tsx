@@ -187,7 +187,7 @@ const Schedule: NextPage = () => {
             </tbody>
           </table>
           <button
-            className="sticky left-0 mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
+            className="sticky left-0 mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
             onClick={addItem}
           >
             +

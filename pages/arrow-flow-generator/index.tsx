@@ -355,14 +355,14 @@ const ArrowFlowGenerator: NextPage = () => {
         <div>
           <div className="my-3">
             <button
-              className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
+              className="mx-1 items-center rounded-sm border border-gray-400 bg-white px-4 py-2 text-gray-800 hover:bg-gray-100"
               onClick={handleAddButtonClick}
             >
               +Add Item
             </button>
 
             <button
-              className="mx-1 items-center rounded-sm border border-gray-400 bg-white py-2 px-4 text-gray-800 hover:bg-gray-100"
+              className="mx-1 items-center rounded-sm border border-gray-400 bg-white px-4 py-2 text-gray-800 hover:bg-gray-100"
               onClick={handleDownload}
             >
               Download
