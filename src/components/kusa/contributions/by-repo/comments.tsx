@@ -100,7 +100,7 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
                   const title = withIssue(c) ? c.issue.title : withPr(c) ? c.pull_request.title : 'Commented';
 
                   return (
-                    <li key={htmlUrl} className="flwx-wrap flex odd:bg-gray-100">
+                    <li key={htmlUrl} className="flex flex-wrap odd:bg-gray-100">
                       <span className="ml-3">
                         <CommentIcon size={20} />
                         {iso8601DateTimeExtract(updatedAt)}
