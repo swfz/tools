@@ -172,7 +172,7 @@ const ContributionsSimple = (props: Props) => {
       <div className="flex justify-start sm:justify-end">
         <button
           onClick={handleSummaryOpen}
-          className="basis-full rounded border border-gray-400 bg-white py-1 px-2 font-semibold text-gray-800 shadow hover:bg-gray-100 sm:basis-1/2"
+          className="basis-full rounded border border-gray-400 bg-white px-2 py-1 font-semibold text-gray-800 shadow hover:bg-gray-100 sm:basis-1/2"
         >
           {open ? 'Fold up' : 'Open'} All Details
         </button>

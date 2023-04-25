@@ -263,14 +263,14 @@ const Timer: NextPage = () => {
               </div>
               <div className="flex flex-row p-1">
                 <button
-                  className="mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={startTimer}
                 >
                   <PlayIcon />
                   Start
                 </button>
                 <button
-                  className="mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={pauseTimer}
                 >
                   {paused ? (
@@ -286,7 +286,7 @@ const Timer: NextPage = () => {
                   )}
                 </button>
                 <button
-                  className="mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={resetTimer}
                 >
                   <StopIcon />
@@ -295,7 +295,7 @@ const Timer: NextPage = () => {
               </div>
               <div className="p-1">
                 <button
-                  className="mx-1 flex items-center rounded border border-gray-400 bg-white py-2 px-4 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={createVideo}
                 >
                   <DuplicateIcon />

@@ -66,13 +66,13 @@ const Contributions = (props: Props) => {
           return (
             <div key={tab.name}>
               {selectedTab == tab.name ? (
-                <button className="border-b-2 border-blue-500 py-4 px-6 font-medium text-blue-500 hover:text-blue-500 focus:outline-none">
+                <button className="border-b-2 border-blue-500 px-6 py-4 font-medium text-blue-500 hover:text-blue-500 focus:outline-none">
                   {tab.displayName}
                 </button>
               ) : (
                 <button
                   onClick={() => setSelectedTab(tab.name)}
-                  className="py-4 px-6 text-gray-600 hover:text-blue-500 focus:outline-none"
+                  className="px-6 py-4 text-gray-600 hover:text-blue-500 focus:outline-none"
                 >
                   {tab.displayName}
                 </button>
