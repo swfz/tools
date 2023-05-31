@@ -39,7 +39,7 @@
     "@storybook/react": "7.0.18",
     "@storybook/testing-library": "0.1.0",
     "@types/gtag.js": "0.0.12",
-    "@types/jest": "29.5.1",
+    "@types/jest": "29.5.2",
     "@types/node": "18.16.16",
     "@types/react": "18.2.6",
     "@types/uuid": "9.0.1",
