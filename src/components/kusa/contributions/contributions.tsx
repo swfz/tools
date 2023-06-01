@@ -42,7 +42,7 @@ const Contributions = (props: Props) => {
     } else {
       setApiResult(props.result);
     }
-  }, [exclude]);
+  }, [exclude, props.result]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setExclude(e.target.checked);
