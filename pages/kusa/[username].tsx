@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { FetchProvider, useFetch } from 'react-hooks-fetch';
-import { Suspense } from 'react';
+import { useEffect } from 'react';
+import { useInfiniteQuery, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Contributions from '@components/kusa/contributions/contributions';
+
+const queryClient = new QueryClient();
 
 type Props = {
   username: string;
@@ -34,17 +36,52 @@ export const getServerSideProps = async (
   return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak } };
 };
 
-const fetchFunc = async (username: string) => {
-  const res = await fetch(`https://api.github.com/users/${username}/events?per_page=100&page=1`);
-  const data = await res.json();
+const createQueryFn = (username: string) => {
+  const fetchEvents = async ({ pageParam = 1 }) => {
+    const res = await fetch(`https://api.github.com/users/${username}/events?per_page=100&page=${pageParam}`);
+    return res.json();
+  };
 
-  return data;
+  return fetchEvents;
 };
 
 const Detail = ({ username }: { username: string }) => {
-  const { result, refetch } = useFetch(fetchFunc);
+  const queryClient = useQueryClient();
+  const queryFn = createQueryFn(username);
 
-  return <Contributions result={result} username={username}></Contributions>;
+  const { status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    ['events'],
+    queryFn,
+    {
+      getNextPageParam: (lastPage, allPages) => (allPages.length >= 3 ? undefined : allPages.length + 1),
+    },
+  );
+
+  useEffect(() => {
+    fetchNextPage();
+  }, [fetchNextPage]);
+
+  return status === 'loading' ? (
+    <div>Loading...</div>
+  ) : status === 'error' ? (
+    <div>Eerror</div>
+  ) : (
+    <>
+      <div className="flex justify-start sm:justify-end">
+      <button
+        className="basis-full rounded border border-gray-400 bg-white px-2 py-1 font-semibold text-gray-800 shadow hover:bg-gray-100 disabled:border-gray-300 disabled:bg-white disabled:text-gray-300 sm:basis-1/6"
+        onClick={() => {
+          fetchNextPage();
+        }}
+        disabled={!hasNextPage}
+      >
+        Load More
+      </button>
+      </div>
+
+      <Contributions result={data.pages.flat()} username={username}></Contributions>
+    </>
+  );
 };
 
 const Kusa = (props: Props) => {
@@ -79,13 +116,10 @@ const Kusa = (props: Props) => {
         </span>
 
         <img src={imgUrl} alt="GitHub Contribution" />
-        <span>{desc}</span>
-        {/* @ts-ignore */}
-        <FetchProvider initialInputs={[[fetchFunc, username]]}>
-          <Suspense fallback={<span>Loading...</span>}>
-            <Detail username={username}></Detail>
-          </Suspense>
-        </FetchProvider>
+        <div>{desc}</div>
+        <QueryClientProvider client={queryClient}>
+          <Detail username={username}></Detail>
+        </QueryClientProvider>
       </div>
     </>
   );
