@@ -3417,10 +3417,10 @@
     tiny-glob "^0.2.9"
     tslib "^2.4.0"
 
-"@primer/octicons-react@19.2.0":
-  version "19.2.0"
-  resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-19.2.0.tgz#65ea3af936c5e4bc736fb0ae1888b41d5360ba4c"
-  integrity sha512-cqjqCmrMrFr2TUVXcUmpjfMPAxK4XA2PizU8preVtLnxi2LMX8cDBSQ0RaAAsXFSvtoC5G1xT20oxUn32P+cUA==
+"@primer/octicons-react@19.3.0":
+  version "19.3.0"
+  resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-19.3.0.tgz#5a420c40145dbecbc0492da8544571d75aa28517"
+  integrity sha512-LCCer1Roc5WGYy5FZcByniuUOJKla7i+9TaPeL95G+KIXhisuyWbTIy5DbiW/EWYMWvfCUQe6u71zZKVNeHjyg==
 
 "@resvg/resvg-wasm@2.4.1":
   version "2.4.1"
