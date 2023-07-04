@@ -31,7 +31,9 @@ export const getServerSideProps = async (
     .map((c: { contributionCount: number }) => c.contributionCount);
 
   const [todayContributionCount, yesterdayContributionCount] = contributions;
-  const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
+
+  const streak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
+  const currentStreak = streak < 0 ? '365+' : streak;
 
   return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak } };
 };
