@@ -32,11 +32,14 @@ const uniqueAndSortCommits = (commits: Summary['commits']): Summary['commits'] =
     return Array.from(commitMap.values());
   };
 
-  return Object.entries(commits).reduce((acc, [repoName, commitsByRepo]) => {
-    const uniqueCommits = uniqByShaAndLatest(commitsByRepo.data);
+  return Object.entries(commits).reduce(
+    (acc, [repoName, commitsByRepo]) => {
+      const uniqueCommits = uniqByShaAndLatest(commitsByRepo.data);
 
-    return { ...acc, [repoName]: { ...commitsByRepo, data: uniqueCommits.reverse() } };
-  }, {} as Summary['commits']);
+      return { ...acc, [repoName]: { ...commitsByRepo, data: uniqueCommits.reverse() } };
+    },
+    {} as Summary['commits'],
+  );
 };
 
 const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summary['pullRequests'] => {
@@ -54,14 +57,17 @@ const ignoreDuplicatePullRequest = (pullRequests: Summary['pullRequests']): Summ
     return Array.from(prMap.values());
   };
 
-  return Object.entries(pullRequests).reduce((acc, [repoName, prsByRepo]) => {
-    const filteredPrs = uniqByNumberAndLatest(prsByRepo.data);
-    const count = filteredPrs.length;
-    const merged = filteredPrs.reduce((acc, pr) => acc + (pr.pull_request.merged ? 1 : 0), 0);
-    const open = count - merged;
+  return Object.entries(pullRequests).reduce(
+    (acc, [repoName, prsByRepo]) => {
+      const filteredPrs = uniqByNumberAndLatest(prsByRepo.data);
+      const count = filteredPrs.length;
+      const merged = filteredPrs.reduce((acc, pr) => acc + (pr.pull_request.merged ? 1 : 0), 0);
+      const open = count - merged;
 
-    return { ...acc, [repoName]: { ...prsByRepo, data: filteredPrs.reverse(), stats: { count, merged, open } } };
-  }, {} as Summary['pullRequests']);
+      return { ...acc, [repoName]: { ...prsByRepo, data: filteredPrs.reverse(), stats: { count, merged, open } } };
+    },
+    {} as Summary['pullRequests'],
+  );
 };
 
 const aggregateIssues = (issues: Summary['issues']): Summary['issues'] => {
@@ -77,14 +83,17 @@ const aggregateIssues = (issues: Summary['issues']): Summary['issues'] => {
     return Array.from(issueMap.values());
   };
 
-  return Object.entries(issues).reduce((acc, [repoName, issuesByRepo]) => {
-    const filteredIssues = uniqByNumberAndLatest(issuesByRepo.data);
+  return Object.entries(issues).reduce(
+    (acc, [repoName, issuesByRepo]) => {
+      const filteredIssues = uniqByNumberAndLatest(issuesByRepo.data);
 
-    const closed = filteredIssues.filter((i) => i.issue.state === 'closed').length;
-    const open = filteredIssues.filter((i) => i.issue.state === 'open').length;
+      const closed = filteredIssues.filter((i) => i.issue.state === 'closed').length;
+      const open = filteredIssues.filter((i) => i.issue.state === 'open').length;
 
-    return { ...acc, [repoName]: { ...issuesByRepo, data: filteredIssues, stats: { closed, open } } };
-  }, {} as Summary['issues']);
+      return { ...acc, [repoName]: { ...issuesByRepo, data: filteredIssues, stats: { closed, open } } };
+    },
+    {} as Summary['issues'],
+  );
 };
 
 const ContributionsByRepo = (props: Props) => {
