@@ -84,15 +84,15 @@ const Detail = ({ username }: { username: string }) => {
   ) : (
     <>
       <div className="flex justify-start sm:justify-end">
-      <button
-        className="basis-full rounded border border-gray-400 bg-white px-2 py-1 font-semibold text-gray-800 shadow hover:bg-gray-100 disabled:border-gray-300 disabled:bg-white disabled:text-gray-300 sm:basis-1/6"
-        onClick={() => {
-          fetchNextPage();
-        }}
-        disabled={!hasNextPage}
-      >
-        Load More
-      </button>
+        <button
+          className="basis-full rounded border border-gray-400 bg-white px-2 py-1 font-semibold text-gray-800 shadow hover:bg-gray-100 disabled:border-gray-300 disabled:bg-white disabled:text-gray-300 sm:basis-1/6"
+          onClick={() => {
+            fetchNextPage();
+          }}
+          disabled={!hasNextPage}
+        >
+          Load More
+        </button>
       </div>
 
       <Contributions result={data.pages.flat()} username={username}></Contributions>
