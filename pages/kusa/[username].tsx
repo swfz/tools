@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import dayjs from 'dayjs';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { useEffect } from 'react';
 import { useInfiniteQuery, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,6 +14,27 @@ type Props = {
   currentStreak: number;
 };
 
+const fetchContribution = async (username: string, to: string): Promise<number[]> => {
+  console.log(`https://forked-gh-contributions.deno.dev/${username}.json?to=${to}`);
+
+  const res = await fetch(`https://forked-gh-contributions.deno.dev/${username}.json?to=${to}`);
+  const json = await res.json();
+
+  const contributions = json.contributions
+    .flat()
+    .reverse()
+    .map((c: { contributionCount: number }) => c.contributionCount);
+
+  // slice(1) because the first element is today's contribution count
+  if (contributions.slice(1).every((c: number) => c !== 0)) {
+    const oldestDate = dayjs(json.contributions.flat()[0].date).subtract(1, 'days').format('YYYY-MM-DD');
+
+    return [...contributions, ...(await fetchContribution(username, oldestDate))];
+  }
+
+  return contributions;
+};
+
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<Props>> => {
@@ -22,18 +44,10 @@ export const getServerSideProps = async (
     return { notFound: true };
   }
 
-  const res = await fetch(`https://github-contributions-api.deno.dev/${username}.json`);
-  const json = await res.json();
-
-  const contributions = json.contributions
-    .flat()
-    .reverse()
-    .map((c: { contributionCount: number }) => c.contributionCount);
-
+  const contributions = await fetchContribution(username, '');
   const [todayContributionCount, yesterdayContributionCount] = contributions;
 
-  const streak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
-  const currentStreak = streak < 0 ? '365+' : streak;
+  const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
 
   return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak } };
 };
