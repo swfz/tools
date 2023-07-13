@@ -41,7 +41,7 @@
     "@types/gtag.js": "0.0.12",
     "@types/jest": "29.5.3",
     "@types/node": "18.16.19",
-    "@types/react": "18.2.14",
+    "@types/react": "18.2.15",
     "@types/uuid": "9.0.2",
     "autoprefixer": "10.4.14",
     "babel-loader": "9.1.3",
