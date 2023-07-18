@@ -102,7 +102,7 @@ const Detail = ({ username }: { username: string }) => {
 
 const Kusa = (props: Props) => {
   const username = props.username;
-  const imgUrl = `https://ksua-image.deno.dev/?user=${username}`;
+  const imgUrl = `https://kusa-image.deno.dev/?user=${username}`;
   const siteUrl = `https://tools.swfz.io/kusa/${username}`;
   const title = `GitHub Contributions(kusa) in ${username}`;
   const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}, Streak: ${props.currentStreak}`;
