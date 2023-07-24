@@ -15,9 +15,7 @@ type Props = {
 };
 
 const fetchContribution = async (username: string, to: string): Promise<number[]> => {
-  console.log(`https://forked-gh-contributions.deno.dev/${username}.json?to=${to}`);
-
-  const res = await fetch(`https://forked-gh-contributions.deno.dev/${username}.json?to=${to}`);
+  const res = await fetch(`https://github-contributions-api.deno.dev/${username}.json?to=${to}`);
   const json = await res.json();
 
   const contributions = json.contributions
