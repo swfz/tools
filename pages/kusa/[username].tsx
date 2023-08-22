@@ -12,6 +12,7 @@ type Props = {
   todayContributionCount: number;
   yesterdayContributionCount: number;
   currentStreak: number;
+  coverage: number;
 };
 
 const fetchContribution = async (username: string, to: string): Promise<number[]> => {
@@ -46,8 +47,9 @@ export const getServerSideProps = async (
   const [todayContributionCount, yesterdayContributionCount] = contributions;
 
   const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
+  const coverage = Math.floor((contributions.slice(0, 365).filter((c: number) => c > 0).length / 365) * 100);
 
-  return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak } };
+  return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak, coverage } };
 };
 
 const createQueryFn = (username: string) => {
@@ -103,7 +105,7 @@ const Kusa = (props: Props) => {
   const imgUrl = `https://kusa-image.deno.dev/?user=${username}`;
   const siteUrl = `https://tools.swfz.io/kusa/${username}`;
   const title = `GitHub Contributions(kusa) in ${username}`;
-  const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}, Streak: ${props.currentStreak}`;
+  const desc = `Today: ${props.todayContributionCount}, Yesterday: ${props.yesterdayContributionCount}, Streak: ${props.currentStreak}, Coverage: ${props.coverage}%`;
   const toGitHub = `https://github.com/${username}`;
 
   return (
