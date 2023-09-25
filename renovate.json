@@ -1,9 +1,11 @@
 {
   "extends": ["config:base"],
+  "labels": ["renovate"],
   "packageRules": [
     {
       "matchUpdateTypes": ["patch"],
       "matchCurrentVersion": "!/^0/",
+      "labels": ["renovate", "automerge"]
       "automerge": true
     }
   ]
