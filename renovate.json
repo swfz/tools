@@ -5,7 +5,7 @@
     {
       "matchUpdateTypes": ["patch"],
       "matchCurrentVersion": "!/^0/",
-      "labels": ["renovate", "automerge"]
+      "labels": ["renovate", "automerge"],
       "automerge": true
     }
   ]
