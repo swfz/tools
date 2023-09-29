@@ -26,7 +26,7 @@ const Timer: NextPage = () => {
   const createDocumentPinp = async () => {
     const content = document.querySelector('#dpinp');
     // @ts-ignore
-    const pipWindow = await documentPictureInPicture.requestWindow();
+    const pipWindow = await documentPictureInPicture.requestWindow({ copyStyleSheets: true });
     pipWindow.document.body.append(content);
 
     pipWindow.addEventListener('pagehide', (event: any) => {
