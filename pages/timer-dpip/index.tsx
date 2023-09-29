@@ -25,10 +25,11 @@ const Timer: NextPage = () => {
 
   const createDocumentPinp = async () => {
     const content = document.querySelector('#dpinp');
+    // @ts-ignore
     const pipWindow = await documentPictureInPicture.requestWindow();
     pipWindow.document.body.append(content);
 
-    pipWindow.addEventListener('pagehide', (event) => {
+    pipWindow.addEventListener('pagehide', (event: any) => {
       console.log('PiP window closed.');
       const container = document.querySelector('#container');
       if (container) {
