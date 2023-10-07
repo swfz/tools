@@ -41,7 +41,7 @@
     "@storybook/testing-library": "0.2.2",
     "@types/gtag.js": "0.0.14",
     "@types/jest": "29.5.5",
-    "@types/node": "18.18.3",
+    "@types/node": "18.18.4",
     "@types/react": "18.2.25",
     "@types/uuid": "9.0.4",
     "autoprefixer": "10.4.16",
