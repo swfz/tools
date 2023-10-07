@@ -39,7 +39,7 @@
     "@storybook/manager-webpack5": "6.5.16",
     "@storybook/react": "7.4.6",
     "@storybook/testing-library": "0.2.2",
-    "@types/gtag.js": "0.0.14",
+    "@types/gtag.js": "0.0.16",
     "@types/jest": "29.5.5",
     "@types/node": "18.18.4",
     "@types/react": "18.2.25",
