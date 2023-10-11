@@ -13,8 +13,8 @@ import type {
   PushEventPayload,
   WatchEventPayload,
 } from './types';
-import { toHtmlUrl } from '@lib/to-html-url';
-import { iso8601DateTimeExtract } from '@lib/iso8601-date-time-extract';
+import { toHtmlUrl } from '@/lib/to-html-url';
+import { iso8601DateTimeExtract } from '@/lib/iso8601-date-time-extract';
 
 type Props = {
   result: any;
