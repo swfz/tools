@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect } from 'react';
 
-import { existsGaId, pageview, GA_ID } from '@lib/gtag';
+import { existsGaId, pageview, GA_ID } from '@/lib/gtag';
 
 export const usePageView = () => {
   const router = useRouter();

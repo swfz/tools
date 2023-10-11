@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { useEffect } from 'react';
 import { useInfiniteQuery, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Contributions from '@components/kusa/contributions/contributions';
+import Contributions from '@/components/kusa/contributions/contributions';
 
 const queryClient = new QueryClient();
 

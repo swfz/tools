@@ -1,5 +1,5 @@
 import React from 'react';
-import { toHtmlUrl } from '@lib/to-html-url';
+import { toHtmlUrl } from '@/lib/to-html-url';
 import {
   PullRequestReviewCommentEventPayload,
   IssueCommentEventPayload,
@@ -16,7 +16,7 @@ import {
   IssueClosedIcon,
   IssueOpenedIcon,
 } from '@primer/octicons-react';
-import { iso8601DateTimeExtract } from '@lib/iso8601-date-time-extract';
+import { iso8601DateTimeExtract } from '@/lib/iso8601-date-time-extract';
 
 const withIssue = (
   value:
