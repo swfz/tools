@@ -12,11 +12,13 @@ jobs:
       - uses: actions/setup-node@v3.8.1
         with:
           node-version-file: .node-version
-          cache: yarn
+          cache: pnpm
+      - uses: pnpm/action-setup@v2.4.0
+        with:
+          run_install: true
       - name: eslint check
         run: |
-          yarn
-          yarn lint
+          pnpm lint
 
   prettier:
     runs-on: ubuntu-latest
@@ -26,11 +28,13 @@ jobs:
       - uses: actions/setup-node@v3.8.1
         with:
           node-version-file: .node-version
-          cache: yarn
+          cache: pnpm
+      - uses: pnpm/action-setup@v2.4.0
+        with:
+          run_install: true
       - name: prettier check
         run: |
-          yarn
-          yarn lint:format
+          pnpm lint:format
 
   slack-notify:
     if: always()
