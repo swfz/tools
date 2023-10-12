@@ -9,13 +9,13 @@ jobs:
     name: run eslint
     steps:
       - uses: actions/checkout@v4.1.0
+      - uses: pnpm/action-setup@v2.4.0
+        with:
+          run_install: true
       - uses: actions/setup-node@v3.8.1
         with:
           node-version-file: .node-version
           cache: pnpm
-      - uses: pnpm/action-setup@v2.4.0
-        with:
-          run_install: true
       - name: eslint check
         run: |
           pnpm lint
@@ -25,13 +25,13 @@ jobs:
     name: run prettier check
     steps:
       - uses: actions/checkout@v4.1.0
+      - uses: pnpm/action-setup@v2.4.0
+        with:
+          run_install: true
       - uses: actions/setup-node@v3.8.1
         with:
           node-version-file: .node-version
           cache: pnpm
-      - uses: pnpm/action-setup@v2.4.0
-        with:
-          run_install: true
       - name: prettier check
         run: |
           pnpm lint:format
