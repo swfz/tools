@@ -15,8 +15,8 @@ dependencies:
     specifier: ^4.29.12
     version: 4.36.1(react-dom@18.2.0)(react@18.2.0)
   '@vercel/og':
-    specifier: 0.5.19
-    version: 0.5.19
+    specifier: 0.5.20
+    version: 0.5.20
   dayjs:
     specifier: 1.11.10
     version: 1.11.10
@@ -2799,8 +2799,8 @@ packages:
       '@babel/runtime': 7.23.2
     dev: true
 
-  /@resvg/resvg-wasm@2.5.0:
-    resolution: {integrity: sha512-jM0zG54ykoGFiMMVvRxzHFVXhxCdQTGp+okLCWGIXt8bN2GLlsWpjvyU0vZJWkTsd+qLmy2dmYcPU02zC0IVMQ==}
+  /@resvg/resvg-wasm@2.6.0:
+    resolution: {integrity: sha512-iDkBM6Ivex8nULtBu8cX670/lfsGxq8U1cuqE+qS9xFpPQP1enPdVm/33Kq3+B+bAldA+AHNZnCgpmlHo/fZrQ==}
     engines: {node: '>= 10'}
     dev: false
 
@@ -4855,11 +4855,11 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@vercel/og@0.5.19:
-    resolution: {integrity: sha512-U/Oi+5/eCZ1YPZxSObSoiyDqqZnNJIjCd6qs9BlCHscrwP2OTfbs88hkT5qMT3HanK1lDFquONjlnrE696fgxA==}
+  /@vercel/og@0.5.20:
+    resolution: {integrity: sha512-zi+ZXSx/peXA+1lq7s/5Vzmm/TTfTSf/5P1qNYnh42+7X+pZmahWoXt0i7SWiq3WagfsNUNA4hUDapDiHRoXqA==}
     engines: {node: '>=16'}
     dependencies:
-      '@resvg/resvg-wasm': 2.5.0
+      '@resvg/resvg-wasm': 2.6.0
       satori: 0.10.9
       yoga-wasm-web: 0.3.3
     dev: false
