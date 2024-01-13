@@ -33,8 +33,8 @@ dependencies:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
   react-use:
-    specifier: 17.4.2
-    version: 17.4.2(react-dom@18.2.0)(react@18.2.0)
+    specifier: 17.4.3
+    version: 17.4.3(react-dom@18.2.0)(react@18.2.0)
   sharp:
     specifier: 0.33.1
     version: 0.33.1
@@ -11910,8 +11910,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /react-use@17.4.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-1jPtmWLD8OJJNYCdYLJEH/HM+bPDfJuyGwCYeJFgPmWY8ttwpgZnW5QnzgM55CYUByUiTjHxsGOnEpLl6yQaoQ==}
+  /react-use@17.4.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-05Oyuwn4ZccdzLD4ttLbMe8TkobdKpOj7YCFE9VhVpbXrTWZpvCcMyroRw/Banh1RIcQRcM06tfzPpY5D9sTsQ==}
     peerDependencies:
       react: '*'
       react-dom: '*'
