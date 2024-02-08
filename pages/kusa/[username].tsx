@@ -9,14 +9,20 @@ const queryClient = new QueryClient();
 
 type Props = {
   username: string;
-  todayContributionCount: number;
-  yesterdayContributionCount: number;
-  currentStreak: number;
-  coverage: number;
+  todayContributionCount: number | string;
+  yesterdayContributionCount: number | string;
+  currentStreak: number | string;
+  coverage: number | string;
 };
 
-const fetchContribution = async (username: string, to: string): Promise<number[]> => {
+const fetchContribution = async (username: string, to: string): Promise<(number | null)[]> => {
   const res = await fetch(`https://github-contributions-api.deno.dev/${username}.json?to=${to}`);
+
+  if (res.status !== 200) {
+    console.log(await res.text());
+    return [null, null];
+  }
+
   const json = await res.json();
 
   const contributions = json.contributions
@@ -46,8 +52,26 @@ export const getServerSideProps = async (
   const contributions = await fetchContribution(username, '');
   const [todayContributionCount, yesterdayContributionCount] = contributions;
 
+  if (
+    todayContributionCount === null ||
+    yesterdayContributionCount === null ||
+    contributions.some((c: number | null) => c === null)
+  ) {
+    return {
+      props: {
+        username,
+        todayContributionCount: '-',
+        yesterdayContributionCount: '-',
+        currentStreak: '-',
+        coverage: '-',
+      },
+    };
+  }
+
   const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
-  const coverage = Math.floor((contributions.slice(0, 365).filter((c: number) => c > 0).length / 365) * 100);
+  const coverage = Math.floor(
+    (contributions.slice(0, 365).filter((c: number | null) => c !== null && c > 0).length / 365) * 100,
+  );
 
   return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak, coverage } };
 };
