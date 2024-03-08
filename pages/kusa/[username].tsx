@@ -15,8 +15,17 @@ type Props = {
   coverage: number | string;
 };
 
-const fetchContribution = async (username: string, to: string): Promise<(number | null)[]> => {
-  const res = await fetch(`https://github-contributions-api.deno.dev/${username}.json?to=${to}`);
+const contributionApiUrl = 'https://github-contributions-api.deno.dev';
+
+const fetchContribution = async (url: string, username: string, to: string): Promise<(number | null)[]> => {
+  const res = await fetch(`${url}/${username}.json?to=${to}`);
+
+  if (res.status !== 200 && url === contributionApiUrl) {
+    console.log('Failed fetch. Retry with another API');
+    console.log(await res.text());
+
+    return await fetchContribution('https://forked-gh-contributions-wt0jrc54gcqt.deno.dev', username, to);
+  }
 
   if (res.status !== 200) {
     console.log(await res.text());
@@ -34,7 +43,7 @@ const fetchContribution = async (username: string, to: string): Promise<(number 
   if (contributions.slice(1).every((c: number) => c !== 0)) {
     const oldestDate = dayjs(json.contributions.flat()[0].date).subtract(1, 'days').format('YYYY-MM-DD');
 
-    return [...contributions, ...(await fetchContribution(username, oldestDate))];
+    return [...contributions, ...(await fetchContribution(url, username, oldestDate))];
   }
 
   return contributions;
@@ -49,7 +58,7 @@ export const getServerSideProps = async (
     return { notFound: true };
   }
 
-  const contributions = await fetchContribution(username, '');
+  const contributions = await fetchContribution(contributionApiUrl, username, '');
   const [todayContributionCount, yesterdayContributionCount] = contributions;
 
   if (
