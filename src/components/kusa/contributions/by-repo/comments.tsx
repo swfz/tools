@@ -93,10 +93,10 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
                   const numberOrId = withCommit(c)
                     ? c.comment.commit_id?.substring(0, 6)
                     : withIssue(c)
-                    ? `#${c.issue.number}`
-                    : withPr(c)
-                    ? `#${c.pull_request.number}`
-                    : '';
+                      ? `#${c.issue.number}`
+                      : withPr(c)
+                        ? `#${c.pull_request.number}`
+                        : '';
                   const title = withIssue(c) ? c.issue.title : withPr(c) ? c.pull_request.title : 'Commented';
 
                   return (
