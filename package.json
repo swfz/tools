@@ -62,7 +62,7 @@
     "ts-jest": "29.1.2",
     "typescript": "5.4.3"
   },
-  "packageManager": "pnpm@8.15.5",
+  "packageManager": "pnpm@8.15.6",
   "prettier": {
     "trailingComma": "all",
     "singleQuote": true,
