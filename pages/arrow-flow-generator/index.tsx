@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { v4 as uuid } from 'uuid';
-import { MouseEvent, useState, useRef } from 'react';
+import { MouseEvent, useState, useRef, forwardRef, ForwardedRef } from 'react';
 import Head from 'next/head';
 
 interface Item {
@@ -189,19 +189,26 @@ const InputOptions = ({
   );
 };
 
-const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
+interface ArrowFlowProps {
+  options: Options;
+  items: Item[];
+}
+
+const ArrowFlow = forwardRef(function ArrowFlow(props: ArrowFlowProps, ref: ForwardedRef<SVGSVGElement>) {
   const leftTopPadding = 10;
-  const topSideWidth = options.itemWidth;
+  const topSideWidth = props.options.itemWidth;
   const protrusionWidth = 30;
-  const itemHeight = options.itemHeight;
-  const space = options.space;
-  const itemWidth = options.itemWidth + space;
+  const itemHeight = props.options.itemHeight;
+  const space = props.options.space;
+  const itemWidth = props.options.itemWidth + space;
+
+  const svgRef = useRef<SVGSVGElement>(null);
 
   const hrefFromOptions = (index: number, options: Options): '#first' | '#middle' | '#last' => {
     if (index === 0) {
       return '#first';
     }
-    if (index === items.length - 1 && !options.lastIsArrow) {
+    if (index === props.items.length - 1 && !options.lastIsArrow) {
       return '#last';
     }
 
@@ -210,11 +217,12 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
 
   return (
     <svg
+      ref={ref}
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={options.width}
-      height={options.height}
+      width={props.options.width}
+      height={props.options.height}
     >
       <defs>
         <polygon
@@ -236,10 +244,10 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
           },${itemHeight} 0,${itemHeight} ${protrusionWidth},${itemHeight / 2}`}
         />
       </defs>
-      {items.map((item, i) => {
+      {props.items.map((item, i) => {
         const x = leftTopPadding + i * itemWidth;
         const y = leftTopPadding;
-        const href = hrefFromOptions(i, options);
+        const href = hrefFromOptions(i, props.options);
         return (
           <use
             key={item.id}
@@ -253,7 +261,7 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
         );
       })}
 
-      {items.map((item, i) => {
+      {props.items.map((item, i) => {
         const x = i === 0 ? leftTopPadding + 10 + i * itemWidth : leftTopPadding + 10 + i * itemWidth + protrusionWidth;
         const y = leftTopPadding + itemHeight / 2 + item.textSize / 4;
         return (
@@ -264,7 +272,7 @@ const ArrowFlow = ({ options, items }: { options: Options; items: Item[] }) => {
       })}
     </svg>
   );
-};
+});
 
 const ArrowFlowGenerator: NextPage = () => {
   const generateDefaultItem = () => ({
@@ -280,7 +288,7 @@ const ArrowFlowGenerator: NextPage = () => {
   const initialItems = [...Array(3)].map(() => generateDefaultItem());
   const [items, setItems] = useState<Item[]>(initialItems);
   const [batch, setBatch] = useState<Item>(generateDefaultItem());
-  const svgRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const [options, setOptions] = useState<Options>({
     width: 800,
     height: 300,
@@ -327,9 +335,9 @@ const ArrowFlowGenerator: NextPage = () => {
     };
   };
 
-  const handleDownload = () => {
+  const handleSvgDownload = () => {
     if (svgRef.current) {
-      const buffer = Buffer.from(svgRef.current?.innerHTML);
+      const buffer = Buffer.from(svgRef.current.outerHTML, 'utf-8');
       const blob = new Blob([buffer], { type: 'image/svg+xml' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -339,6 +347,34 @@ const ArrowFlowGenerator: NextPage = () => {
       a.remove();
     }
   };
+
+  const handlePngDownload = () => {
+    if (svgRef.current) {
+      const svgData = new XMLSerializer().serializeToString(svgRef.current);
+      const canvas = document.createElement('canvas');
+      canvas.width = svgRef.current.clientWidth;
+      canvas.height = svgRef.current.clientHeight;
+
+      const ctx = canvas.getContext('2d');
+      const image = new Image();
+
+      if (ctx && image) {
+        const a = document.createElement('a');
+        const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+
+        image.onload = () => {
+          ctx.drawImage(image, 0, 0);
+          a.href = canvas.toDataURL('image/png');
+
+          a.download = 'arrow-flow.png';
+          a.click();
+          a.remove();
+        };
+        image.src = URL.createObjectURL(blob);
+      }
+    }
+  };
+
   return (
     <>
       <Head>
@@ -363,9 +399,16 @@ const ArrowFlowGenerator: NextPage = () => {
 
             <button
               className="mx-1 items-center rounded-sm border border-gray-400 bg-white px-4 py-2 text-gray-800 hover:bg-gray-100"
-              onClick={handleDownload}
+              onClick={handleSvgDownload}
             >
-              Download
+              Download(SVG)
+            </button>
+
+            <button
+              className="mx-1 items-center rounded-sm border border-gray-400 bg-white px-4 py-2 text-gray-800 hover:bg-gray-100"
+              onClick={handlePngDownload}
+            >
+              Download(PNG)
             </button>
           </div>
 
@@ -379,8 +422,8 @@ const ArrowFlowGenerator: NextPage = () => {
             return <InputItem key={item.id} item={item} handleInput={handleInput}></InputItem>;
           })}
 
-          <div ref={svgRef} className="border">
-            <ArrowFlow options={options} items={items}></ArrowFlow>
+          <div className="border">
+            <ArrowFlow options={options} items={items} ref={svgRef}></ArrowFlow>
           </div>
         </div>
       </div>
