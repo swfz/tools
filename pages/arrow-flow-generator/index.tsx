@@ -16,6 +16,7 @@ interface Options {
   width: number;
   height: number;
   lastIsArrow: boolean;
+  firstIsArrow: boolean;
   space: number;
   itemHeight: number;
   itemWidth: number;
@@ -177,6 +178,15 @@ const InputOptions = ({
         </div>
 
         <div className="flex flex-row">
+          <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="first-is-arrow">
+            First Item is Arrow Shape:
+          </label>
+          <span className="basis-3/4">
+            <input type="checkbox" id="first-is-arrow" onChange={handleOptions('firstIsArrow')} className="mt-1" />
+          </span>
+        </div>
+
+        <div className="flex flex-row">
           <label className="ml-2 basis-1/4 font-bold text-gray-700" htmlFor="last-is-arrow">
             Last Item is Arrow Shape:
           </label>
@@ -205,7 +215,7 @@ const ArrowFlow = forwardRef(function ArrowFlow(props: ArrowFlowProps, ref: Forw
   const svgRef = useRef<SVGSVGElement>(null);
 
   const hrefFromOptions = (index: number, options: Options): '#first' | '#middle' | '#last' => {
-    if (index === 0) {
+    if (index === 0 && !options.firstIsArrow) {
       return '#first';
     }
     if (index === props.items.length - 1 && !options.lastIsArrow) {
@@ -262,7 +272,10 @@ const ArrowFlow = forwardRef(function ArrowFlow(props: ArrowFlowProps, ref: Forw
       })}
 
       {props.items.map((item, i) => {
-        const x = i === 0 ? leftTopPadding + 10 + i * itemWidth : leftTopPadding + 10 + i * itemWidth + protrusionWidth;
+        const x =
+          i === 0 && !props.options.firstIsArrow
+            ? leftTopPadding + 10 + i * itemWidth
+            : leftTopPadding + 10 + i * itemWidth + protrusionWidth;
         const y = leftTopPadding + itemHeight / 2 + item.textSize / 4;
         return (
           <text key={item.id} x={x} y={y} fontFamily="sans-serif" fontSize={item.textSize} fill={item.textColor}>
@@ -292,6 +305,7 @@ const ArrowFlowGenerator: NextPage = () => {
   const [options, setOptions] = useState<Options>({
     width: 800,
     height: 300,
+    firstIsArrow: false,
     lastIsArrow: false,
     space: 10,
     itemHeight: 200,
@@ -330,7 +344,9 @@ const ArrowFlowGenerator: NextPage = () => {
 
   const handleOptions = (propName: string) => {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = propName === 'lastIsArrow' ? event.target.checked : parseInt(event.target.value);
+      const value = ['firstIsArrow', 'lastIsArrow'].includes(propName)
+        ? event.target.checked
+        : parseInt(event.target.value);
       setOptions((prev) => ({ ...prev, [propName]: value }));
     };
   };
