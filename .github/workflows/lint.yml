@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     name: run eslint
     steps:
-      - uses: actions/checkout@v4.1.5
+      - uses: actions/checkout@v4.1.6
       - uses: pnpm/action-setup@v4.0.0
         with:
           run_install: true
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     name: run prettier check
     steps:
-      - uses: actions/checkout@v4.1.5
+      - uses: actions/checkout@v4.1.6
       - uses: pnpm/action-setup@v4.0.0
         with:
           run_install: true
