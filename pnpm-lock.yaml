@@ -76,8 +76,8 @@ importers:
         specifier: 0.2.2
         version: 0.2.2
       '@types/gtag.js':
-        specifier: 0.0.19
-        version: 0.0.19
+        specifier: 0.0.20
+        version: 0.0.20
       '@types/jest':
         specifier: 29.5.12
         version: 29.5.12
@@ -2304,8 +2304,8 @@ packages:
   '@types/graceful-fs@4.1.7':
     resolution: {integrity: sha512-MhzcwU8aUygZroVwL2jeYk6JisJrPl/oov/gsgGCue9mkgl9wjGbzReYQClxiUgFDnib9FuHqTndccKeZKxTRw==}
 
-  '@types/gtag.js@0.0.19':
-    resolution: {integrity: sha512-KHoDzrf9rSd0mooKN576PjExpdk/XRrNu4RQnmigsScSTSidwyOUe9kDrHz9UPKjiBrx2QEsSkexbJSgS0j72w==}
+  '@types/gtag.js@0.0.20':
+    resolution: {integrity: sha512-wwAbk3SA2QeU67unN7zPxjEHmPmlXwZXZvQEpbEUQuMCRGgKyE1m6XDuTUA9b6pCGb/GqJmdfMOY5LuDjJSbbg==}
 
   '@types/html-minifier-terser@6.1.0':
     resolution: {integrity: sha512-oh/6byDPnL1zeNXFrDXFLyZjkr1MsBG667IM792caf1L2UPOOMf65NFzjUH/ltyfwjAGfs1rsX1eftK0jC/KIg==}
@@ -10578,7 +10578,7 @@ snapshots:
     dependencies:
       '@types/node': 20.14.2
 
-  '@types/gtag.js@0.0.19': {}
+  '@types/gtag.js@0.0.20': {}
 
   '@types/html-minifier-terser@6.1.0': {}
 
