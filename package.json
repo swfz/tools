@@ -26,7 +26,7 @@
     "react-dom": "18.3.1",
     "react-use": "17.5.0",
     "sharp": "0.33.4",
-    "uuid": "9.0.1"
+    "uuid": "10.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.24.7",
@@ -43,7 +43,7 @@
     "@types/jest": "29.5.12",
     "@types/node": "20.14.2",
     "@types/react": "18.3.3",
-    "@types/uuid": "9.0.8",
+    "@types/uuid": "10.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "autoprefixer": "10.4.19",
     "babel-loader": "9.1.3",
