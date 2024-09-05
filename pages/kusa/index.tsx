@@ -45,7 +45,7 @@ const KusaIndex: NextPage = () => {
             </button>
           </span>
           <p>
-            コントリビューション画像は<a href="https://grass-graph.appspot.com/">grass-graph</a>を使わせてもらっています
+            コントリビューション画像は<a href="https://kusa-image.deno.dev/">kusa-image</a>を使っています
           </p>
         </div>
       </div>
