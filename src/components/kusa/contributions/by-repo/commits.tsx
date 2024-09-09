@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommitIcon, InfoIcon } from '@primer/octicons-react';
+import { GitCommitIcon, InfoIcon } from '@primer/octicons-react';
 import { Summary } from '../types';
 import { toHtmlUrl } from '@/lib/to-html-url';
 import { iso8601DateTimeExtract } from '@/lib/iso8601-date-time-extract';
@@ -37,7 +37,7 @@ const Commits = ({ commits }: { commits: Summary['commits'] }) => {
                   return (
                     <li key={commit.sha} className="flex flex-wrap odd:bg-gray-100">
                       <span className="basis-full sm:basis-1/6">
-                        <CommitIcon size={20} />
+                        <GitCommitIcon size={20} />
                         {iso8601DateTimeExtract(commit.date)}{' '}
                         <a
                           target="_blank"

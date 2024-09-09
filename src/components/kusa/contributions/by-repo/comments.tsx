@@ -9,7 +9,7 @@ import {
 } from '../types';
 import {
   CommentIcon,
-  CommitIcon,
+  GitCommitIcon,
   GitMergeIcon,
   GitPullRequestIcon,
   InfoIcon,
@@ -123,7 +123,7 @@ const Comments = ({ comments }: { comments: Summary['comments'] }) => {
                             </span>
                           ) : (
                             <span className="text-gray-800">
-                              <CommitIcon size={20} />
+                              <GitCommitIcon size={20} />
                             </span>
                           )}
                           {numberOrId}
