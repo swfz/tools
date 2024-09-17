@@ -42,7 +42,7 @@
     "@types/gtag.js": "0.0.20",
     "@types/jest": "29.5.13",
     "@types/node": "20.16.5",
-    "@types/react": "18.3.6",
+    "@types/react": "18.3.7",
     "@types/uuid": "10.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "autoprefixer": "10.4.20",
