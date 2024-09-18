@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 import ContributionsSimple from './contributions-simple';
 import sampleResponse from '../../../../sample-github-public-event.json';
 
@@ -10,10 +10,10 @@ export default {
    */
   title: 'kusa/ContributionsSimple',
   component: ContributionsSimple,
-} as ComponentMeta<typeof ContributionsSimple>;
+} as Meta<typeof ContributionsSimple>;
 
 //👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof ContributionsSimple> = (args) => <ContributionsSimple {...args} />;
+const Template: StoryFn<typeof ContributionsSimple> = (args) => <ContributionsSimple {...args} />;
 
 export const SimpleView = Template.bind({});
 

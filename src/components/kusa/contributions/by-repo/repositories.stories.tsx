@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { StoryFn, Meta } from '@storybook/react';
 
 import Repositories from './repositories';
 
@@ -11,10 +11,10 @@ export default {
    */
   title: 'kusa/Repositories',
   component: Repositories,
-} as ComponentMeta<typeof Repositories>;
+} as Meta<typeof Repositories>;
 
 //👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof Repositories> = (args) => <Repositories {...args} />;
+const Template: StoryFn<typeof Repositories> = (args) => <Repositories {...args} />;
 
 export const Display = Template.bind({});
 
