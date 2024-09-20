@@ -18,7 +18,7 @@
     "@primer/octicons-react": "19.11.0",
     "@tailwindcss/forms": "0.5.9",
     "@tanstack/react-query": "^4.29.12",
-    "@vercel/og": "0.6.2",
+    "@vercel/og": "0.6.3",
     "dayjs": "1.11.13",
     "next": "14.2.13",
     "next-pwa": "5.6.0",
