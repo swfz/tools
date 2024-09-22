@@ -34,6 +34,10 @@ const fetchContribution = async (url: string, username: string, to: string): Pro
 
   const json = await res.json();
 
+  if(!to) {
+    console.log(json.contributions.at(-1));
+  }
+
   const contributions = json.contributions
     .flat()
     .reverse()
