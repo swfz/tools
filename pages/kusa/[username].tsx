@@ -61,6 +61,8 @@ export const getServerSideProps = async (
   const contributions = await fetchContribution(contributionApiUrl, username, '');
   const [todayContributionCount, yesterdayContributionCount] = contributions;
 
+  console.log(Intl.DateTimeFormat().resolvedOptions().timeZone, [todayContributionCount, yesterdayContributionCount]);
+
   if (
     todayContributionCount === null ||
     yesterdayContributionCount === null ||
