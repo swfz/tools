@@ -85,8 +85,8 @@ importers:
         specifier: 20.16.10
         version: 20.16.10
       '@types/react':
-        specifier: 18.3.9
-        version: 18.3.9
+        specifier: 18.3.10
+        version: 18.3.10
       '@types/uuid':
         specifier: 10.0.0
         version: 10.0.0
@@ -1898,8 +1898,8 @@ packages:
   '@types/range-parser@1.2.5':
     resolution: {integrity: sha512-xrO9OoVPqFuYyR/loIHjnbvvyRZREYKLjxV4+dY6v3FQR3stQ9ZxIGkaclF7YhI9hfjpuTbu14hZEy94qKLtOA==}
 
-  '@types/react@18.3.9':
-    resolution: {integrity: sha512-+BpAVyTpJkNWWSSnaLBk6ePpHLOGJKnEQNbINNovPWzvEUyAe3e+/d494QdEh71RekM/qV7lw6jzf1HGrJyAtQ==}
+  '@types/react@18.3.10':
+    resolution: {integrity: sha512-02sAAlBnP39JgXwkAq3PeU9DVaaGpZyF3MGcC0MKgQVkZor5IiiDAipVaxQHtDJAmO4GIy/rVBy/LzVj76Cyqg==}
 
   '@types/resolve@1.17.1':
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
@@ -8247,10 +8247,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  '@mdx-js/react@3.0.1(@types/react@18.3.9)(react@18.3.1)':
+  '@mdx-js/react@3.0.1(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
       '@types/mdx': 2.0.8
-      '@types/react': 18.3.9
+      '@types/react': 18.3.10
       react: 18.3.1
 
   '@next/env@14.2.13': {}
@@ -8388,12 +8388,12 @@ snapshots:
 
   '@storybook/addon-docs@8.3.2(storybook@8.3.2)':
     dependencies:
-      '@mdx-js/react': 3.0.1(@types/react@18.3.9)(react@18.3.1)
+      '@mdx-js/react': 3.0.1(@types/react@18.3.10)(react@18.3.1)
       '@storybook/blocks': 8.3.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.2)
       '@storybook/csf-plugin': 8.3.2(storybook@8.3.2)
       '@storybook/global': 5.0.0
       '@storybook/react-dom-shim': 8.3.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.3.2)
-      '@types/react': 18.3.9
+      '@types/react': 18.3.10
       fs-extra: 11.1.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -9211,7 +9211,7 @@ snapshots:
 
   '@types/range-parser@1.2.5': {}
 
-  '@types/react@18.3.9':
+  '@types/react@18.3.10':
     dependencies:
       '@types/prop-types': 15.7.8
       csstype: 3.1.2
