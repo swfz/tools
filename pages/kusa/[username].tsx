@@ -34,7 +34,7 @@ const fetchContribution = async (url: string, username: string, to: string): Pro
 
   const json = await res.json();
 
-  if(!to) {
+  if (!to) {
     console.log(json.contributions.at(-1));
   }
 
