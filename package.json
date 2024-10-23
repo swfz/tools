@@ -40,7 +40,7 @@
     "@storybook/react": "8.3.6",
     "@storybook/testing-library": "0.2.2",
     "@types/gtag.js": "0.0.20",
-    "@types/jest": "29.5.13",
+    "@types/jest": "29.5.14",
     "@types/node": "20.16.10",
     "@types/react": "18.3.11",
     "@types/uuid": "10.0.0",
