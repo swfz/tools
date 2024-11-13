@@ -26,14 +26,7 @@ const ANSITextDisplay: NextPage = () => {
     green: '#859900',
   };
 
-  // 256色のカラーパレット生成（前と同じなので省略）
-  const generate256Colors = () => {
-    // ... （前のコードと同じ）
-  };
-
-  const colors256 = generate256Colors();
-
-  const preprocessText = (input, format) => {
+  const preprocessText = (input: string, format: string) => {
     switch (format) {
       case 'json':
         return input.replace(/\\u001b\[/g, '\u001b[').replace(/\\n/g, '\n');
@@ -47,24 +40,24 @@ const ANSITextDisplay: NextPage = () => {
 
   // フォーマット変換関数
   const convertFormat = {
-    toRaw: (text) =>
+    toRaw: (text: string) =>
       text
         .replace(/\\u001b\[/g, '[')
         .replace(/\\x1b\[/g, '[')
         .replace(/\\e\[/g, '['),
-    toJSON: (text) =>
+    toJSON: (text: string) =>
       text
         .replace(/\\x1b\[/g, '\\u001b[')
         .replace(/\\e\[/g, '\\u001b[')
         .replace(/(?<!\\)\[/g, '\\u001b['),
-    toYAML: (text) =>
+    toYAML: (text: string) =>
       text
         .replace(/\\u001b\[/g, '\\e[')
         .replace(/\\x1b\[/g, '\\e[')
         .replace(/(?<!\\)\[/g, '\\e['),
   };
 
-  const parseANSI = (input) => {
+  const parseANSI = (input: string) => {
     // フォーマットに応じて前処理
     const processedText = preprocessText(input, format);
 
@@ -117,16 +110,6 @@ const ANSITextDisplay: NextPage = () => {
               isDim = false;
             } else if (basicColorMap[code]) {
               currentColor = basicColorMap[code];
-            } else if (code.startsWith('38;5;')) {
-              const colorIndex = parseInt(code.split(';')[2]);
-              if (colors256[colorIndex]) {
-                currentColor = colors256[colorIndex];
-              }
-            } else if (code.startsWith('48;5;')) {
-              const colorIndex = parseInt(code.split(';')[2]);
-              if (colors256[colorIndex]) {
-                currentBg = colors256[colorIndex];
-              }
             }
           }
           return null;
