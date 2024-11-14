@@ -62,7 +62,7 @@ const ANSITextDisplay: NextPage = () => {
     const processedText = preprocessText(input, format);
 
     // 基本的なカラーコードマッピング
-    const basicColorMap = {
+    const basicColorMap: { [key: string]: string } = {
       '30': solarizedColors.base02,
       '31': solarizedColors.red,
       '32': solarizedColors.green,
@@ -90,10 +90,12 @@ const ANSITextDisplay: NextPage = () => {
     return parts
       .map((part, index) => {
         if (part.startsWith('\u001b[')) {
-          const codes = part
-            .match(/\u001b\[([^\u001b]*)/)[1]
-            .replace('m', '')
-            .split(';');
+          const codes =
+            part
+              .match(/\u001b\[([^\u001b]*)/)?.[1]
+              .toString()
+              .replace('m', '')
+              .split(';') || [];
 
           for (const code of codes) {
             if (code === '0') {
