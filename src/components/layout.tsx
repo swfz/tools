@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useState, ReactNode, MouseEvent, useEffect } from 'react';
 import { useMedia } from 'react-use';
 import { ClockIcon, AdjustmentsIcon, GridIcon, ChevronDoubleIcon } from './icon';
+import { PaintbrushIcon } from '@primer/octicons-react';
 
 function Layout({ children }: { children: ReactNode }) {
   const isWide = useMedia('(min-width: 640px)', false);
@@ -60,6 +61,14 @@ function Layout({ children }: { children: ReactNode }) {
               <span className="flex cursor-pointer items-center">
                 <ChevronDoubleIcon />
                 <span className={isOpen ? '' : 'hidden'}>Arrow Flow Generator</span>
+              </span>
+            </Link>
+          </li>
+          <li className={'inline-block h-8 text-xs hover:text-pink-800 sm:text-base'}>
+            <Link href="/ansi-text-display" passHref>
+              <span className="flex cursor-pointer items-center">
+                <PaintbrushIcon size={24} />
+                <span className={isOpen ? '' : 'hidden'}>Ansi Text Display</span>
               </span>
             </Link>
           </li>
