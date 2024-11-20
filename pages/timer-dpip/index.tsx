@@ -220,7 +220,8 @@ const Timer: NextPage = () => {
                     }`}
                   >
                     <div className="py-5 text-stale-900 text-4xl">{formatTime(count)}</div>
-                    <div id="fuga" className="flex flex-col">
+                    <meter min={0} max={maxCount} value={count} className="w-full px-5"></meter>
+                    <div className="flex flex-col">
                       <button
                         id="pause-button"
                         className="shrink items-center rounded px-2 py-1 font-semibold text-gray-800 shadow opacity-25 w-full"
