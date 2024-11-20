@@ -3,6 +3,8 @@ import Head from 'next/head';
 import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent, StrictMode } from 'react';
 import { event } from '@/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@/components/icon';
+import { LinkExternalIcon } from '@primer/octicons-react';
+import Link from 'next/link';
 
 interface formValues {
   hour: number;
@@ -220,6 +222,12 @@ const Timer: NextPage = () => {
               <div>Picture in Pictureで表示できるタイマー</div>
               <div>時間、分、秒を指定してタイマーを発動する</div>
               <div>時間になると背景色が変わります</div>
+              <Link href="/timer-dpip" passHref>
+                <button className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100">
+                  <LinkExternalIcon />
+                  Document Picture in Picture Mode
+                </button>
+              </Link>
             </div>
             <div className="divide-y divide-gray-300 p-2">
               <div id="timer">

@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent, StrictMode } from 'react';
+import { useEffect, useState, ChangeEvent, StrictMode } from 'react';
 import { event } from '@/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@/components/icon';
 
@@ -29,12 +29,37 @@ const Timer: NextPage = () => {
     const pipWindow = await documentPictureInPicture.requestWindow({ copyStyleSheets: true });
     pipWindow.document.body.append(content);
 
+    const pipPauseBtn = pipWindow.document.querySelector('#pause-button');
+    const pauseHandler = () => pauseTimer();
+
+    pipPauseBtn.addEventListener('click', pauseHandler);
+
     pipWindow.addEventListener('pagehide', (event: any) => {
-      console.log('PiP window closed.');
       const container = document.querySelector('#container');
+
       if (container) {
         const pipContent = event.target.querySelector('#dpinp');
         container.append(pipContent);
+      }
+      pipPauseBtn.removeEventListener('click', pauseHandler);
+    });
+
+    // @ts-ignore
+    [...document.styleSheets].forEach((styleSheet) => {
+      try {
+        const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
+        const style = document.createElement('style');
+
+        style.textContent = cssRules;
+        pipWindow.document.head.appendChild(style);
+      } catch (e) {
+        const link = document.createElement('link');
+
+        link.rel = 'stylesheet';
+        link.type = styleSheet.type;
+        link.media = styleSheet.media;
+        link.href = styleSheet.href;
+        pipWindow.document.head.appendChild(link);
       }
     });
   };
@@ -195,20 +220,22 @@ const Timer: NextPage = () => {
                     }`}
                   >
                     <div className="py-5 text-stale-900 text-4xl">{formatTime(count)}</div>
-                    <button
-                      className="mx-1 flex flex-col items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100 opacity-25 w-full"
-                      onClick={pauseTimer}
-                    >
-                      {paused ? (
-                        <>
-                          <PlayIcon />
-                        </>
-                      ) : (
-                        <>
-                          <PauseIcon />
-                        </>
-                      )}
-                    </button>
+                    <div id="fuga" className="flex flex-col">
+                      <button
+                        id="pause-button"
+                        className="shrink items-center rounded px-2 py-1 font-semibold text-gray-800 shadow opacity-25 w-full"
+                      >
+                        {paused ? (
+                          <>
+                            <PlayIcon />
+                          </>
+                        ) : (
+                          <>
+                            <PauseIcon />
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -220,6 +247,22 @@ const Timer: NextPage = () => {
                 >
                   <PlayIcon />
                   Start
+                </button>
+                <button
+                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  onClick={pauseTimer}
+                >
+                  {paused ? (
+                    <>
+                      <PlayIcon />
+                      Replay
+                    </>
+                  ) : (
+                    <>
+                      <PauseIcon />
+                      Pause
+                    </>
+                  )}
                 </button>
                 <button
                   className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
