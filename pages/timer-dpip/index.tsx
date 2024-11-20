@@ -1,10 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent, StrictMode } from 'react';
+import { useEffect, useState, ChangeEvent, StrictMode } from 'react';
 import { event } from '@/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@/components/icon';
-import { LinkExternalIcon } from '@primer/octicons-react';
-import Link from 'next/link';
 
 interface formValues {
   hour: number;
@@ -13,9 +11,6 @@ interface formValues {
 }
 
 const Timer: NextPage = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   const seconds = [...Array(60)].map((_, i) => i);
   const minutes = [...Array(60)].map((_, i) => i);
   const hours = [...Array(24)].map((_, i) => i);
@@ -28,32 +23,44 @@ const Timer: NextPage = () => {
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
   const [paused, setPaused] = useState(false);
 
-  const getContext = (): CanvasRenderingContext2D | null => {
-    const canvas = canvasRef.current;
+  const createDocumentPinp = async () => {
+    const content = document.querySelector('#dpinp');
+    // @ts-ignore
+    const pipWindow = await documentPictureInPicture.requestWindow({ copyStyleSheets: true });
+    pipWindow.document.body.append(content);
 
-    return canvas ? canvas.getContext('2d') : null;
-  };
+    const pipPauseBtn = pipWindow.document.querySelector('#pause-button');
+    const pauseHandler = () => pauseTimer();
 
-  async function createVideo() {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
+    pipPauseBtn.addEventListener('click', pauseHandler);
 
-    if (canvas && video) {
-      video.srcObject = canvas.captureStream();
-      video.play();
-    }
-  }
+    pipWindow.addEventListener('pagehide', (event: any) => {
+      const container = document.querySelector('#container');
 
-  const handleVideoEvent = (e: SyntheticEvent<HTMLVideoElement>) => {
-    // TODO: さっと解決できなかったのでキャストしている
-    const video = e.target as HTMLVideoElement;
-    video.requestPictureInPicture();
+      if (container) {
+        const pipContent = event.target.querySelector('#dpinp');
+        container.append(pipContent);
+      }
+      pipPauseBtn.removeEventListener('click', pauseHandler);
+    });
 
-    event({
-      action: 'pinp',
-      category: 'timer',
-      label: 'count',
-      value: count,
+    // @ts-ignore
+    [...document.styleSheets].forEach((styleSheet) => {
+      try {
+        const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
+        const style = document.createElement('style');
+
+        style.textContent = cssRules;
+        pipWindow.document.head.appendChild(style);
+      } catch (e) {
+        const link = document.createElement('link');
+
+        link.rel = 'stylesheet';
+        link.type = styleSheet.type;
+        link.media = styleSheet.media;
+        link.href = styleSheet.href;
+        pipWindow.document.head.appendChild(link);
+      }
     });
   };
 
@@ -77,7 +84,6 @@ const Timer: NextPage = () => {
     setStartMs(Date.now());
     setPaused(false);
     setElapsedMs(0);
-    console.log('start ==============');
     const count = formValue.hour * 60 * 60 + formValue.min * 60 + formValue.sec;
     setCount(count);
     setMaxCount(count);
@@ -117,55 +123,6 @@ const Timer: NextPage = () => {
     });
   };
 
-  const writeToCanvas = useCallback(
-    (ctx: CanvasRenderingContext2D, count: number) => {
-      const width = 300;
-      const height = 100;
-
-      const value = formatTime(count);
-      const bgColor = count === 0 ? '#cc1074' : '#EFEFEF';
-      const fgColor = count === 0 ? '#000000' : '#666666';
-      const guageFgColor1 = '#ff1493';
-      const guageFgColor2 = '#cc1074';
-      const guageBgColor1 = '#222222';
-      const guageBgColor2 = '#000000';
-
-      // 枠
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = bgColor;
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = fgColor;
-      ctx.font = '30px Arial';
-      ctx.fillText(value, 90, 45);
-
-      // guage border
-      ctx.strokeStyle = '#666666';
-      ctx.strokeRect(20, 70, 260, 10);
-
-      // guage background
-      const bgGradient = ctx.createLinearGradient(21, 71, 21, 79);
-      bgGradient.addColorStop(0, guageBgColor2);
-      bgGradient.addColorStop(0.4, guageBgColor1);
-      bgGradient.addColorStop(0.6, guageBgColor1);
-      bgGradient.addColorStop(1, guageBgColor2);
-
-      ctx.fillStyle = bgGradient;
-      ctx.fillRect(21, 71, 258, 8);
-
-      // guage
-      const fgGradient = ctx.createLinearGradient(21, 71, 21, 79);
-      fgGradient.addColorStop(0, guageFgColor2);
-      fgGradient.addColorStop(0.4, guageFgColor1);
-      fgGradient.addColorStop(0.6, guageFgColor1);
-      fgGradient.addColorStop(1, guageFgColor2);
-      const remaining = 258 * (count / maxCount);
-
-      ctx.fillStyle = fgGradient;
-      ctx.fillRect(21, 71, remaining, 8);
-    },
-    [maxCount],
-  );
-
   const formatTime = (count: number) => {
     const hour = Math.floor(count / 60 / 60);
     const min = Math.floor(count / 60) - hour * 60;
@@ -175,23 +132,18 @@ const Timer: NextPage = () => {
   };
 
   useEffect(() => {
-    const ctx: CanvasRenderingContext2D | null = getContext();
-
-    if (!ctx) {
+    if (count <= 0) {
       return;
     }
-    if (count < 0) {
-      return;
-    }
-
-    writeToCanvas(ctx, count);
 
     const interval = setTimeout(() => {
       if (!paused) {
         const thisRangeElapsedMs = Date.now() - startMs;
 
         setDecrement(Date.now() - startMs);
-        setCount(maxCount - Math.floor((elapsedMs + thisRangeElapsedMs) / 1000));
+
+        const count = maxCount - Math.floor((elapsedMs + thisRangeElapsedMs) / 1000);
+        setCount(count < 0 ? 0 : count);
       }
       if (count === 0) {
         event({
@@ -201,11 +153,10 @@ const Timer: NextPage = () => {
           value: maxCount,
         });
       }
-      writeToCanvas(ctx, count);
     }, 200);
 
     return () => clearInterval(interval);
-  }, [count, elapsedMs, decrement, startMs, paused, writeToCanvas]);
+  }, [count, elapsedMs, decrement, startMs, paused]);
 
   return (
     <>
@@ -222,17 +173,8 @@ const Timer: NextPage = () => {
               <div>Picture in Pictureで表示できるタイマー</div>
               <div>時間、分、秒を指定してタイマーを発動する</div>
               <div>時間になると背景色が変わります</div>
-              <Link href="/timer-dpip" passHref>
-                <button className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100">
-                  <LinkExternalIcon />
-                  Document Picture in Picture Mode
-                </button>
-              </Link>
             </div>
             <div className="divide-y divide-gray-300 p-2">
-              <div id="timer">
-                <canvas id="canvas" width="300" height="100" ref={canvasRef}></canvas>
-              </div>
               <div className="flex p-1">
                 <span className="flex-1">Hour: </span>
                 <select className="flex-1 rounded" value={formValue.hour} onChange={handleHourChange}>
@@ -269,6 +211,36 @@ const Timer: NextPage = () => {
                   })}
                 </select>
               </div>
+
+              <div id="container">
+                <div className="flex flex-row p-1" id="dpinp">
+                  <div
+                    className={`bg-gray-100 flex flex-col w-full items-center ${
+                      count <= 0 ? 'bg-pink-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <div className="py-5 text-stale-900 text-4xl">{formatTime(count)}</div>
+                    <meter min={0} max={maxCount} value={count} className="w-full px-5"></meter>
+                    <div className="flex flex-col">
+                      <button
+                        id="pause-button"
+                        className="shrink items-center rounded px-2 py-1 font-semibold text-gray-800 shadow opacity-25 w-full"
+                      >
+                        {paused ? (
+                          <>
+                            <PlayIcon />
+                          </>
+                        ) : (
+                          <>
+                            <PauseIcon />
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex flex-row p-1">
                 <button
                   className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
@@ -304,13 +276,12 @@ const Timer: NextPage = () => {
               <div className="p-1">
                 <button
                   className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
-                  onClick={createVideo}
+                  onClick={createDocumentPinp}
                 >
                   <DuplicateIcon />
                   Picture in Picture
                 </button>
               </div>
-              <video muted={true} onLoadedMetadata={handleVideoEvent} ref={videoRef} className="hidden"></video>
             </div>
           </div>
         </div>
