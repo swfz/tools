@@ -63,22 +63,10 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-eac1af49'], function (workbox) {
+define(['./workbox-8817a5e5'], function (workbox) {
   'use strict';
 
-  /**
-   * Welcome to your Workbox-powered service worker!
-   *
-   * You'll need to register this file in your web app.
-   * See https://goo.gl/nhQhGp
-   *
-   * The rest of the code is auto-generated. Please don't update this file
-   * directly; instead, make changes to your Workbox build configuration
-   * and re-run your build process.
-   * See https://goo.gl/2aRDsh
-   */
-
-  importScripts('fallback-development.js', 'worker-development.js');
+  importScripts('fallback-development.js');
   self.skipWaiting();
   workbox.clientsClaim();
   workbox.registerRoute(
@@ -95,7 +83,6 @@ define(['./workbox-eac1af49'], function (workbox) {
                 headers: response.headers,
               });
             }
-
             return response;
           },
         },
@@ -119,4 +106,3 @@ define(['./workbox-eac1af49'], function (workbox) {
     'GET',
   );
 });
-//# sourceMappingURL=sw.js.map
