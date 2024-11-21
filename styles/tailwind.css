@@ -38,3 +38,10 @@
 .input-end {
   @apply appearance-none block w-16  bg-white text-gray-700 border border-gray-500 rounded px-1 py-0 leading-none focus:outline-none focus:bg-white;
 }
+
+/* for document picture in picture timer */
+@media all and (display-mode: picture-in-picture) {
+  #pause-button {
+    display: contents;
+  }
+}

@@ -205,11 +205,11 @@ const Timer: NextPage = () => {
                     }`}
                   >
                     <div className="py-5 text-stale-900 text-4xl">{formatTime(count)}</div>
-                    <meter min={0} max={maxCount} value={count} className="w-full px-5"></meter>
-                    <div className="flex flex-col">
+                    <meter min={0} max={maxCount} value={count} className="w-full px-5 mb-3"></meter>
+                    <div className="flex flex-col mb-2">
                       <button
                         id="pause-button"
-                        className="shrink items-center rounded px-2 py-1 font-semibold text-gray-800 shadow opacity-25 w-full"
+                        className="hidden shrink items-center rounded px-2 font-semibold text-gray-800 shadow opacity-25 w-full"
                       >
                         {paused ? (
                           <>
