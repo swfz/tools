@@ -42,6 +42,6 @@
 /* for document picture in picture timer */
 @media all and (display-mode: picture-in-picture) {
   #pause-button {
-    display: contents;
+    @apply visible;
   }
 }

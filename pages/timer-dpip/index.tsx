@@ -24,7 +24,11 @@ const Timer: NextPage = () => {
   const createDocumentPinp = async () => {
     const content = document.querySelector('#dpinp');
     // @ts-ignore
-    const pipWindow = await documentPictureInPicture.requestWindow({ copyStyleSheets: true });
+    const pipWindow = await documentPictureInPicture.requestWindow({
+      width: content?.clientWidth,
+      height: content?.clientHeight,
+      copyStyleSheets: true,
+    });
     pipWindow.document.body.append(content);
 
     const pipPauseBtn = pipWindow.document.querySelector('#pause-button');
@@ -205,11 +209,11 @@ const Timer: NextPage = () => {
                     }`}
                   >
                     <div className="py-5 text-stale-900 text-4xl">{formatTime(count)}</div>
-                    <meter min={0} max={maxCount} value={count} className="w-full px-5 mb-3"></meter>
+                    <meter min={0} max={maxCount} value={count} className="w-full px-5"></meter>
                     <div className="flex flex-col mb-2">
                       <button
                         id="pause-button"
-                        className="hidden shrink items-center rounded px-2 font-semibold text-gray-800 shadow opacity-25 w-full"
+                        className="invisible shrink items-center rounded px-2 font-semibold text-gray-800 shadow opacity-25 w-full"
                       >
                         {paused ? (
                           <>
