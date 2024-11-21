@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState, ChangeEvent, StrictMode } from 'react';
+import { useEffect, useState, ChangeEvent, StrictMode, useRef } from 'react';
 import { event } from '@/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@/components/icon';
 
@@ -15,13 +15,11 @@ const Timer: NextPage = () => {
   const minutes = [...Array(60)].map((_, i) => i);
   const hours = [...Array(24)].map((_, i) => i);
 
-  const [startMs, setStartMs] = useState(Date.now());
-  const [elapsedMs, setElapsedMs] = useState(0);
-  const [decrement, setDecrement] = useState(0);
+  const workerRef = useRef<Worker | null>(null);
   const [count, setCount] = useState(0);
   const [maxCount, setMaxCount] = useState(0);
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState<Boolean | null>(null);
 
   const createDocumentPinp = async () => {
     const content = document.querySelector('#dpinp');
@@ -30,7 +28,7 @@ const Timer: NextPage = () => {
     pipWindow.document.body.append(content);
 
     const pipPauseBtn = pipWindow.document.querySelector('#pause-button');
-    const pauseHandler = () => pauseTimer();
+    const pauseHandler = () => setPaused((prev) => !prev);
 
     pipPauseBtn.addEventListener('click', pauseHandler);
 
@@ -81,12 +79,10 @@ const Timer: NextPage = () => {
   };
 
   const startTimer = () => {
-    setStartMs(Date.now());
-    setPaused(false);
-    setElapsedMs(0);
     const count = formValue.hour * 60 * 60 + formValue.min * 60 + formValue.sec;
-    setCount(count);
     setMaxCount(count);
+    workerRef.current?.postMessage({ command: 'start', payload: { count, interval: 1000 } });
+
     event({
       action: 'start',
       category: 'timer',
@@ -95,26 +91,14 @@ const Timer: NextPage = () => {
     });
   };
 
-  const pauseTimer = () => {
-    setPaused((paused) => {
-      if (paused) {
-        setStartMs(Date.now());
-      }
-      if (!paused) {
-        setElapsedMs((elapsed) => elapsed + (Date.now() - startMs));
-      }
-
-      return !paused;
-    });
-  };
+  const pauseTimer = () => setPaused((prev) => !prev);
 
   const resetTimer = () => {
+    workerRef.current?.postMessage({ command: 'reset' });
+
     setFormValue({ hour: 0, min: 0, sec: 0 });
     setCount(0);
     setPaused(false);
-    setDecrement(0);
-    setElapsedMs(0);
-    setStartMs(0);
     event({
       action: 'reset',
       category: 'timer',
@@ -132,45 +116,46 @@ const Timer: NextPage = () => {
   };
 
   useEffect(() => {
-    if (count <= 0) {
-      return;
+    if (!workerRef.current) {
+      workerRef.current = new Worker('/timer-worker.js');
     }
 
-    const interval = setTimeout(() => {
-      if (!paused) {
-        const thisRangeElapsedMs = Date.now() - startMs;
+    const worker = workerRef.current;
 
-        setDecrement(Date.now() - startMs);
+    worker.onmessage = (event) => {
+      const c = event.data.count <= 0 ? 0 : event.data.count;
 
-        const count = maxCount - Math.floor((elapsedMs + thisRangeElapsedMs) / 1000);
-        setCount(count < 0 ? 0 : count);
+      setCount(c);
+    };
+
+    return () => {
+      if (worker) {
+        worker.terminate();
+        workerRef.current = null;
       }
-      if (count === 0) {
-        event({
-          action: 'timeup',
-          category: 'timer',
-          label: 'max_count',
-          value: maxCount,
-        });
-      }
-    }, 200);
+    };
+  }, []);
 
-    return () => clearInterval(interval);
-  }, [count, elapsedMs, decrement, startMs, paused]);
+  useEffect(() => {
+    if (workerRef.current) {
+      const worker = workerRef.current;
+      worker.postMessage({ command: !paused ? 'resume' : 'pause' });
+    }
+  }, [paused]);
 
   return (
     <>
       <StrictMode>
         <Head>
-          <title>Picture in Picture Timer</title>
+          <title>Document Picture in Picture Timer</title>
         </Head>
         <div className="divide-y divide-gray-300">
           <div>
-            <h1 className="text-3xl">Picture in Picture Timer</h1>
+            <h1 className="text-3xl">Document Picture in Picture Timer</h1>
           </div>
           <div className="p-3">
             <div>
-              <div>Picture in Pictureで表示できるタイマー</div>
+              <div>Document Picture in Pictureで表示できるタイマー</div>
               <div>時間、分、秒を指定してタイマーを発動する</div>
               <div>時間になると背景色が変わります</div>
             </div>
@@ -243,14 +228,14 @@ const Timer: NextPage = () => {
 
               <div className="flex flex-row p-1">
                 <button
-                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 w-full flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={startTimer}
                 >
                   <PlayIcon />
                   Start
                 </button>
                 <button
-                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 w-full flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={pauseTimer}
                 >
                   {paused ? (
@@ -266,7 +251,7 @@ const Timer: NextPage = () => {
                   )}
                 </button>
                 <button
-                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 w-full flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={resetTimer}
                 >
                   <StopIcon />
@@ -275,7 +260,7 @@ const Timer: NextPage = () => {
               </div>
               <div className="p-1">
                 <button
-                  className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 w-full flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={createDocumentPinp}
                 >
                   <DuplicateIcon />
