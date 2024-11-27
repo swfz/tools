@@ -10,6 +10,8 @@ interface formValues {
   sec: number;
 }
 
+type DocumentPictureInPictureWindow = Pick<Window, 'document' | 'addEventListener' | 'removeEventListener' | 'close'>;
+
 const Timer: NextPage = () => {
   const seconds = [...Array(60)].map((_, i) => i);
   const minutes = [...Array(60)].map((_, i) => i);
@@ -20,50 +22,64 @@ const Timer: NextPage = () => {
   const [maxCount, setMaxCount] = useState(0);
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
   const [paused, setPaused] = useState<Boolean | null>(null);
+  const pipWindow = useRef<DocumentPictureInPictureWindow | null>(null);
 
   const createDocumentPinp = async () => {
-    const content = document.querySelector('#dpinp');
-    // @ts-ignore
-    const pipWindow = await documentPictureInPicture.requestWindow({
-      width: content?.clientWidth,
-      height: content?.clientHeight,
-      copyStyleSheets: true,
-    });
-    pipWindow.document.body.append(content);
+    if (pipWindow.current !== null) {
+      pipWindow.current.close();
+      pipWindow.current = null;
+    } else {
+      const content = document.querySelector('#dpinp');
+      // @ts-ignore
+      pipWindow.current = await documentPictureInPicture.requestWindow({
+        width: content?.clientWidth,
+        height: content?.clientHeight,
+        copyStyleSheets: true,
+      });
+      if (pipWindow.current === null || content === null) return;
 
-    const pipPauseBtn = pipWindow.document.querySelector('#pause-button');
-    const pauseHandler = () => setPaused((prev) => !prev);
+      pipWindow.current.document.body.append(content);
 
-    pipPauseBtn.addEventListener('click', pauseHandler);
+      const pipPauseBtn = pipWindow.current.document.querySelector('#pause-button');
+      if (pipPauseBtn === null) return;
 
-    pipWindow.addEventListener('pagehide', (event: any) => {
-      const container = document.querySelector('#container');
+      const pauseHandler = () => setPaused((prev) => !prev);
+      pipPauseBtn.addEventListener('click', pauseHandler);
 
-      if (container) {
-        const pipContent = event.target.querySelector('#dpinp');
-        container.append(pipContent);
-      }
-      pipPauseBtn.removeEventListener('click', pauseHandler);
-    });
+      pipWindow.current.addEventListener('pagehide', (event: any) => {
+        const container = document.querySelector('#container');
 
-    // @ts-ignore
-    [...document.styleSheets].forEach((styleSheet) => {
-      try {
-        const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
-        const style = document.createElement('style');
+        if (container) {
+          const pipContent = event.target.querySelector('#dpinp');
+          container.append(pipContent);
+        }
+        pipPauseBtn.removeEventListener('click', pauseHandler);
+        pipWindow.current = null;
+      });
 
-        style.textContent = cssRules;
-        pipWindow.document.head.appendChild(style);
-      } catch (e) {
-        const link = document.createElement('link');
+      // @ts-ignore
+      [...document.styleSheets].forEach((styleSheet) => {
+        try {
+          const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
+          const style = document.createElement('style');
 
-        link.rel = 'stylesheet';
-        link.type = styleSheet.type;
-        link.media = styleSheet.media;
-        link.href = styleSheet.href;
-        pipWindow.document.head.appendChild(link);
-      }
-    });
+          style.textContent = cssRules;
+          if (pipWindow.current !== null) {
+            pipWindow.current.document.head.appendChild(style);
+          }
+        } catch (e) {
+          const link = document.createElement('link');
+
+          link.rel = 'stylesheet';
+          link.type = styleSheet.type;
+          link.media = styleSheet.media;
+          link.href = styleSheet.href;
+          if (pipWindow.current !== null) {
+            pipWindow.current.document.head.appendChild(link);
+          }
+        }
+      });
+    }
   };
 
   const handleHourChange = (e: ChangeEvent<HTMLSelectElement>) => {
