@@ -14,7 +14,6 @@ declare global {
     requestWindow: (options?: DocumentPictureInPictureOptions) => Promise<Window>;
   }
 
-  // eslint-disable-next-line no-var
   var documentPictureInPicture: DocumentPictureInPicture;
 }
 
@@ -81,7 +80,7 @@ const DocumentPinpReactPortal: NextPage = () => {
             <div id="dpip" ref={contentRef}>
               <p>this is content!!!</p>
               <p>clicked {count}</p>
-              <button onClick={clickHandler} className="border rounded">
+              <button onClick={clickHandler} className="rounded border">
                 click!!!
               </button>
             </div>
@@ -93,14 +92,14 @@ const DocumentPinpReactPortal: NextPage = () => {
           <div id="dpip" ref={contentRef}>
             <p>this is content!!!</p>
             <p>clicked {count}</p>
-            <button onClick={clickHandler} className="border rounded">
+            <button onClick={clickHandler} className="rounded border">
               click!!!
             </button>
           </div>
         </div>
       )}
 
-      <button onClick={createDocumentPinp} className="border rounded">
+      <button onClick={createDocumentPinp} className="rounded border">
         Document PinP
       </button>
     </>

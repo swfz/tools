@@ -154,28 +154,28 @@ const ANSITextDisplay: NextPage = () => {
             <div>主にAnsible実行失敗時の結果などで使える</div>
           </div>
         </div>
-        <div className="w-full max-w-4xl mx-auto p-4">
-          <div className="flex gap-4 mb-4">
+        <div className="mx-auto w-full max-w-4xl p-4">
+          <div className="mb-4 flex gap-4">
             <details>
               <summary className="px-3 py-1">フォーマット変換</summary>
               <div className="flex gap-4">
                 <button
                   onClick={() => setText(convertFormat.toRaw(text))}
-                  className="px-3 py-1 rounded hover:opacity-80"
+                  className="rounded px-3 py-1 hover:opacity-80"
                   style={{ backgroundColor: solarizedColors.blue, color: solarizedColors.base3 }}
                 >
                   生形式に変換
                 </button>
                 <button
                   onClick={() => setText(convertFormat.toJSON(text))}
-                  className="px-3 py-1 rounded hover:opacity-80"
+                  className="rounded px-3 py-1 hover:opacity-80"
                   style={{ backgroundColor: solarizedColors.cyan, color: solarizedColors.base3 }}
                 >
                   JSON形式に変換
                 </button>
                 <button
                   onClick={() => setText(convertFormat.toYAML(text))}
-                  className="px-3 py-1 rounded hover:opacity-80"
+                  className="rounded px-3 py-1 hover:opacity-80"
                   style={{ backgroundColor: solarizedColors.green, color: solarizedColors.base3 }}
                 >
                   YAML形式に変換
@@ -187,16 +187,16 @@ const ANSITextDisplay: NextPage = () => {
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="w-full p-2 rounded mb-4 font-mono"
+            className="mb-4 w-full rounded p-2 font-mono"
             rows={10}
             cols={100}
             placeholder="エスケープシーケンス付きのテキストを入力してください..."
           />
 
           <div className="mb-4">
-            <div className="flex items-center gap-4 mb-2">
+            <div className="mb-2 flex items-center gap-4">
               <label className="text-sm">入力形式:</label>
-              <select value={format} onChange={(e) => setFormat(e.target.value)} className="px-2 py-1 rounded text-sm">
+              <select value={format} onChange={(e) => setFormat(e.target.value)} className="rounded px-2 py-1 text-sm">
                 <option value="raw">生のエスケープシーケンス ([31m)</option>
                 <option value="json">JSONエスケープ形式 (\u001b)</option>
                 <option value="yaml">YAMLエスケープ形式 (\e)</option>
@@ -210,7 +210,7 @@ const ANSITextDisplay: NextPage = () => {
 
           <div>結果</div>
           <div
-            className="rounded p-4 min-h-[200px]"
+            className="min-h-[200px] rounded p-4"
             style={{
               backgroundColor: solarizedColors.base02,
               border: `1px solid ${solarizedColors.base01}`,

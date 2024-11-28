@@ -1,5 +1,5 @@
 export const ClockIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -10,7 +10,7 @@ export const ClockIcon = () => (
 );
 
 export const AdjustmentsIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -21,7 +21,7 @@ export const AdjustmentsIcon = () => (
 );
 
 export const PlayIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -33,7 +33,7 @@ export const PlayIcon = () => (
 );
 
 export const StopIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     <path
       strokeLinecap="round"
@@ -45,7 +45,7 @@ export const StopIcon = () => (
 );
 
 export const DuplicateIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -56,7 +56,7 @@ export const DuplicateIcon = () => (
 );
 
 export const PauseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -67,7 +67,7 @@ export const PauseIcon = () => (
 );
 
 export const GridIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="size-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -80,7 +80,7 @@ export const GridIcon = () => (
 export const ShareIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
+    className="size-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -97,7 +97,7 @@ export const ShareIcon = () => (
 export const CheckCircleIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
+    className="size-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -110,7 +110,7 @@ export const CheckCircleIcon = () => (
 export const InformationCircleIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
+    className="size-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -127,7 +127,7 @@ export const ChevronDoubleIcon = () => (
     viewBox="0 0 24 24"
     strokeWidth="1.5"
     stroke="currentColor"
-    className="h-6 w-6"
+    className="size-6"
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
   </svg>
