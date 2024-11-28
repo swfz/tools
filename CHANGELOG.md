@@ -1,5 +1,209 @@
 # Changelog
 
+## [v1.0.4](https://github.com/swfz/tools/compare/v1.0.3...v1.0.4) - 2023-08-04
+- chore(deps): update nextjs monorepo to v13.1.5 by @renovate in https://github.com/swfz/tools/pull/385
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.8.2 by @renovate in https://github.com/swfz/tools/pull/386
+- chore(deps): update dependency eslint to v8.32.0 by @renovate in https://github.com/swfz/tools/pull/382
+- fix(deps): update dependency @primer/octicons-react to v17.11.1 by @renovate in https://github.com/swfz/tools/pull/387
+- chore(deps): update storybook monorepo to v6.5.16 by @renovate in https://github.com/swfz/tools/pull/389
+- fix(deps): update dependency @vercel/og to v0.1.0 by @renovate in https://github.com/swfz/tools/pull/396
+- chore(deps): update dependency eslint to v8.33.0 by @renovate in https://github.com/swfz/tools/pull/391
+- refactor: エクスポートしている型定義を別ファイルに切り出した by @ytkg in https://github.com/swfz/tools/pull/399
+- chore(deps): update dependency tailwindcss to v3.2.6 by @renovate in https://github.com/swfz/tools/pull/398
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.8.3 by @renovate in https://github.com/swfz/tools/pull/393
+- chore(deps): update nextjs monorepo to v13.1.6 by @renovate in https://github.com/swfz/tools/pull/390
+- chore(deps): update dependency prettier to v2.8.4 by @renovate in https://github.com/swfz/tools/pull/397
+- chore(deps): update dependency eslint to v8.34.0 by @renovate in https://github.com/swfz/tools/pull/400
+- chore(deps): update dependency typescript to v4.9.5 by @renovate in https://github.com/swfz/tools/pull/392
+- chore(deps): update dependency @types/react to v18.0.28 by @renovate in https://github.com/swfz/tools/pull/401
+- [clean] Suggestion: selectedView の定義を変更して可読性を上げたい by @honyanya in https://github.com/swfz/tools/pull/402
+- fix(deps): update dependency @primer/octicons-react to v17.12.0 by @renovate in https://github.com/swfz/tools/pull/404
+- chore(deps): update dependency tailwindcss to v3.2.7 by @renovate in https://github.com/swfz/tools/pull/403
+- refactor: 早期リターンするようにした by @ytkg in https://github.com/swfz/tools/pull/406
+- [add] Suggestion: jest を追加してテストコードを書く by @honyanya in https://github.com/swfz/tools/pull/407
+- chore(deps): update dependency @babel/core to v7.21.0 by @renovate in https://github.com/swfz/tools/pull/408
+- chore(deps): update dependency @types/uuid to v9.0.1 by @renovate in https://github.com/swfz/tools/pull/409
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.9.0 by @renovate in https://github.com/swfz/tools/pull/405
+- chore(deps): update nextjs monorepo to v13.2.1 by @renovate in https://github.com/swfz/tools/pull/410
+- clean: ログ出力を削除 by @ytkg in https://github.com/swfz/tools/pull/414
+- [clean] Suggestion: to-html-url を lib 配下にした by @honyanya in https://github.com/swfz/tools/pull/413
+- chore(deps): update dependency eslint to v8.35.0 by @renovate in https://github.com/swfz/tools/pull/411
+- fix(deps): update dependency @vercel/og to v0.2.0 by @renovate in https://github.com/swfz/tools/pull/412
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.10.0 by @renovate in https://github.com/swfz/tools/pull/415
+- refactor: 変数名を username に変更 by @ytkg in https://github.com/swfz/tools/pull/416
+- chore(deps): update nextjs monorepo to v13.2.3 by @renovate in https://github.com/swfz/tools/pull/417
+- chore(deps): update jest monorepo to v29.5.0 by @renovate in https://github.com/swfz/tools/pull/423
+- fix(deps): update dependency @primer/octicons-react to v18 by @renovate in https://github.com/swfz/tools/pull/419
+- fix(deps): update dependency @vercel/og to v0.4.0 by @renovate in https://github.com/swfz/tools/pull/420
+- chore(deps): update dependency eslint-config-prettier to v8.7.0 by @renovate in https://github.com/swfz/tools/pull/421
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.10.1 by @renovate in https://github.com/swfz/tools/pull/418
+- fix(deps): update dependency @primer/octicons-react to v18.2.0 by @renovate in https://github.com/swfz/tools/pull/425
+- chore(deps): update dependency autoprefixer to v10.4.14 by @renovate in https://github.com/swfz/tools/pull/424
+- chore(deps): update nextjs monorepo to v13.2.4 by @renovate in https://github.com/swfz/tools/pull/426
+- [clean] Suggestion: 同じ処理が複数あったのでまとめた by @honyanya in https://github.com/swfz/tools/pull/422
+- chore(deps): update dependency eslint to v8.36.0 by @renovate in https://github.com/swfz/tools/pull/427
+- [add] Suggestion: components ディレクトリに kusa ディレクトリを追加 by @honyanya in https://github.com/swfz/tools/pull/428
+- chore(deps): update dependency typescript to v5 by @renovate in https://github.com/swfz/tools/pull/433
+- chore(deps): update actions/checkout action to v3.4.0 by @renovate in https://github.com/swfz/tools/pull/432
+- fix(deps): update dependency @vercel/og to v0.4.1 by @renovate in https://github.com/swfz/tools/pull/436
+- fix(deps): update dependency @primer/octicons-react to v18.3.0 by @renovate in https://github.com/swfz/tools/pull/437
+- refactor: パスエイリアスを追加してコンポーネントとライブラリのインポートを簡略化 by @ytkg in https://github.com/swfz/tools/pull/441
+- fix(deps): update dependency sharp to v0.32.0 by @renovate in https://github.com/swfz/tools/pull/440
+- chore(deps): update dependency @types/react to v18.0.29 by @renovate in https://github.com/swfz/tools/pull/439
+- chore(deps): update actions/checkout action to v3.5.0 by @renovate in https://github.com/swfz/tools/pull/438
+- chore(deps): update dependency eslint-config-prettier to v8.8.0 by @renovate in https://github.com/swfz/tools/pull/435
+- chore(deps): update dependency prettier to v2.8.7 by @renovate in https://github.com/swfz/tools/pull/434
+- chore(deps): update dependency @babel/core to v7.21.3 by @renovate in https://github.com/swfz/tools/pull/431
+- chore(deps): update dependency @types/jest to v29.5.0 by @renovate in https://github.com/swfz/tools/pull/430
+- chore(deps): bump http-cache-semantics from 4.1.0 to 4.1.1 by @dependabot in https://github.com/swfz/tools/pull/395
+- chore(deps): update dependency eslint to v8.37.0 by @renovate in https://github.com/swfz/tools/pull/447
+- chore(deps): update dependency @babel/core to v7.21.4 by @renovate in https://github.com/swfz/tools/pull/449
+- chore(deps): update dependency typescript to v5.0.3 by @renovate in https://github.com/swfz/tools/pull/448
+- chore(deps): update dependency tailwindcss to v3.3.1 by @renovate in https://github.com/swfz/tools/pull/446
+- fix(deps): update dependency @vercel/og to v0.5.0 by @renovate in https://github.com/swfz/tools/pull/445
+- chore(deps): update dependency @types/react to v18.0.31 by @renovate in https://github.com/swfz/tools/pull/444
+- refactor: 使っていない username を削除 by @ytkg in https://github.com/swfz/tools/pull/442
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.10.3 by @renovate in https://github.com/swfz/tools/pull/450
+- chore(deps): update dependency @types/react to v18.0.32 by @renovate in https://github.com/swfz/tools/pull/451
+- chore(deps): update dependency ts-jest to v29.1.0 by @renovate in https://github.com/swfz/tools/pull/452
+- fix(deps): update dependency @vercel/og to v0.5.1 by @renovate in https://github.com/swfz/tools/pull/460
+- chore(deps): update dependency eslint to v8.38.0 by @renovate in https://github.com/swfz/tools/pull/461
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.11.0 by @renovate in https://github.com/swfz/tools/pull/457
+- [change] Suggestion: DateExtract を作成したが時間を抽出している箇所もあったため DateTimeExtract に変更 by @honyanya in https://github.com/swfz/tools/pull/454
+- chore(deps): update dependency @storybook/testing-library to v0.1.0 by @renovate in https://github.com/swfz/tools/pull/453
+- chore(deps): update storybook monorepo to v7 (major) by @renovate in https://github.com/swfz/tools/pull/455
+- chore(deps): update dependency @types/react to v18.0.33 by @renovate in https://github.com/swfz/tools/pull/456
+- chore(deps): update nextjs monorepo to v13.3.0 by @renovate in https://github.com/swfz/tools/pull/458
+- chore(deps): update dependency typescript to v5.0.4 by @renovate in https://github.com/swfz/tools/pull/459
+- chore(deps): update actions/checkout action to v3.5.2 by @renovate in https://github.com/swfz/tools/pull/464
+- fix(deps): update dependency @vercel/og to v0.5.2 by @renovate in https://github.com/swfz/tools/pull/465
+- chore(deps): update storybook monorepo to v7.0.4 by @renovate in https://github.com/swfz/tools/pull/463
+- chore(deps): update dependency @types/react to v18.0.35 by @renovate in https://github.com/swfz/tools/pull/462
+- fix(deps): update dependency @vercel/og to v0.5.3 by @renovate in https://github.com/swfz/tools/pull/468
+- chore(deps): update nextjs monorepo to v13.3.1 by @renovate in https://github.com/swfz/tools/pull/471
+- chore(deps): update dependency postcss to v8.4.23 by @renovate in https://github.com/swfz/tools/pull/467
+- chore(deps): update dependency @types/react to v18.0.38 by @renovate in https://github.com/swfz/tools/pull/469
+- chore(deps): update dependency prettier to v2.8.8 by @renovate in https://github.com/swfz/tools/pull/473
+- chore(deps): update dependency eslint to v8.39.0 by @renovate in https://github.com/swfz/tools/pull/472
+- chore(deps): update dependency @types/jest to v29.5.1 by @renovate in https://github.com/swfz/tools/pull/470
+- fix: tailwindcss class order by @swfz in https://github.com/swfz/tools/pull/475
+- chore(deps): update storybook monorepo to v7.0.7 by @renovate in https://github.com/swfz/tools/pull/466
+- fix: tailwind css by @swfz in https://github.com/swfz/tools/pull/476
+- fix(deps): update dependency @vercel/og to v0.5.4 by @renovate in https://github.com/swfz/tools/pull/479
+- chore(deps): update dependency @babel/core to v7.21.5 by @renovate in https://github.com/swfz/tools/pull/480
+- chore(deps): update dependency @types/react to v18.2.0 by @renovate in https://github.com/swfz/tools/pull/474
+- fix(deps): update dependency sharp to v0.32.1 by @renovate in https://github.com/swfz/tools/pull/478
+- chore(deps): update dependency tailwindcss to v3.3.2 by @renovate in https://github.com/swfz/tools/pull/477
+- chore(deps): update dependency @types/react to v18.2.5 by @renovate in https://github.com/swfz/tools/pull/484
+- chore(deps): update storybook monorepo to v7.0.9 by @renovate in https://github.com/swfz/tools/pull/483
+- chore(deps): update nextjs monorepo to v13.4.1 by @renovate in https://github.com/swfz/tools/pull/481
+- chore(deps): update dependency @babel/core to v7.21.8 by @renovate in https://github.com/swfz/tools/pull/482
+- chore(deps): update dependency eslint to v8.40.0 by @renovate in https://github.com/swfz/tools/pull/485
+- chore(deps): update node.js to v18.16.0 by @renovate in https://github.com/swfz/tools/pull/394
+- chore(deps): update dependency @types/react to v18.2.6 by @renovate in https://github.com/swfz/tools/pull/486
+- chore(deps): update storybook monorepo to v7.0.10 by @renovate in https://github.com/swfz/tools/pull/488
+- chore(deps): update storybook monorepo to v7.0.11 by @renovate in https://github.com/swfz/tools/pull/491
+- chore(deps): update nextjs monorepo to v13.4.2 by @renovate in https://github.com/swfz/tools/pull/490
+- chore(deps): update dependency @types/node to v18.16.8 by @renovate in https://github.com/swfz/tools/pull/487
+- fix(deps): update dependency @primer/octicons-react to v19 by @renovate in https://github.com/swfz/tools/pull/489
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.12.0 by @renovate in https://github.com/swfz/tools/pull/493
+- chore(deps): update dependency @types/node to v18.16.13 by @renovate in https://github.com/swfz/tools/pull/492
+- chore(deps): update storybook monorepo to v7.0.12 by @renovate in https://github.com/swfz/tools/pull/494
+- chore(deps): update dependency eslint to v8.41.0 by @renovate in https://github.com/swfz/tools/pull/496
+- chore(deps): update nextjs monorepo to v13.4.4 by @renovate in https://github.com/swfz/tools/pull/495
+- chore(deps): update dependency @types/node to v18.16.15 by @renovate in https://github.com/swfz/tools/pull/497
+- chore(deps): update storybook monorepo by @renovate in https://github.com/swfz/tools/pull/498
+- fix(deps): update dependency @vercel/og to v0.5.6 by @renovate in https://github.com/swfz/tools/pull/499
+- chore(deps): update dependency @storybook/react to v7.0.18 by @renovate in https://github.com/swfz/tools/pull/502
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.12.1 by @renovate in https://github.com/swfz/tools/pull/506
+- chore(deps): update dependency postcss to v8.4.24 by @renovate in https://github.com/swfz/tools/pull/505
+- chore(deps): update storybook monorepo to v7.0.18 by @renovate in https://github.com/swfz/tools/pull/504
+- chore(deps): update dependency @types/node to v18.16.16 by @renovate in https://github.com/swfz/tools/pull/503
+- update: og.tsx to use stable edge runtime by @swfz in https://github.com/swfz/tools/pull/507
+- feature/paging github events by @swfz in https://github.com/swfz/tools/pull/510
+- chore(deps): update dependency @babel/core to v7.22.1 by @renovate in https://github.com/swfz/tools/pull/501
+- chore(deps): update dependency @types/jest to v29.5.2 by @renovate in https://github.com/swfz/tools/pull/508
+- fix(deps): update dependency dayjs to v1.11.8 by @renovate in https://github.com/swfz/tools/pull/511
+- chore(deps): update dependency eslint to v8.42.0 by @renovate in https://github.com/swfz/tools/pull/512
+- chore(deps): update dependency typescript to v5.1.3 by @renovate in https://github.com/swfz/tools/pull/509
+- chore(deps): update dependency @types/react to v18.2.8 by @renovate in https://github.com/swfz/tools/pull/500
+- chore(deps): update nextjs monorepo to v13.4.5 by @renovate in https://github.com/swfz/tools/pull/520
+- fix(deps): update dependency @primer/octicons-react to v19.2.0 by @renovate in https://github.com/swfz/tools/pull/521
+- chore(deps): update actions/checkout action to v3.5.3 by @renovate in https://github.com/swfz/tools/pull/518
+- chore(deps): update dependency @babel/core to v7.22.5 by @renovate in https://github.com/swfz/tools/pull/516
+- chore(deps): update dependency @types/uuid to v9.0.2 by @renovate in https://github.com/swfz/tools/pull/517
+- chore(deps): update dependency @types/node to v18.16.18 by @renovate in https://github.com/swfz/tools/pull/519
+- fix(deps): update dependency @vercel/og to v0.5.7 by @renovate in https://github.com/swfz/tools/pull/514
+- chore(deps): update storybook monorepo to v7.0.20 by @renovate in https://github.com/swfz/tools/pull/515
+- fix(deps): update dependency @tanstack/react-query to v4.29.13 by @renovate in https://github.com/swfz/tools/pull/522
+- chore(deps): update dependency @types/react to v18.2.12 by @renovate in https://github.com/swfz/tools/pull/513
+- fix(deps): update dependency @tanstack/react-query to v4.29.14 by @renovate in https://github.com/swfz/tools/pull/526
+- fix(deps): update dependency @primer/octicons-react to v19.3.0 by @renovate in https://github.com/swfz/tools/pull/525
+- chore(deps): update nextjs monorepo to v13.4.6 by @renovate in https://github.com/swfz/tools/pull/524
+- chore(deps): update storybook monorepo to v7.0.21 by @renovate in https://github.com/swfz/tools/pull/523
+- chore(deps): update dependency eslint to v8.43.0 by @renovate in https://github.com/swfz/tools/pull/527
+- chore(deps): update storybook monorepo to v7.0.22 by @renovate in https://github.com/swfz/tools/pull/528
+- chore(deps): update nextjs monorepo to v13.4.7 by @renovate in https://github.com/swfz/tools/pull/533
+- chore(deps): update storybook monorepo to v7.0.23 by @renovate in https://github.com/swfz/tools/pull/534
+- chore(deps): update node.js to v18.16.1 - autoclosed by @renovate in https://github.com/swfz/tools/pull/531
+- fix(deps): update dependency @tanstack/react-query to v4.29.15 by @renovate in https://github.com/swfz/tools/pull/530
+- chore(deps): update dependency @types/react to v18.2.13 by @renovate in https://github.com/swfz/tools/pull/529
+- fix(deps): update dependency @tanstack/react-query to v4.29.17 by @renovate in https://github.com/swfz/tools/pull/538
+- chore(deps): update dependency @types/react to v18.2.14 by @renovate in https://github.com/swfz/tools/pull/537
+- fix(deps): update dependency @primer/octicons-react to v19.4.0 by @renovate in https://github.com/swfz/tools/pull/536
+- fix(deps): update dependency @vercel/og to v0.5.8 by @renovate in https://github.com/swfz/tools/pull/535
+- chore(deps): update dependency @storybook/testing-library to v0.2.0 by @renovate in https://github.com/swfz/tools/pull/532
+- chore(deps): update dependency eslint to v8.44.0 by @renovate in https://github.com/swfz/tools/pull/546
+- fix(deps): update dependency dayjs to v1.11.9 by @renovate in https://github.com/swfz/tools/pull/545
+- chore(deps): update dependency @types/node to v18.16.19 by @renovate in https://github.com/swfz/tools/pull/544
+- chore(deps): update dependency ts-jest to v29.1.1 by @renovate in https://github.com/swfz/tools/pull/543
+- chore(deps): update storybook monorepo to v7.0.24 by @renovate in https://github.com/swfz/tools/pull/541
+- fix(deps): update dependency @tanstack/react-query to v4.29.19 by @renovate in https://github.com/swfz/tools/pull/540
+- chore(deps): update dependency eslint-plugin-tailwindcss to v3.13.0 by @renovate in https://github.com/swfz/tools/pull/539
+- fix: 365日以上のstreakの場合の文言を設定 by @swfz in https://github.com/swfz/tools/pull/551
+- chore(deps): update actions/setup-node action to v3.7.0 by @renovate in https://github.com/swfz/tools/pull/554
+- chore(deps): update dependency prettier to v3 by @renovate in https://github.com/swfz/tools/pull/553
+- chore(deps): update jest monorepo to v29.6.0 by @renovate in https://github.com/swfz/tools/pull/552
+- feat: #547 fetch contributions recursively by @swfz in https://github.com/swfz/tools/pull/557
+- chore: format by @swfz in https://github.com/swfz/tools/pull/558
+- fix(deps): update dependency sharp to v0.32.2 by @renovate in https://github.com/swfz/tools/pull/562
+- chore(deps): update dependency babel-loader to v9.1.3 by @renovate in https://github.com/swfz/tools/pull/559
+- chore(deps): update jest monorepo by @renovate in https://github.com/swfz/tools/pull/556
+- chore(deps): update dependency @babel/core to v7.22.9 by @renovate in https://github.com/swfz/tools/pull/550
+- chore(deps): update nextjs monorepo to v13.4.9 by @renovate in https://github.com/swfz/tools/pull/549
+- chore(deps): update storybook monorepo to v7.0.27 by @renovate in https://github.com/swfz/tools/pull/548
+- fix(deps): update dependency @tailwindcss/forms to v0.5.4 by @renovate in https://github.com/swfz/tools/pull/565
+- chore(deps): update dependency @types/react to v18.2.15 by @renovate in https://github.com/swfz/tools/pull/564
+- chore(deps): update dependency postcss to v8.4.26 by @renovate in https://github.com/swfz/tools/pull/555
+- chore(deps): update nextjs monorepo to v13.4.10 by @renovate in https://github.com/swfz/tools/pull/566
+- fix(deps): update dependency sharp to v0.32.3 by @renovate in https://github.com/swfz/tools/pull/567
+- chore(deps): update dependency eslint to v8.45.0 by @renovate in https://github.com/swfz/tools/pull/569
+- Contribution画像の差し替え by @swfz in https://github.com/swfz/tools/pull/570
+- fix(deps): update dependency @vercel/og to v0.5.9 by @renovate in https://github.com/swfz/tools/pull/574
+- fix(deps): update dependency @tanstack/react-query to v4.32.0 by @renovate in https://github.com/swfz/tools/pull/568
+- chore(deps): update storybook monorepo to v7.1.0 by @renovate in https://github.com/swfz/tools/pull/571
+- chore(deps): update dependency typescript to v5.1.6 by @renovate in https://github.com/swfz/tools/pull/542
+- chore(deps): bump tough-cookie from 4.1.2 to 4.1.3 by @dependabot in https://github.com/swfz/tools/pull/560
+- chore(deps): bump semver from 5.7.1 to 5.7.2 by @dependabot in https://github.com/swfz/tools/pull/561
+- chore(deps): update dependency node to v18.17.0 by @renovate in https://github.com/swfz/tools/pull/572
+- chore(deps): update nextjs monorepo to v13.4.12 by @renovate in https://github.com/swfz/tools/pull/575
+- fix(deps): update dependency sharp to v0.32.4 by @renovate in https://github.com/swfz/tools/pull/576
+- chore(deps): update dependency postcss to v8.4.27 by @renovate in https://github.com/swfz/tools/pull/577
+- chore(deps): bump word-wrap from 1.2.3 to 1.2.4 by @dependabot in https://github.com/swfz/tools/pull/573
+- chore(deps): update dependency tailwindcss to v3.3.3 by @renovate in https://github.com/swfz/tools/pull/563
+- Contribution APIのURLを変更 by @swfz in https://github.com/swfz/tools/pull/578
+- chore(deps): update jest monorepo to v29.6.2 by @renovate in https://github.com/swfz/tools/pull/582
+- chore(deps): update dependency eslint-config-prettier to v8.9.0 by @renovate in https://github.com/swfz/tools/pull/583
+- chore(deps): update dependency @types/node to v18.17.1 by @renovate in https://github.com/swfz/tools/pull/581
+- chore(deps): update storybook monorepo to v7.1.1 by @renovate in https://github.com/swfz/tools/pull/580
+- chore(deps): update dependency @types/node to v18.17.2 by @renovate in https://github.com/swfz/tools/pull/591
+- chore(deps): update dependency eslint-config-prettier to v8.10.0 by @renovate in https://github.com/swfz/tools/pull/590
+- chore(deps): update dependency prettier to v3.0.1 by @renovate in https://github.com/swfz/tools/pull/589
+- fix(deps): update dependency @vercel/og to v0.5.10 by @renovate in https://github.com/swfz/tools/pull/588
+- chore(deps): update dependency eslint to v8.46.0 by @renovate in https://github.com/swfz/tools/pull/584
+- fix(deps): update dependency @tanstack/react-query to v4.32.5 by @renovate in https://github.com/swfz/tools/pull/586
+- fix(deps): update dependency @primer/octicons-react to v19.5.0 by @renovate in https://github.com/swfz/tools/pull/585
+
 ## [v1.0.3](https://github.com/swfz/tools/compare/v1.0.2...v1.0.3) - 2023-01-20
 - chore(deps): update nextjs monorepo to v13.0.2 by @renovate in https://github.com/swfz/tools/pull/320
 - chore(deps): update dependency babel-loader to v9.1.0 by @renovate in https://github.com/swfz/tools/pull/319
