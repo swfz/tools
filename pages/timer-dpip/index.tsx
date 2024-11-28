@@ -34,7 +34,6 @@ const Timer: NextPage = () => {
       pipWindow.current = await documentPictureInPicture.requestWindow({
         width: content?.clientWidth,
         height: content?.clientHeight,
-        copyStyleSheets: true,
       });
       if (pipWindow.current === null || content === null) return;
 
