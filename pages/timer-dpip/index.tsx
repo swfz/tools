@@ -219,16 +219,16 @@ const Timer: NextPage = () => {
               <div id="container">
                 <div className="flex flex-row p-1" id="dpinp">
                   <div
-                    className={`bg-gray-100 flex flex-col w-full items-center ${
+                    className={`flex w-full flex-col items-center bg-gray-100 ${
                       count <= 0 ? 'bg-pink-600' : 'bg-gray-200'
                     }`}
                   >
-                    <div className="py-5 text-stale-900 text-4xl">{formatTime(count)}</div>
+                    <div className="py-5 text-4xl text-slate-900">{formatTime(count)}</div>
                     <meter min={0} max={maxCount} value={count} className="w-full px-5"></meter>
-                    <div className="flex flex-col mb-2">
+                    <div className="mb-2 flex flex-col">
                       <button
                         id="pause-button"
-                        className="invisible shrink items-center rounded px-2 font-semibold text-gray-800 shadow opacity-25 w-full"
+                        className="invisible w-full shrink items-center rounded px-2 font-semibold text-gray-800 opacity-25 shadow"
                       >
                         {paused ? (
                           <>
@@ -247,14 +247,14 @@ const Timer: NextPage = () => {
 
               <div className="flex flex-row p-1">
                 <button
-                  className="mx-1 w-full flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={startTimer}
                 >
                   <PlayIcon />
                   Start
                 </button>
                 <button
-                  className="mx-1 w-full flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={pauseTimer}
                 >
                   {paused ? (
@@ -270,7 +270,7 @@ const Timer: NextPage = () => {
                   )}
                 </button>
                 <button
-                  className="mx-1 w-full flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={resetTimer}
                 >
                   <StopIcon />
@@ -279,7 +279,7 @@ const Timer: NextPage = () => {
               </div>
               <div className="p-1">
                 <button
-                  className="mx-1 w-full flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                  className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={createDocumentPinp}
                 >
                   <DuplicateIcon />

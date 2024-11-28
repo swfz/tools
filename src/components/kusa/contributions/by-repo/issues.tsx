@@ -35,7 +35,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                 <span className="col-span-2 col-start-12 col-end-13 inline-flex flex-row-reverse">
                   {issues[repoName].stats.closed > 0 && (
                     <span className="inline-flex">
-                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs font-semibold text-gray-200">
+                      <span className="ml-2 inline-flex size-4 items-center justify-center rounded-full bg-red-600 text-xs font-semibold text-gray-200">
                         {issues[repoName].stats.closed}
                       </span>
                       <span className="text-xs">&nbsp;closed</span>
@@ -43,7 +43,7 @@ const Issues = ({ issues }: { issues: Summary['issues'] }) => {
                   )}
                   {issues[repoName].stats.open > 0 && (
                     <span className="inline-flex">
-                      <span className="ml-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-green-700 text-xs font-semibold text-gray-200">
+                      <span className="ml-2 inline-flex size-4 items-center justify-center rounded-full bg-green-700 text-xs font-semibold text-gray-200">
                         {issues[repoName].stats.open}
                       </span>
                       <span className="text-xs">&nbsp;open</span>
