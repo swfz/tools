@@ -19,7 +19,7 @@ declare global {
 }
 
 const DocumentPinpReactPortal: NextPage = () => {
-  const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>>| null>(null);
+  const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>> | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -29,7 +29,7 @@ const DocumentPinpReactPortal: NextPage = () => {
   const createDocumentPinp = async () => {
     // close
     if (isOpen) {
-      if(!pipWindow.current) return;
+      if (!pipWindow.current) return;
       pipWindow.current.close();
       setIsOpen((prev) => !prev);
     }
@@ -40,9 +40,9 @@ const DocumentPinpReactPortal: NextPage = () => {
         height: contentRef.current?.clientHeight,
       });
 
-      if(!pipWindow.current) return;
+      if (!pipWindow.current) return;
       pipWindow.current.addEventListener('pagehide', (event: any) => {
-        if(!pipWindow.current) return;
+        if (!pipWindow.current) return;
         pipWindow.current.close();
         setIsOpen(false);
       });
