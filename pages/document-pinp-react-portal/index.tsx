@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 declare global {
@@ -16,6 +16,19 @@ declare global {
 
   var documentPictureInPicture: DocumentPictureInPicture;
 }
+
+interface ConditionalPortalProps {
+  children: React.ReactNode;
+  usePortal: boolean;
+  portalContainer?: Element | null;
+}
+
+const ConditionalPortal: React.FC<ConditionalPortalProps> = ({ children, usePortal, portalContainer }) => {
+  if (usePortal && portalContainer) {
+    return createPortal(children, portalContainer);
+  }
+  return <>{children}</>;
+};
 
 const DocumentPinpReactPortal: NextPage = () => {
   const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>> | null>(null);
@@ -74,20 +87,7 @@ const DocumentPinpReactPortal: NextPage = () => {
 
   return (
     <>
-      {pipWindow.current && isOpen ? (
-        createPortal(
-          <div id="container">
-            <div id="dpip" ref={contentRef}>
-              <p>this is content!!!</p>
-              <p>clicked {count}</p>
-              <button onClick={clickHandler} className="rounded border">
-                click!!!
-              </button>
-            </div>
-          </div>,
-          pipWindow.current.document.body,
-        )
-      ) : (
+      <ConditionalPortal usePortal={isOpen} portalContainer={pipWindow?.current?.document.body}>
         <div id="container">
           <div id="dpip" ref={contentRef}>
             <p>this is content!!!</p>
@@ -97,7 +97,7 @@ const DocumentPinpReactPortal: NextPage = () => {
             </button>
           </div>
         </div>
-      )}
+      </ConditionalPortal>
 
       <button onClick={createDocumentPinp} className="rounded border">
         Document PinP
