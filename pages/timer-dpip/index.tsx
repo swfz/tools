@@ -3,6 +3,27 @@ import Head from 'next/head';
 import { useEffect, useState, ChangeEvent, StrictMode, useRef } from 'react';
 import { event } from '@/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@/components/icon';
+import { createPortal } from 'react-dom';
+
+declare global {
+  interface DocumentPictureInPictureOptions {
+    width?: number;
+    height?: number;
+    disallowReturnToOpener?: boolean;
+    preferInitialWindowPlacement?: boolean;
+  }
+  interface DocumentPictureInPicture {
+    requestWindow: (options?: DocumentPictureInPictureOptions) => Promise<Window>;
+  }
+
+  var documentPictureInPicture: DocumentPictureInPicture;
+}
+
+interface ConditionalPortalProps {
+  children: React.ReactNode;
+  usePortal: boolean;
+  portalContainer?: Element | null;
+}
 
 interface formValues {
   hour: number;
@@ -10,9 +31,14 @@ interface formValues {
   sec: number;
 }
 
-type DocumentPictureInPictureWindow = Pick<Window, 'document' | 'addEventListener' | 'removeEventListener' | 'close'>;
+const ConditionalPortal: React.FC<ConditionalPortalProps> = ({ children, usePortal, portalContainer }) => {
+  if (usePortal && portalContainer) {
+    return createPortal(children, portalContainer);
+  }
+  return <>{children}</>;
+};
 
-const Timer: NextPage = () => {
+const DocumentPinpTimer: NextPage = () => {
   const seconds = [...Array(60)].map((_, i) => i);
   const minutes = [...Array(60)].map((_, i) => i);
   const hours = [...Array(24)].map((_, i) => i);
@@ -22,38 +48,27 @@ const Timer: NextPage = () => {
   const [maxCount, setMaxCount] = useState(0);
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
   const [paused, setPaused] = useState<Boolean | null>(null);
-  const pipWindow = useRef<DocumentPictureInPictureWindow | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>> | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const createDocumentPinp = async () => {
-    if (pipWindow.current !== null) {
+    if (isOpen) {
+      if (!pipWindow.current) return;
       pipWindow.current.close();
-      pipWindow.current = null;
+      setIsOpen((prev) => !prev);
     } else {
-      const content = document.querySelector('#dpinp');
-      // @ts-ignore
       pipWindow.current = await documentPictureInPicture.requestWindow({
-        width: content?.clientWidth,
-        height: content?.clientHeight,
+        width: contentRef.current?.clientWidth,
+        height: contentRef.current?.clientHeight,
       });
-      if (pipWindow.current === null || content === null) return;
-
-      pipWindow.current.document.body.append(content);
-
-      const pipPauseBtn = pipWindow.current.document.querySelector('#pause-button');
-      if (pipPauseBtn === null) return;
 
       const pauseHandler = () => setPaused((prev) => !prev);
-      pipPauseBtn.addEventListener('click', pauseHandler);
 
       pipWindow.current.addEventListener('pagehide', (event: any) => {
-        const container = document.querySelector('#container');
-
-        if (container) {
-          const pipContent = event.target.querySelector('#dpinp');
-          container.append(pipContent);
-        }
-        pipPauseBtn.removeEventListener('click', pauseHandler);
-        pipWindow.current = null;
+        if (!pipWindow.current) return;
+        pipWindow.current.close();
+        setIsOpen(false);
       });
 
       // @ts-ignore
@@ -78,6 +93,7 @@ const Timer: NextPage = () => {
           }
         }
       });
+      setIsOpen((prev) => !prev);
     }
   };
 
@@ -178,105 +194,107 @@ const Timer: NextPage = () => {
               <div>時間、分、秒を指定してタイマーを発動する</div>
               <div>時間になると背景色が変わります</div>
             </div>
-            <div className="divide-y divide-gray-300 p-2">
-              <div className="flex p-1">
-                <span className="flex-1">Hour: </span>
-                <select className="flex-1 rounded" value={formValue.hour} onChange={handleHourChange}>
-                  {hours.map((hour) => {
-                    return (
-                      <option key={hour} value={hour}>
-                        {hour.toString().padStart(2, '0')}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="flex p-1">
-                <span className="flex-1">Minute: </span>
-                <select className="flex-1 rounded" value={formValue.min} onChange={handleMinChange}>
-                  {minutes.map((min) => {
-                    return (
-                      <option key={min} value={min}>
-                        {min.toString().padStart(2, '0')}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="flex p-1">
-                <span className="flex-1">Second: </span>
-                <select className="flex-1 rounded" value={formValue.sec} onChange={handleSecChange}>
-                  {seconds.map((sec) => {
-                    return (
-                      <option key={sec} value={sec}>
-                        {sec.toString().padStart(2, '0')}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
 
-              <div id="container">
-                <div className="flex flex-row p-1" id="dpinp">
-                  <div
-                    className={`flex w-full flex-col items-center bg-gray-100 ${
-                      count <= 0 ? 'bg-pink-600' : 'bg-gray-200'
-                    }`}
-                  >
-                    <div className="py-5 text-4xl text-slate-900">{formatTime(count)}</div>
-                    <meter min={0} max={maxCount} value={count} className="w-full px-5"></meter>
-                    <div className="mb-2 flex flex-col">
-                      <button
-                        id="pause-button"
-                        className="invisible w-full shrink items-center rounded px-2 font-semibold text-gray-800 opacity-25 shadow"
+            <ConditionalPortal usePortal={isOpen} portalContainer={pipWindow?.current?.document.body}>
+              <div>
+                <div className="divide-y divide-gray-300 p-2">
+                  <div className="flex p-1">
+                    <span className="flex-1 px-1">Hour: </span>
+                    <select
+                      className="m-0 h-6 flex-1 rounded p-0 px-1 text-sm"
+                      value={formValue.hour}
+                      onChange={handleHourChange}
+                    >
+                      {hours.map((hour) => {
+                        return (
+                          <option key={hour} value={hour}>
+                            {hour.toString().padStart(2, '0')}
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    <span className="flex-1 px-1">Minute: </span>
+                    <select
+                      className="m-0 h-6 flex-1 rounded p-0 px-1 text-sm"
+                      value={formValue.min}
+                      onChange={handleMinChange}
+                    >
+                      {minutes.map((min) => {
+                        return (
+                          <option key={min} value={min}>
+                            {min.toString().padStart(2, '0')}
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    <span className="flex-1 px-1">Second: </span>
+                    <select
+                      className="m-0 h-6 flex-1 rounded p-0 px-1 text-sm"
+                      value={formValue.sec}
+                      onChange={handleSecChange}
+                    >
+                      {seconds.map((sec) => {
+                        return (
+                          <option key={sec} value={sec}>
+                            {sec.toString().padStart(2, '0')}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+
+                  <div id="container">
+                    <div className="flex flex-row p-1" id="dpinp">
+                      <div
+                        className={`flex w-full flex-col items-center bg-gray-100 ${
+                          count <= 0 ? 'bg-pink-600' : 'bg-gray-200'
+                        }`}
                       >
-                        {paused ? (
-                          <>
-                            <PlayIcon />
-                          </>
-                        ) : (
-                          <>
-                            <PauseIcon />
-                          </>
-                        )}
-                      </button>
+                        <div className="py-5 text-4xl text-slate-900">{formatTime(count)}</div>
+                        <meter min={0} max={maxCount} value={count} className="mb-5 w-full px-5"></meter>
+                      </div>
                     </div>
+                  </div>
+
+                  <div className="flex flex-row p-1">
+                    <button
+                      className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                      onClick={startTimer}
+                    >
+                      <PlayIcon />
+                      Start
+                    </button>
+                    <button
+                      className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                      onClick={pauseTimer}
+                    >
+                      {paused ? (
+                        <>
+                          <PlayIcon />
+                          Replay
+                        </>
+                      ) : (
+                        <>
+                          <PauseIcon />
+                          Pause
+                        </>
+                      )}
+                    </button>
+                    <button
+                      className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                      onClick={resetTimer}
+                    >
+                      <StopIcon />
+                      Reset
+                    </button>
                   </div>
                 </div>
               </div>
+            </ConditionalPortal>
 
-              <div className="flex flex-row p-1">
-                <button
-                  className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
-                  onClick={startTimer}
-                >
-                  <PlayIcon />
-                  Start
-                </button>
-                <button
-                  className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
-                  onClick={pauseTimer}
-                >
-                  {paused ? (
-                    <>
-                      <PlayIcon />
-                      Replay
-                    </>
-                  ) : (
-                    <>
-                      <PauseIcon />
-                      Pause
-                    </>
-                  )}
-                </button>
-                <button
-                  className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
-                  onClick={resetTimer}
-                >
-                  <StopIcon />
-                  Reset
-                </button>
-              </div>
+            <div>
               <div className="p-1">
                 <button
                   className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
@@ -294,4 +312,4 @@ const Timer: NextPage = () => {
   );
 };
 
-export default Timer;
+export default DocumentPinpTimer;
