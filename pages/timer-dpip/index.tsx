@@ -39,16 +39,13 @@ const ConditionalPortal: React.FC<ConditionalPortalProps> = ({ children, usePort
 };
 
 const DocumentPinpTimer: NextPage = () => {
-  const seconds = [...Array(60)].map((_, i) => i);
-  const minutes = [...Array(60)].map((_, i) => i);
-  const hours = [...Array(24)].map((_, i) => i);
-
   const workerRef = useRef<Worker | null>(null);
   const [count, setCount] = useState(0);
   const [maxCount, setMaxCount] = useState(0);
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
   const [paused, setPaused] = useState<Boolean | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [started, setStarted] = useState<boolean>(false);
   const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>> | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -97,17 +94,17 @@ const DocumentPinpTimer: NextPage = () => {
     }
   };
 
-  const handleHourChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleHourChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormValue((prev) => {
       return { ...prev, hour: parseInt(e.target.value) };
     });
   };
-  const handleMinChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleMinChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormValue((prev) => {
       return { ...prev, min: parseInt(e.target.value) };
     });
   };
-  const handleSecChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const handleSecChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormValue((prev) => {
       return { ...prev, sec: parseInt(e.target.value) };
     });
@@ -116,6 +113,8 @@ const DocumentPinpTimer: NextPage = () => {
   const startTimer = () => {
     const count = formValue.hour * 60 * 60 + formValue.min * 60 + formValue.sec;
     setMaxCount(count);
+    setStarted(true);
+    setCount(count);
     workerRef.current?.postMessage({ command: 'start', payload: { count, interval: 1000 } });
 
     event({
@@ -133,6 +132,7 @@ const DocumentPinpTimer: NextPage = () => {
 
     setCount(0);
     setPaused(false);
+    setStarted(false);
     event({
       action: 'reset',
       category: 'timer',
@@ -196,54 +196,7 @@ const DocumentPinpTimer: NextPage = () => {
 
             <ConditionalPortal usePortal={isOpen} portalContainer={pipWindow?.current?.document.body}>
               <div>
-                <div className="divide-y divide-gray-300 p-2">
-                  <div className="flex p-1">
-                    <span className="flex-1 px-1">Hour: </span>
-                    <select
-                      className="m-0 h-6 flex-1 rounded p-0 px-1 text-sm"
-                      value={formValue.hour}
-                      onChange={handleHourChange}
-                    >
-                      {hours.map((hour) => {
-                        return (
-                          <option key={hour} value={hour}>
-                            {hour.toString().padStart(2, '0')}
-                          </option>
-                        );
-                      })}
-                    </select>
-
-                    <span className="flex-1 px-1">Minute: </span>
-                    <select
-                      className="m-0 h-6 flex-1 rounded p-0 px-1 text-sm"
-                      value={formValue.min}
-                      onChange={handleMinChange}
-                    >
-                      {minutes.map((min) => {
-                        return (
-                          <option key={min} value={min}>
-                            {min.toString().padStart(2, '0')}
-                          </option>
-                        );
-                      })}
-                    </select>
-
-                    <span className="flex-1 px-1">Second: </span>
-                    <select
-                      className="m-0 h-6 flex-1 rounded p-0 px-1 text-sm"
-                      value={formValue.sec}
-                      onChange={handleSecChange}
-                    >
-                      {seconds.map((sec) => {
-                        return (
-                          <option key={sec} value={sec}>
-                            {sec.toString().padStart(2, '0')}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-
+                <div className="divide-y divide-gray-300">
                   <div id="container">
                     <div className="flex flex-row p-1" id="dpinp">
                       <div
@@ -258,36 +211,67 @@ const DocumentPinpTimer: NextPage = () => {
                   </div>
 
                   <div className="flex flex-row p-1">
-                    <button
-                      className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
-                      onClick={startTimer}
-                    >
-                      <PlayIcon />
-                      Start
-                    </button>
-                    <button
-                      className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
-                      onClick={pauseTimer}
-                    >
-                      {paused ? (
-                        <>
+                    <div className="grow p-1">
+                      H:
+                      <input
+                        type="number"
+                        className="h-10 w-12 rounded text-sm"
+                        min={0}
+                        max={23}
+                        value={formValue.hour}
+                        onChange={handleHourChange}
+                      ></input>
+                      M:
+                      <input
+                        type="number"
+                        className="h-10 w-12 rounded text-sm"
+                        min={0}
+                        max={59}
+                        value={formValue.min}
+                        onChange={handleMinChange}
+                      ></input>
+                      S:
+                      <input
+                        type="number"
+                        className="h-10 w-12 rounded text-sm"
+                        min={0}
+                        max={59}
+                        value={formValue.sec}
+                        onChange={handleSecChange}
+                      ></input>
+                    </div>
+                    <div className="flex flex-row p-1">
+                      {!paused && !started && (
+                        <button
+                          className="mx-1 flex items-center rounded border border-gray-400 bg-white p-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                          onClick={startTimer}
+                        >
                           <PlayIcon />
-                          Replay
-                        </>
-                      ) : (
-                        <>
-                          <PauseIcon />
-                          Pause
-                        </>
+                        </button>
                       )}
-                    </button>
-                    <button
-                      className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
-                      onClick={resetTimer}
-                    >
-                      <StopIcon />
-                      Reset
-                    </button>
+                      {started && (
+                        <button
+                          className="mx-1 flex items-center rounded border border-gray-400 bg-white p-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                          onClick={pauseTimer}
+                        >
+                          {paused ? (
+                            <>
+                              <PlayIcon />
+                            </>
+                          ) : (
+                            <>
+                              <PauseIcon />
+                            </>
+                          )}
+                        </button>
+                      )}
+                      <button
+                        className="mx-1 flex items-center rounded border border-gray-400 bg-white p-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
+                        onClick={resetTimer}
+                      >
+                        <StopIcon />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
