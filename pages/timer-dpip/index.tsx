@@ -212,33 +212,37 @@ const DocumentPinpTimer: NextPage = () => {
 
                   <div className="flex flex-row p-1">
                     <div className="grow p-1">
-                      H:
-                      <input
-                        type="number"
-                        className="h-10 w-12 rounded text-sm"
-                        min={0}
-                        max={23}
-                        value={formValue.hour}
-                        onChange={handleHourChange}
-                      ></input>
-                      M:
-                      <input
-                        type="number"
-                        className="h-10 w-12 rounded text-sm"
-                        min={0}
-                        max={59}
-                        value={formValue.min}
-                        onChange={handleMinChange}
-                      ></input>
-                      S:
-                      <input
-                        type="number"
-                        className="h-10 w-12 rounded text-sm"
-                        min={0}
-                        max={59}
-                        value={formValue.sec}
-                        onChange={handleSecChange}
-                      ></input>
+                      {!started && (
+                        <div>
+                          H:
+                          <input
+                            type="number"
+                            className="h-10 w-12 rounded text-sm"
+                            min={0}
+                            max={23}
+                            value={formValue.hour}
+                            onChange={handleHourChange}
+                          ></input>
+                          M:
+                          <input
+                            type="number"
+                            className="h-10 w-12 rounded text-sm"
+                            min={0}
+                            max={59}
+                            value={formValue.min}
+                            onChange={handleMinChange}
+                          ></input>
+                          S:
+                          <input
+                            type="number"
+                            className="h-10 w-12 rounded text-sm"
+                            min={0}
+                            max={59}
+                            value={formValue.sec}
+                            onChange={handleSecChange}
+                          ></input>
+                        </div>
+                      )}
                     </div>
                     <div className="flex flex-row p-1">
                       {!paused && !started && (
