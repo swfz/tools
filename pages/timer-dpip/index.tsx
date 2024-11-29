@@ -131,7 +131,6 @@ const DocumentPinpTimer: NextPage = () => {
   const resetTimer = () => {
     workerRef.current?.postMessage({ command: 'reset' });
 
-    setFormValue({ hour: 0, min: 0, sec: 0 });
     setCount(0);
     setPaused(false);
     event({
