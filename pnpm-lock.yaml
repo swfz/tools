@@ -98,7 +98,7 @@ importers:
         version: 18.3.14
       '@types/react-dom':
         specifier: ^18.3.1
-        version: 18.3.2
+        version: 18.3.3(@types/react@18.3.14)
       '@types/uuid':
         specifier: 10.0.0
         version: 10.0.0
@@ -1894,8 +1894,10 @@ packages:
   '@types/qs@6.9.8':
     resolution: {integrity: sha512-u95svzDlTysU5xecFNTgfFG5RUWu1A9P0VzgpcIiGZA9iraHOdSzcxMxQ55DyeRaGCSxQi7LxXDI4rzq/MYfdg==}
 
-  '@types/react-dom@18.3.2':
-    resolution: {integrity: sha512-Fqp+rcvem9wEnGr3RY8dYNvSQ8PoLqjZ9HLgaPUOjJJD120uDyOxOjc/39M4Kddp9JQCxpGQbnhVQF0C0ncYVg==}
+  '@types/react-dom@18.3.3':
+    resolution: {integrity: sha512-uTYkxTLkYp41nq/ULXyXMtkNT1vu5fXJoqad6uTNCOGat5t9cLgF4vMNLBXsTOXpdOI44XzKPY1M5RRm0bQHuw==}
+    peerDependencies:
+      '@types/react': ^18.0.0
 
   '@types/react@18.3.14':
     resolution: {integrity: sha512-NzahNKvjNhVjuPBQ+2G7WlxstQ+47kXZNHlUvFakDViuIEfGY926GqhMueQFZ7woG+sPiQKlF36XfrIUVSUfFg==}
@@ -9058,7 +9060,7 @@ snapshots:
 
   '@types/qs@6.9.8': {}
 
-  '@types/react-dom@18.3.2':
+  '@types/react-dom@18.3.3(@types/react@18.3.14)':
     dependencies:
       '@types/react': 18.3.14
 
