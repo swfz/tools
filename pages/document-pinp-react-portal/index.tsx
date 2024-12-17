@@ -91,7 +91,10 @@ const DocumentPinpReactPortal: NextPage = () => {
         <div id="container">
           <div id="dpip" ref={contentRef}>
             <p>this is content!!!</p>
-            <p>clicked {count}</p>
+            <div className="flex flex-row">
+              <p>clicked: </p>
+              <p aria-label="count">{count}</p>
+            </div>
             <button onClick={clickHandler} className="rounded border">
               click!!!
             </button>
