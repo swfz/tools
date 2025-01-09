@@ -214,28 +214,28 @@ const DocumentPinpTimer: NextPage = () => {
                     <div className="grow p-1">
                       {!started && (
                         <div>
-                          H:
+                          <span className="pl-2 text-xl">H:</span>
                           <input
                             type="number"
-                            className="h-10 w-12 rounded text-sm"
+                            className="h-10 w-14 rounded text-sm"
                             min={0}
                             max={23}
                             value={formValue.hour}
                             onChange={handleHourChange}
                           ></input>
-                          M:
+                          <span className="pl-2 text-xl">M:</span>
                           <input
                             type="number"
-                            className="h-10 w-12 rounded text-sm"
+                            className="h-10 w-14 rounded text-sm"
                             min={0}
                             max={59}
                             value={formValue.min}
                             onChange={handleMinChange}
                           ></input>
-                          S:
+                          <span className="pl-2 text-xl">S:</span>
                           <input
                             type="number"
-                            className="h-10 w-12 rounded text-sm"
+                            className="h-10 w-14 rounded text-sm"
                             min={0}
                             max={59}
                             value={formValue.sec}
