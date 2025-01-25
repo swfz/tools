@@ -18,8 +18,8 @@ importers:
         specifier: ^4.29.12
         version: 4.36.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@vercel/og':
-        specifier: 0.6.4
-        version: 0.6.4
+        specifier: 0.6.5
+        version: 0.6.5
       dayjs:
         specifier: 1.11.13
         version: 1.11.13
@@ -1996,8 +1996,8 @@ packages:
     resolution: {integrity: sha512-BkLMNpdV6prozk8LlyK/SOoWLmUFi+ZD+pcqti9ILCbVvHGk1ui1g4jJOc2WDLaeExz2qWwojxlPce5PljcT3w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@vercel/og@0.6.4':
-    resolution: {integrity: sha512-+IB8fYbVHEAtLfhCXSRS61Q/OfBJTaPCXhvGvXTBIUfs9lqZMDesZ2UnvKYbnEYHSMgCzBaj5BOq66iePl8mjw==}
+  '@vercel/og@0.6.5':
+    resolution: {integrity: sha512-GFXtgid3+TcVHTd668a10vGpzAh4Ty/yBZPRxKf1UicI8Vi8EthfvSxcaLW0KvQBBe1+d7TcjecLZHRT8JzQ4g==}
     engines: {node: '>=16'}
 
   '@vitest/expect@2.0.5':
@@ -5683,8 +5683,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  satori@0.12.0:
-    resolution: {integrity: sha512-e0e+qQyeFwEszujN7SpWpRtZgww7Nh8lSO3bUn2spHZ5JpqEl3zJ3P14/JlWruxEwdgREs35ZnavrPrWaRVFDg==}
+  satori@0.12.1:
+    resolution: {integrity: sha512-0SbjchvDrDbeXeQgxWVtSWxww7qcFgk3DtSE2/blHOSlLsSHwIqO2fCrtVa/EudJ7Eqno8A33QNx56rUyGbLuw==}
     engines: {node: '>=16'}
 
   saxes@6.0.0:
@@ -9161,10 +9161,10 @@ snapshots:
       '@typescript-eslint/types': 8.21.0
       eslint-visitor-keys: 4.2.0
 
-  '@vercel/og@0.6.4':
+  '@vercel/og@0.6.5':
     dependencies:
       '@resvg/resvg-wasm': 2.4.0
-      satori: 0.12.0
+      satori: 0.12.1
       yoga-wasm-web: 0.3.3
 
   '@vitest/expect@2.0.5':
@@ -13768,7 +13768,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  satori@0.12.0:
+  satori@0.12.1:
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
       css-background-parser: 0.1.0
