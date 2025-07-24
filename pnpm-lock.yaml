@@ -18,8 +18,8 @@ importers:
         specifier: ^4.29.12
         version: 4.36.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@vercel/og':
-        specifier: 0.6.5
-        version: 0.6.5
+        specifier: 0.8.5
+        version: 0.8.5
       dayjs:
         specifier: 1.11.13
         version: 1.11.13
@@ -2123,8 +2123,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@vercel/og@0.6.5':
-    resolution: {integrity: sha512-GFXtgid3+TcVHTd668a10vGpzAh4Ty/yBZPRxKf1UicI8Vi8EthfvSxcaLW0KvQBBe1+d7TcjecLZHRT8JzQ4g==}
+  '@vercel/og@0.8.5':
+    resolution: {integrity: sha512-fHqnxfBYcwkamlEgcIzaZqL8IHT09hR7FZL7UdMTdGJyoaBzM/dY6ulO5Swi4ig30FrBJI9I2C+GLV9sb9vexA==}
     engines: {node: '>=16'}
 
   '@vitest/expect@2.0.5':
@@ -3294,8 +3294,9 @@ packages:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
     engines: {node: '>=12'}
 
-  emoji-regex@10.2.1:
-    resolution: {integrity: sha512-97g6QgOk8zlDRdgq1WxwgTMgEWGVAQvB5Fdpgc1MkNy56la5SKP9GsMXKDOdqwn90/41a8yPwIGk1Y6WVbeMQA==}
+  emoji-regex-xs@2.0.1:
+    resolution: {integrity: sha512-1QFuh8l7LqUcKe24LsPUNzjrzJQ7pgRwp1QMcZ5MX6mFplk2zQ08NVCM84++1cveaUUYtcCYHmeFEuNg16sU4g==}
+    engines: {node: '>=10.0.0'}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -5819,8 +5820,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  satori@0.12.1:
-    resolution: {integrity: sha512-0SbjchvDrDbeXeQgxWVtSWxww7qcFgk3DtSE2/blHOSlLsSHwIqO2fCrtVa/EudJ7Eqno8A33QNx56rUyGbLuw==}
+  satori@0.16.0:
+    resolution: {integrity: sha512-ZvHN3ygzZ8FuxjSNB+mKBiF/NIoqHzlBGbD0MJiT+MvSsFOvotnWOhdTjxKzhHRT2wPC1QbhLzx2q/Y83VhfYQ==}
     engines: {node: '>=16'}
 
   saxes@6.0.0:
@@ -6940,8 +6941,8 @@ packages:
     resolution: {integrity: sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==}
     engines: {node: '>=12.20'}
 
-  yoga-wasm-web@0.3.3:
-    resolution: {integrity: sha512-N+d4UJSJbt/R3wqY7Coqs5pcV0aUj2j9IaQ3rNj9bVCLld8tTGKRa2USARjnvZJWVx1NDmQev8EknoczaOQDOA==}
+  yoga-layout@3.2.1:
+    resolution: {integrity: sha512-0LPOt3AxKqMdFBZA3HBAt/t/8vIKq7VaQYbuA8WxCgung+p9TVyKRYdpvCb80HcdTN2NkbIKbhNwKUfm3tQywQ==}
 
 snapshots:
 
@@ -9416,11 +9417,10 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.6.3':
     optional: true
 
-  '@vercel/og@0.6.5':
+  '@vercel/og@0.8.5':
     dependencies:
       '@resvg/resvg-wasm': 2.4.0
-      satori: 0.12.1
-      yoga-wasm-web: 0.3.3
+      satori: 0.16.0
 
   '@vitest/expect@2.0.5':
     dependencies:
@@ -10884,7 +10884,7 @@ snapshots:
 
   emittery@0.13.1: {}
 
-  emoji-regex@10.2.1: {}
+  emoji-regex-xs@2.0.1: {}
 
   emoji-regex@8.0.0: {}
 
@@ -14063,19 +14063,19 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  satori@0.12.1:
+  satori@0.16.0:
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
       css-background-parser: 0.1.0
       css-box-shadow: 1.0.0-3
       css-gradient-parser: 0.0.16
       css-to-react-native: 3.2.0
-      emoji-regex: 10.2.1
+      emoji-regex-xs: 2.0.1
       escape-html: 1.0.3
       linebreak: 1.1.0
       parse-css-color: 0.2.1
       postcss-value-parser: 4.2.0
-      yoga-wasm-web: 0.3.3
+      yoga-layout: 3.2.1
 
   saxes@6.0.0:
     dependencies:
@@ -15499,4 +15499,4 @@ snapshots:
 
   yocto-queue@1.0.0: {}
 
-  yoga-wasm-web@0.3.3: {}
+  yoga-layout@3.2.1: {}
