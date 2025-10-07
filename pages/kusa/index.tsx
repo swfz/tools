@@ -14,7 +14,10 @@ const KusaIndex: NextPage = () => {
     if (router.isReady) {
       const { users } = router.query;
       if (users && typeof users === 'string') {
-        const urlUsernames = users.split(',').map(name => name.trim()).filter(name => name);
+        const urlUsernames = users
+          .split(',')
+          .map((name) => name.trim())
+          .filter((name) => name);
         setUsernames(urlUsernames);
       }
     }
@@ -25,7 +28,7 @@ const KusaIndex: NextPage = () => {
     if (router.isReady) {
       const currentUsers = router.query.users as string;
       const newUsersParam = usernames.join(',');
-      
+
       if (usernames.length === 0) {
         // ユーザーが0人の場合はusersパラメータを削除
         if (currentUsers) {
@@ -54,16 +57,19 @@ const KusaIndex: NextPage = () => {
   const handleAddUsernames = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (multiInputText.trim()) {
-      const names = multiInputText.split(',').map(name => name.trim()).filter(name => name);
+      const names = multiInputText
+        .split(',')
+        .map((name) => name.trim())
+        .filter((name) => name);
       // 既存のユーザー名と重複しないものだけ追加
-      const newNames = names.filter(name => !usernames.includes(name));
-      setUsernames(prev => [...prev, ...newNames]);
+      const newNames = names.filter((name) => !usernames.includes(name));
+      setUsernames((prev) => [...prev, ...newNames]);
       setMultiInputText('');
     }
   };
 
   const handleRemoveUser = (usernameToRemove: string) => {
-    setUsernames(prev => prev.filter(name => name !== usernameToRemove));
+    setUsernames((prev) => prev.filter((name) => name !== usernameToRemove));
   };
 
   const handleClearUsernames = () => {
@@ -79,7 +85,7 @@ const KusaIndex: NextPage = () => {
         <div>
           <h1 className="text-3xl">Kusa</h1>
         </div>
-        
+
         {/* 個別ユーザー詳細表示セクション */}
         <div className="p-4">
           <h2 className="text-xl font-semibold mb-3">📊 個別ユーザー詳細表示</h2>
@@ -111,8 +117,12 @@ const KusaIndex: NextPage = () => {
           <div className="bg-green-50 p-3 rounded mb-3">
             <p className="text-sm mb-1">複数のGitHubユーザーの草画像を並べて比較できます</p>
             <ul className="text-xs list-disc list-inside ml-2 space-y-1">
-              <li><strong>一人ずつ追加</strong>: ユーザー名入力後「画像追加」をクリック</li>
-              <li><strong>複数一括追加</strong>: 「user1,user2,user3」のようにカンマ区切りで入力</li>
+              <li>
+                <strong>一人ずつ追加</strong>: ユーザー名入力後「画像追加」をクリック
+              </li>
+              <li>
+                <strong>複数一括追加</strong>: 「user1,user2,user3」のようにカンマ区切りで入力
+              </li>
             </ul>
           </div>
           <div className="flex flex-row items-center gap-2">
@@ -131,7 +141,7 @@ const KusaIndex: NextPage = () => {
               画像追加
             </button>
           </div>
-          
+
           {/* 複数ユーザー画像表示エリア */}
           {usernames.length > 0 && (
             <div className="mt-4">
@@ -151,9 +161,9 @@ const KusaIndex: NextPage = () => {
                   <div key={username} className="border border-gray-200 rounded-lg p-4 shadow-sm">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-lg font-semibold">
-                        <a 
-                          href={`https://github.com/${username}`} 
-                          target="_blank" 
+                        <a
+                          href={`https://github.com/${username}`}
+                          target="_blank"
                           rel="noreferrer"
                           className="text-blue-600 hover:underline"
                         >
@@ -177,8 +187,8 @@ const KusaIndex: NextPage = () => {
                         </a>
                       </div>
                     </div>
-                    <img 
-                      src={`https://kusa-image.deno.dev/${username}`} 
+                    <img
+                      src={`https://kusa-image.deno.dev/${username}`}
                       alt={`${username}'s GitHub Contributions`}
                       className="w-full max-w-4xl rounded border"
                     />
@@ -187,9 +197,13 @@ const KusaIndex: NextPage = () => {
               </div>
             </div>
           )}
-          
+
           <p className="mt-4 text-xs text-gray-600">
-            💡 コントリビューション画像は<a href="https://kusa-image.deno.dev/" className="text-blue-600 hover:underline">kusa-image</a>を使用しています
+            💡 コントリビューション画像は
+            <a href="https://kusa-image.deno.dev/" className="text-blue-600 hover:underline">
+              kusa-image
+            </a>
+            を使用しています
           </p>
         </div>
       </div>
