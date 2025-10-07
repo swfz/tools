@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState, useEffect } from 'react';
 import Head from 'next/head';
 
 const KusaIndex: NextPage = () => {
@@ -8,6 +8,35 @@ const KusaIndex: NextPage = () => {
   const [inputText, setInputText] = useState('');
   const [multiInputText, setMultiInputText] = useState('');
   const [usernames, setUsernames] = useState<string[]>([]);
+
+  // URLからusersパラメータを取得してstateを初期化
+  useEffect(() => {
+    if (router.isReady) {
+      const { users } = router.query;
+      if (users && typeof users === 'string') {
+        const urlUsernames = users.split(',').map(name => name.trim()).filter(name => name);
+        setUsernames(urlUsernames);
+      }
+    }
+  }, [router.isReady, router.query]);
+
+  // usernamesが変更されたらURLを更新
+  useEffect(() => {
+    if (router.isReady) {
+      const currentUsers = router.query.users as string;
+      const newUsersParam = usernames.join(',');
+      
+      if (usernames.length === 0) {
+        // ユーザーが0人の場合はusersパラメータを削除
+        if (currentUsers) {
+          router.replace('/kusa', undefined, { shallow: true });
+        }
+      } else if (currentUsers !== newUsersParam) {
+        // ユーザーリストが変更された場合はURLを更新
+        router.replace(`/kusa?users=${encodeURIComponent(newUsersParam)}`, undefined, { shallow: true });
+      }
+    }
+  }, [usernames, router]);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value);
