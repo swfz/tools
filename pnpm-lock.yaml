@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@primer/octicons-react':
-        specifier: 19.21.1
-        version: 19.21.1(react@19.2.3)
+        specifier: 19.21.2
+        version: 19.21.2(react@19.2.3)
       '@tailwindcss/forms':
         specifier: 0.5.11
         version: 0.5.11(tailwindcss@3.4.19)
@@ -1458,8 +1458,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@primer/octicons-react@19.21.1':
-    resolution: {integrity: sha512-DHaErpn2ZLMOJRxTdLf73eCDRvvil3xRmsOvKzg+I5KY0PsclYvEs/OX/Xb6fTK+PTteehidFvHBxrLYyEQ9Mg==}
+  '@primer/octicons-react@19.21.2':
+    resolution: {integrity: sha512-Bk+S08EpeeWLFscUxwEY8t5z14KxByhIbPG6OiYXSNrkbzN4fmRetnB/C+K1srn4BWuRSwwFxUwvDI2ytgNrFw==}
     engines: {node: '>=8'}
     peerDependencies:
       react: '>=16.3'
@@ -8429,7 +8429,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@primer/octicons-react@19.21.1(react@19.2.3)':
+  '@primer/octicons-react@19.21.2(react@19.2.3)':
     dependencies:
       react: 19.2.3
 
