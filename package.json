@@ -45,7 +45,7 @@
     "@types/gtag.js": "0.0.20",
     "@types/jest": "29.5.14",
     "@types/node": "22.19.11",
-    "@types/react": "19.2.9",
+    "@types/react": "19.2.14",
     "@types/react-dom": "^19.0.0",
     "@types/uuid": "11.0.0",
     "@typescript-eslint/parser": "^8.0.0",
