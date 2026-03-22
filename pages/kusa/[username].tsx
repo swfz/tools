@@ -4,6 +4,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { useEffect } from 'react';
 import { useInfiniteQuery, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Contributions from '@/components/kusa/contributions/contributions';
+import { calculateCurrentStreak, calculateCoverage } from '@/lib/contribution-stats';
 
 const queryClient = new QueryClient();
 
@@ -15,7 +16,7 @@ type Props = {
   coverage: number | string;
 };
 
-const contributionApiUrl = 'https://github-contributions-api.deno.dev';
+const contributionApiUrl = process.env.CONTRIBUTION_API_URL || 'https://github-contributions-api.deno.dev';
 
 const fetchContribution = async (url: string, username: string, to: string): Promise<(number | null)[]> => {
   const res = await fetch(`${url}/${username}.json?to=${to}`);
@@ -83,10 +84,8 @@ export const getServerSideProps = async (
     };
   }
 
-  const currentStreak = todayContributionCount > 0 ? contributions.indexOf(0) : contributions.slice(1).indexOf(0);
-  const coverage = Math.floor(
-    (contributions.slice(0, 365).filter((c: number | null) => c !== null && c > 0).length / 365) * 100,
-  );
+  const currentStreak = calculateCurrentStreak(contributions);
+  const coverage = calculateCoverage(contributions);
 
   return { props: { username, todayContributionCount, yesterdayContributionCount, currentStreak, coverage } };
 };

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import ContributionsByRepo from './contributions-by-repo';
 import ContributionsByEvent from './contributions-by-event';
 import ContributionsSimple from './contributions-simple';
-import { Commit, GitHubEvent } from './types';
+import { GitHubEvent } from './types';
+import { filterDependencyUpdateEvents } from './filter';
 
 type Props = {
   result: any;
@@ -12,33 +13,11 @@ type Props = {
 const Contributions = (props: Props) => {
   const [selectedTab, setSelectedTab] = useState<string>('simple');
   const [exclude, setExclude] = useState<boolean>(false);
-  const [apiResult, setApiResult] = useState([]);
+  const [apiResult, setApiResult] = useState<GitHubEvent[]>([]);
 
   useEffect(() => {
     if (exclude) {
-      const filtered = props.result.filter((row: GitHubEvent) => {
-        const isRenovateBranch = row.payload.ref_type === 'branch' && row.payload.ref.startsWith('renovate');
-        const isRenovatePR = row.payload.pull_request?.user?.login === 'renovate[bot]';
-        const isRenovatePush =
-          row.payload?.commits?.every((c: Commit) => c.message.includes('update dependency')) ||
-          row.payload?.commits?.every((c: Commit) => c.message.includes('Update dependency')) ||
-          row.payload?.commits?.at(-1).message.includes('renovate');
-
-        const isDependabotBranch = row.payload.ref_type === 'branch' && row.payload.ref.startsWith('dependabot');
-        const isDependabotPR = row.payload.pull_request?.user?.login === 'dependabot[bot]';
-        const isDependabotPush = row.payload?.commits?.every((c: Commit) => c.message.includes('dependabot'));
-
-        return (
-          !isRenovateBranch &&
-          !isRenovatePR &&
-          !isRenovatePush &&
-          !isDependabotBranch &&
-          !isDependabotPR &&
-          !isDependabotPush
-        );
-      });
-
-      setApiResult(filtered);
+      setApiResult(filterDependencyUpdateEvents(props.result));
     } else {
       setApiResult(props.result);
     }
