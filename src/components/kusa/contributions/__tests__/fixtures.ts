@@ -4,7 +4,11 @@ let idCounter = 1;
 
 const defaultRepo = { name: 'user/repo', url: 'https://api.github.com/repos/user/repo' };
 
-export const createGitHubEvent = (type: GitHubEventType, payload: any, overrides?: Partial<GitHubEvent>): GitHubEvent => ({
+export const createGitHubEvent = (
+  type: GitHubEventType,
+  payload: any,
+  overrides?: Partial<GitHubEvent>,
+): GitHubEvent => ({
   id: idCounter++,
   repo: defaultRepo,
   created_at: '2024-01-15T10:00:00Z',
@@ -32,10 +36,7 @@ export const createPushEvent = (overrides?: Partial<GitHubEvent>): GitHubEvent =
     overrides,
   );
 
-export const createPullRequestEvent = (
-  action: string = 'opened',
-  overrides?: Partial<GitHubEvent>,
-): GitHubEvent =>
+export const createPullRequestEvent = (action: string = 'opened', overrides?: Partial<GitHubEvent>): GitHubEvent =>
   createGitHubEvent(
     'PullRequestEvent',
     {

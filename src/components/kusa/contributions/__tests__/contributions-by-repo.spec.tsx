@@ -42,12 +42,7 @@ describe('ContributionsByRepo', () => {
   });
 
   test('複数イベントタイプが混在するデータで正常に表示される', () => {
-    const events = [
-      createPushEvent(),
-      createPullRequestEvent(),
-      createIssuesEvent(),
-      createWatchEvent(),
-    ];
+    const events = [createPushEvent(), createPullRequestEvent(), createIssuesEvent(), createWatchEvent()];
 
     expect(() => render(<ContributionsByRepo result={events} />)).not.toThrow();
   });

@@ -20,7 +20,7 @@ test.describe('Kusa ページ', () => {
   test('/kusa/swfz にアクセスしてページが表示される', async ({ page }) => {
     await mockGitHubEventsApi(page);
     await page.goto('/kusa/swfz');
-    await expect(page.locator('text=swfz\'s kusa')).toBeVisible();
+    await expect(page.locator("text=swfz's kusa")).toBeVisible();
   });
 
   test('OGメタタグが設定されている', async ({ page }) => {
