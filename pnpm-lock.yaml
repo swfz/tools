@@ -109,8 +109,8 @@ importers:
         specifier: 10.4.27
         version: 10.4.27(postcss@8.5.8)
       babel-loader:
-        specifier: 10.0.0
-        version: 10.0.0(@babel/core@7.29.0)(webpack@5.91.0(esbuild@0.18.20))
+        specifier: 10.1.1
+        version: 10.1.1(@babel/core@7.29.0)(webpack@5.91.0(esbuild@0.18.20))
       eslint:
         specifier: 9.39.4
         version: 9.39.4(jiti@1.21.7)
@@ -2620,12 +2620,18 @@ packages:
     peerDependencies:
       '@babel/core': ^7.8.0
 
-  babel-loader@10.0.0:
-    resolution: {integrity: sha512-z8jt+EdS61AMw22nSfoNJAZ0vrtmhPRVi6ghL3rCeRZI8cdNYFiV5xeV3HbE7rlZZNmGH8BVccwWt8/ED0QOHA==}
+  babel-loader@10.1.1:
+    resolution: {integrity: sha512-JwKSzk2kjIe7mgPK+/lyZ2QAaJcpahNAdM+hgR2HI8D0OJVkdj8Rl6J3kaLYki9pwF7P2iWnD8qVv80Lq1ABtg==}
     engines: {node: ^18.20.0 || ^20.10.0 || >=22.0.0}
     peerDependencies:
-      '@babel/core': ^7.12.0
+      '@babel/core': ^7.12.0 || ^8.0.0-beta.1
+      '@rspack/core': ^1.0.0 || ^2.0.0-0
       webpack: '>=5.61.0'
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+      webpack:
+        optional: true
 
   babel-loader@8.3.0:
     resolution: {integrity: sha512-H8SvsMF+m9t15HNLMipppzkC+Y2Yq+v3SonZyU70RBL/h1gxPkH08Ot8pEE9Z4Kd+czyWJClmFS8qzIP9OZ04Q==}
@@ -10128,10 +10134,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  babel-loader@10.0.0(@babel/core@7.29.0)(webpack@5.91.0(esbuild@0.18.20)):
+  babel-loader@10.1.1(@babel/core@7.29.0)(webpack@5.91.0(esbuild@0.18.20)):
     dependencies:
       '@babel/core': 7.29.0
       find-up: 5.0.0
+    optionalDependencies:
       webpack: 5.91.0(esbuild@0.18.20)
 
   babel-loader@8.3.0(@babel/core@7.29.0)(webpack@4.47.0):
