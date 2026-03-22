@@ -51,4 +51,20 @@ test.describe('Kusa ページ', () => {
     await checkbox.check();
     await expect(checkbox).toBeChecked();
   });
+
+  test('SSRで計算された貢献統計がページに表示される', async ({ page }) => {
+    await mockGitHubEventsApi(page);
+    await page.goto('/kusa/swfz');
+    // モックサーバーの固定データから算出される期待値:
+    // Today=5, Yesterday=3, Streak=7, Coverage=85%
+    const statsText = page.locator('text=Today: 5, Yesterday: 3, Streak: 7, Coverage: 85%');
+    await expect(statsText).toBeVisible();
+  });
+
+  test('OGメタタグのdescriptionに貢献統計が含まれる', async ({ page }) => {
+    await mockGitHubEventsApi(page);
+    await page.goto('/kusa/swfz');
+    const ogDesc = await page.getAttribute('meta[property="og:description"]', 'content');
+    expect(ogDesc).toBe('Today: 5, Yesterday: 3, Streak: 7, Coverage: 85%');
+  });
 });

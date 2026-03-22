@@ -7,16 +7,26 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const sampleEventsPath = path.resolve(__dirname, '../sample-github-public-event.json');
 const sampleEvents = JSON.parse(fs.readFileSync(sampleEventsPath, 'utf-8'));
 
-// Contribution APIのモックレスポンス（365日分、一部0を含む）
+// Contribution APIのモックレスポンス（365日分、決定的な固定データ）
+// 実APIと同じく日付昇順（古い順）で返す
+// fetchContribution内で .flat().reverse() されるため、reverse後:
+//   [0]=今日(5), [1]=昨日(3), [2]=2日前(2), [3-6]=1, [7]=0, ...
+// 期待値: Today=5, Yesterday=3, Streak=7, Coverage=85%
 const generateContributions = () => {
   const contributions = [];
   const today = new Date();
-  for (let i = 0; i < 365; i++) {
+  for (let i = 364; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(date.getDate() - i);
+    let count;
+    if (i === 0) count = 5;
+    else if (i === 1) count = 3;
+    else if (i === 2) count = 2;
+    else if (i % 7 === 0) count = 0;
+    else count = 1;
     contributions.push({
       date: date.toISOString().split('T')[0],
-      contributionCount: i < 3 ? 5 : i % 7 === 0 ? 0 : Math.floor(Math.random() * 10) + 1,
+      contributionCount: count,
     });
   }
   return [contributions];
