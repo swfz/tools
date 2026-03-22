@@ -184,6 +184,7 @@ export type Summary = {
   };
   repositories: CreateEventPayload[];
   stared: WatchEventPayload[];
+  forks: ForkEventPayload[];
   comments: {
     [key: string]: {
       repo: GitHubRepo;
