@@ -22,4 +22,12 @@ describe('iso8601DateExtract', () => {
   test('Tが含まれない入力でindex=1の場合、エラーが発生する', () => {
     expect(() => iso8601DateTimeExtract('2022-09-22', 1)).toThrow();
   });
+
+  test('undefinedが渡された場合、空文字を返す', () => {
+    expect(iso8601DateTimeExtract(undefined)).toBe('');
+  });
+
+  test('空文字が渡された場合、空文字を返す', () => {
+    expect(iso8601DateTimeExtract('')).toBe('');
+  });
 });
