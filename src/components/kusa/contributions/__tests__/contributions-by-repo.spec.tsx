@@ -47,6 +47,13 @@ describe('ContributionsByRepo', () => {
     expect(() => render(<ContributionsByRepo result={events} />)).not.toThrow();
   });
 
+  test('PushEventのcommitsがundefinedでもクラッシュしない', () => {
+    const pushEventWithoutCommits = createPushEvent();
+    pushEventWithoutCommits.payload.commits = undefined;
+
+    expect(() => render(<ContributionsByRepo result={[pushEventWithoutCommits]} />)).not.toThrow();
+  });
+
   test('BotユーザーのコミットはPushEventから除外される', () => {
     const botPushEvent = createPushEvent();
     botPushEvent.payload.commits = [
