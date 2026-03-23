@@ -205,7 +205,7 @@ const Timer: NextPage = () => {
     }, 200);
 
     return () => clearInterval(interval);
-  }, [count, elapsedMs, decrement, startMs, paused, writeToCanvas]);
+  }, [count, elapsedMs, decrement, startMs, paused, writeToCanvas, maxCount]);
 
   return (
     <>
