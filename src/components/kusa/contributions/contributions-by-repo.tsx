@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitHubEvent, PushEventPayload, Summary } from './types';
+import { GitHubEvent, SearchData, Summary } from './types';
 import { uniqueAndSortCommits, ignoreDuplicatePullRequest, aggregateIssues } from './aggregate';
 
 import Commits from './by-repo/commits';
@@ -11,49 +11,98 @@ import Forks from './by-repo/forks';
 import Comments from './by-repo/comments';
 
 type Props = {
-  result: any;
+  events: GitHubEvent[];
+  searchData: SearchData;
+};
+
+const repoNameFromUrl = (repositoryUrl: string): string => {
+  // "https://api.github.com/repos/swfz/tools" -> "swfz/tools"
+  return repositoryUrl.replace('https://api.github.com/repos/', '');
 };
 
 const ContributionsByRepo = (props: Props) => {
-  const grouped = props.result.reduce(
-    (acc: Summary, row: GitHubEvent) => {
-      if (row.type === 'PushEvent') {
-        // TODO: GitHubEventの型定義を解決すればこちらも解決する
-        // BotUserのコミットはノイズになるので除外する
-        const targetCommits = ((row.payload as PushEventPayload).commits ?? [])
-          .filter((c) => !c.author.email.match('@users.noreply.github.com'))
-          .map((c) => ({ ...c, date: row.created_at ?? '' }));
-        const commitData = [...(acc.commits[row.repo.name]?.data || []), ...targetCommits];
-        const commits = { ...acc.commits, [row.repo.name]: { repo: row.repo, data: commitData } };
+  // Search APIデータからPR/Commit/Issueを構築
+  const searchCommits: Summary['commits'] = {};
+  for (const c of props.searchData.commits) {
+    const repoName = c.repository.full_name;
+    if (!searchCommits[repoName]) {
+      searchCommits[repoName] = {
+        repo: { name: repoName, url: `https://api.github.com/repos/${repoName}` },
+        data: [],
+      };
+    }
+    searchCommits[repoName].data.push({
+      sha: c.sha,
+      message: c.commit.message,
+      url: `https://api.github.com/repos/${repoName}/commits/${c.sha}`,
+      author: { name: c.commit.author.name, email: c.commit.author.email },
+      date: c.commit.author.date,
+    });
+  }
 
-        return { ...acc, commits };
-      }
-      if (row.type === 'PullRequestEvent') {
-        const prPayloads = [...(acc.pullRequests[row.repo.name]?.data || []), row.payload];
-        const pullRequests = { ...acc.pullRequests, [row.repo.name]: { repo: row.repo, data: prPayloads } };
+  const searchPullRequests: Summary['pullRequests'] = {};
+  for (const pr of props.searchData.pullRequests) {
+    const repoName = repoNameFromUrl(pr.repository_url);
+    if (!searchPullRequests[repoName]) {
+      searchPullRequests[repoName] = {
+        repo: { name: repoName, url: pr.repository_url },
+        data: [],
+        stats: { count: 0, merged: 0, open: 0 },
+      };
+    }
+    const merged = pr.pull_request.merged_at !== null;
+    searchPullRequests[repoName].data.push({
+      action: merged ? 'merged' : pr.state === 'closed' ? 'closed' : 'opened',
+      number: pr.number,
+      pull_request: {
+        title: pr.title,
+        url: pr.pull_request.url,
+        html_url: pr.html_url,
+        number: pr.number,
+        state: pr.state,
+        updated_at: pr.updated_at,
+        additions: 0,
+        deletions: 0,
+        merged,
+      },
+    });
+  }
 
-        return { ...acc, pullRequests };
-      }
-      if (row.type === 'IssuesEvent') {
-        const issuesPayloads = [...(acc.issues[row.repo.name]?.data || []), row.payload];
-        const issues = { ...acc.issues, [row.repo.name]: { repo: row.repo, data: issuesPayloads } };
+  const searchIssues: Summary['issues'] = {};
+  for (const issue of props.searchData.issues) {
+    const repoName = repoNameFromUrl(issue.repository_url);
+    if (!searchIssues[repoName]) {
+      searchIssues[repoName] = {
+        repo: { name: repoName, url: issue.repository_url },
+        data: [],
+        stats: { open: 0, closed: 0 },
+      };
+    }
+    searchIssues[repoName].data.push({
+      action: issue.state === 'closed' ? 'closed' : 'opened',
+      number: issue.number,
+      issue: {
+        title: issue.title,
+        url: `https://api.github.com/repos/${repoName}/issues/${issue.number}`,
+        html_url: issue.html_url,
+        number: issue.number,
+        state: issue.state as 'open' | 'closed',
+        updated_at: issue.updated_at,
+      },
+    });
+  }
 
-        return { ...acc, issues };
-      }
+  // Events APIデータからStar/Fork/Create/Delete/Commentsを構築
+  const eventsGrouped = props.events.reduce(
+    (acc, row: GitHubEvent) => {
       if (row.type === 'CreateEvent' && row.payload.ref_type === 'repository') {
-        const repositories = [...acc.repositories, row];
-
-        return { ...acc, repositories };
+        return { ...acc, repositories: [...acc.repositories, row] };
       }
       if (row.type === 'WatchEvent' && row.payload.action === 'started') {
-        const stared = [...acc.stared, row];
-
-        return { ...acc, stared };
+        return { ...acc, stared: [...acc.stared, row] };
       }
       if (row.type === 'ForkEvent') {
-        const forks = [...acc.forks, row.payload];
-
-        return { ...acc, forks };
+        return { ...acc, forks: [...acc.forks, row.payload] };
       }
       if (
         ['IssueCommentEvent', 'PullRequestReviewCommentEvent', 'PullRequestReviewEvent', 'CommitCommentEvent'].includes(
@@ -65,41 +114,37 @@ const ContributionsByRepo = (props: Props) => {
           ...acc.comments,
           [row.repo.name]: { repo: row.repo, data: commentsPayloads },
         };
-
         return { ...acc, comments };
       }
       return acc;
     },
     {
-      issues: {},
-      pullRequests: {},
-      commits: {},
-      repositories: [],
-      stared: [],
-      forks: [],
-      comments: {},
+      repositories: [] as GitHubEvent[],
+      stared: [] as GitHubEvent[],
+      forks: [] as any[],
+      comments: {} as Summary['comments'],
     },
   );
 
   const summary = {
-    issues: aggregateIssues(grouped.issues),
-    pullRequests: ignoreDuplicatePullRequest(grouped.pullRequests),
-    commits: uniqueAndSortCommits(grouped.commits),
-    repositories: grouped.repositories,
-    stared: grouped.stared,
-    forks: grouped.forks,
-    comments: grouped.comments,
+    issues: aggregateIssues(searchIssues),
+    pullRequests: ignoreDuplicatePullRequest(searchPullRequests),
+    commits: uniqueAndSortCommits(searchCommits),
+    repositories: eventsGrouped.repositories,
+    stared: eventsGrouped.stared,
+    forks: eventsGrouped.forks,
+    comments: eventsGrouped.comments,
   };
 
   return (
     <>
-      <Commits commits={summary.commits}></Commits>
-      <PullRequests pullRequests={summary.pullRequests}></PullRequests>
-      <Issues issues={summary.issues}></Issues>
-      <Repositories repositories={summary.repositories}></Repositories>
-      <StaredRepositories repositories={summary.stared}></StaredRepositories>
-      <Forks forks={summary.forks}></Forks>
-      <Comments comments={summary.comments}></Comments>
+      <Commits commits={summary.commits} />
+      <PullRequests pullRequests={summary.pullRequests} />
+      <Issues issues={summary.issues} />
+      <Repositories repositories={summary.repositories} />
+      <StaredRepositories repositories={summary.stared} />
+      <Forks forks={summary.forks} />
+      <Comments comments={summary.comments} />
     </>
   );
 };

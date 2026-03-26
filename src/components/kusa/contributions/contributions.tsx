@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import ContributionsByRepo from './contributions-by-repo';
-import ContributionsByEvent from './contributions-by-event';
 import ContributionsSimple from './contributions-simple';
-import { GitHubEvent } from './types';
-import { filterDependencyUpdateEvents } from './filter';
+import { GitHubEvent, SearchData } from './types';
+import { filterDependencyUpdateEvents, filterDependencyUpdateSearchData } from './filter';
 
 type Props = {
-  result: any;
+  events: GitHubEvent[];
+  searchData: SearchData;
   username: string;
 };
 
 const Contributions = (props: Props) => {
   const [selectedTab, setSelectedTab] = useState<string>('simple');
   const [exclude, setExclude] = useState<boolean>(false);
-  const [apiResult, setApiResult] = useState<GitHubEvent[]>([]);
+  const [filteredEvents, setFilteredEvents] = useState<GitHubEvent[]>([]);
+  const [filteredSearchData, setFilteredSearchData] = useState<SearchData>(props.searchData);
 
   useEffect(() => {
     if (exclude) {
-      setApiResult(filterDependencyUpdateEvents(props.result));
+      setFilteredEvents(filterDependencyUpdateEvents(props.events));
+      setFilteredSearchData(filterDependencyUpdateSearchData(props.searchData));
     } else {
-      setApiResult(props.result);
+      setFilteredEvents(props.events);
+      setFilteredSearchData(props.searchData);
     }
-  }, [exclude, props.result]);
+  }, [exclude, props.events, props.searchData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setExclude(e.target.checked);
@@ -30,7 +33,6 @@ const Contributions = (props: Props) => {
   const tabs = [
     { name: 'simple', displayName: 'Simple List' },
     { name: 'repo', displayName: 'Group By Repo' },
-    // { name: 'event', displayName: 'Group By Event' },
   ];
 
   return (
@@ -61,9 +63,8 @@ const Contributions = (props: Props) => {
         })}
       </nav>
 
-      {selectedTab == 'simple' && <ContributionsSimple result={apiResult}></ContributionsSimple>}
-      {selectedTab == 'repo' && <ContributionsByRepo result={apiResult}></ContributionsByRepo>}
-      {/* {selectedTab == 'event' && <ContributionsByEvent result={props.result}></ContributionsByEvent>} */}
+      {selectedTab == 'simple' && <ContributionsSimple events={filteredEvents} searchData={filteredSearchData} />}
+      {selectedTab == 'repo' && <ContributionsByRepo events={filteredEvents} searchData={filteredSearchData} />}
     </div>
   );
 };

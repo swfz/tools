@@ -154,6 +154,57 @@ export type GitHubEvent = {
 
 export type CommitData = Commit & { date: string };
 
+// Search API response types
+export type SearchPullRequest = {
+  title: string;
+  number: number;
+  state: string;
+  html_url: string;
+  created_at: string;
+  updated_at: string;
+  repository_url: string;
+  pull_request: {
+    url: string;
+    html_url: string;
+    diff_url: string;
+    patch_url: string;
+    merged_at: string | null;
+  };
+};
+
+export type SearchCommit = {
+  sha: string;
+  html_url: string;
+  commit: {
+    message: string;
+    author: {
+      date: string;
+      name: string;
+      email: string;
+    };
+  };
+  repository: {
+    full_name: string;
+    html_url: string;
+  };
+};
+
+export type SearchIssue = {
+  title: string;
+  number: number;
+  state: string;
+  html_url: string;
+  created_at: string;
+  updated_at: string;
+  repository_url: string;
+};
+
+export type SearchData = {
+  pullRequests: SearchPullRequest[];
+  commits: SearchCommit[];
+  issues: SearchIssue[];
+};
+
 export type Summary = {
   commits: {
     [key: string]: {

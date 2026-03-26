@@ -82,10 +82,12 @@ const PullRequests = ({ pullRequests }: { pullRequests: Summary['pullRequests'] 
                         </a>
                       </span>
                       <span className="sm:basis-8/12">{pr.pull_request.title}</span>
-                      <span className="content-end text-xs font-bold sm:basis-2/12 sm:text-right">
-                        <span className="text-green-700">+{pr.pull_request.additions}</span>{' '}
-                        <span className="text-red-700">-{pr.pull_request.deletions}</span>
-                      </span>
+                      {(pr.pull_request.additions > 0 || pr.pull_request.deletions > 0) && (
+                        <span className="content-end text-xs font-bold sm:basis-2/12 sm:text-right">
+                          <span className="text-green-700">+{pr.pull_request.additions}</span>{' '}
+                          <span className="text-red-700">-{pr.pull_request.deletions}</span>
+                        </span>
+                      )}
                     </li>
                   );
                 })}

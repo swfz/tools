@@ -1,5 +1,5 @@
-import { filterDependencyUpdateEvents } from '../filter';
-import { GitHubEvent } from '../types';
+import { filterDependencyUpdateEvents, filterDependencyUpdateSearchData } from '../filter';
+import { GitHubEvent, SearchData, SearchPullRequest, SearchCommit } from '../types';
 
 const makeEvent = (type: string, payload: any): GitHubEvent => ({
   id: 1,
@@ -142,5 +142,154 @@ describe('filterDependencyUpdateEvents', () => {
     expect(result).toHaveLength(2);
     expect(result[0].type).toBe('PushEvent');
     expect(result[1].type).toBe('PullRequestEvent');
+  });
+});
+
+const makeSearchPR = (title: string, htmlUrl: string): SearchPullRequest => ({
+  title,
+  number: 1,
+  state: 'open',
+  html_url: htmlUrl,
+  created_at: '2024-01-01T00:00:00Z',
+  updated_at: '2024-01-01T00:00:00Z',
+  repository_url: 'https://api.github.com/repos/user/repo',
+  pull_request: {
+    url: '',
+    html_url: htmlUrl,
+    diff_url: '',
+    patch_url: '',
+    merged_at: null,
+  },
+});
+
+const makeSearchCommit = (message: string): SearchCommit => ({
+  sha: 'abc123',
+  html_url: 'https://github.com/user/repo/commit/abc123',
+  commit: {
+    message,
+    author: { date: '2024-01-01T00:00:00Z', name: 'test', email: 'test@example.com' },
+  },
+  repository: { full_name: 'user/repo', html_url: 'https://github.com/user/repo' },
+});
+
+const emptySearchData: SearchData = { pullRequests: [], commits: [], issues: [] };
+
+describe('filterDependencyUpdateSearchData', () => {
+  test('空データで空データが返る', () => {
+    const result = filterDependencyUpdateSearchData(emptySearchData);
+    expect(result.pullRequests).toEqual([]);
+    expect(result.commits).toEqual([]);
+  });
+
+  test('通常のPRとコミットは保持される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      pullRequests: [makeSearchPR('feat: add new feature', 'https://github.com/user/repo/pull/1')],
+      commits: [makeSearchCommit('feat: add new feature')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.pullRequests).toHaveLength(1);
+    expect(result.commits).toHaveLength(1);
+  });
+
+  test('renovateのURLを含むPRが除外される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      pullRequests: [makeSearchPR('Update eslint to v9', 'https://github.com/user/repo/pull/1/renovate/eslint-9.x')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.pullRequests).toHaveLength(0);
+  });
+
+  test('update dependencyタイトルのPRが除外される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      pullRequests: [makeSearchPR('Update dependency eslint to v9', 'https://github.com/user/repo/pull/1')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.pullRequests).toHaveLength(0);
+  });
+
+  test('chore(deps)タイトルのPRが除外される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      pullRequests: [makeSearchPR('chore(deps): update eslint', 'https://github.com/user/repo/pull/1')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.pullRequests).toHaveLength(0);
+  });
+
+  test('dependabotのURLを含むPRが除外される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      pullRequests: [makeSearchPR('Bump eslint from 8 to 9', 'https://github.com/user/repo/pull/1/dependabot/npm')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.pullRequests).toHaveLength(0);
+  });
+
+  test('bump タイトルのPRが除外される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      pullRequests: [makeSearchPR('Bump eslint from 8.0 to 9.0', 'https://github.com/user/repo/pull/1')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.pullRequests).toHaveLength(0);
+  });
+
+  test('renovateメッセージのコミットが除外される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      commits: [makeSearchCommit('chore(deps): renovate update eslint')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.commits).toHaveLength(0);
+  });
+
+  test('dependabotメッセージのコミットが除外される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      commits: [makeSearchCommit('dependabot bump eslint from 8 to 9')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.commits).toHaveLength(0);
+  });
+
+  test('update dependencyメッセージのコミットが除外される', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      commits: [makeSearchCommit('Update dependency eslint to v9')],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.commits).toHaveLength(0);
+  });
+
+  test('issuesはフィルタされない', () => {
+    const data: SearchData = {
+      ...emptySearchData,
+      issues: [
+        {
+          title: 'renovate issue',
+          number: 1,
+          state: 'open',
+          html_url: '',
+          created_at: '',
+          updated_at: '',
+          repository_url: '',
+        },
+      ],
+    };
+
+    const result = filterDependencyUpdateSearchData(data);
+    expect(result.issues).toHaveLength(1);
   });
 });
