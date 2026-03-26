@@ -5,7 +5,11 @@ import { useEffect } from 'react';
 import { useInfiniteQuery, useQuery, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Contributions from '@/components/kusa/contributions/contributions';
 import { calculateCurrentStreak, calculateCoverage } from '@/lib/contribution-stats';
-import { fetchSearchPullRequests, fetchSearchCommits, fetchSearchIssues } from '@/components/kusa/contributions/search-api';
+import {
+  fetchSearchPullRequests,
+  fetchSearchCommits,
+  fetchSearchIssues,
+} from '@/components/kusa/contributions/search-api';
 import { SearchData } from '@/components/kusa/contributions/types';
 
 const queryClient = new QueryClient();
@@ -106,26 +110,24 @@ const Detail = ({ username }: { username: string }) => {
   const queryFn = createQueryFn(username);
 
   // Events API (Star/Fork/Create/Delete/Comments用)
-  const { status: eventsStatus, data: eventsData, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    ['events'],
-    queryFn,
-    {
-      getNextPageParam: (lastPage, allPages) => (allPages.length >= 3 ? undefined : allPages.length + 1),
-    },
-  );
+  const {
+    status: eventsStatus,
+    data: eventsData,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(['events'], queryFn, {
+    getNextPageParam: (lastPage, allPages) => (allPages.length >= 3 ? undefined : allPages.length + 1),
+  });
 
   // Search API (PR/Commit/Issue用)
-  const { status: searchStatus, data: searchData } = useQuery<SearchData>(
-    ['search', username],
-    async () => {
-      const [pullRequests, commits, issues] = await Promise.all([
-        fetchSearchPullRequests(username),
-        fetchSearchCommits(username),
-        fetchSearchIssues(username),
-      ]);
-      return { pullRequests, commits, issues };
-    },
-  );
+  const { status: searchStatus, data: searchData } = useQuery<SearchData>(['search', username], async () => {
+    const [pullRequests, commits, issues] = await Promise.all([
+      fetchSearchPullRequests(username),
+      fetchSearchCommits(username),
+      fetchSearchIssues(username),
+    ]);
+    return { pullRequests, commits, issues };
+  });
 
   useEffect(() => {
     fetchNextPage();

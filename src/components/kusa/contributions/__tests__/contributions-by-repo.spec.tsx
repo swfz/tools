@@ -1,12 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ContributionsByRepo from '../contributions-by-repo';
-import {
-  createCreateEvent,
-  createWatchEvent,
-  createForkEvent,
-  createIssueCommentEvent,
-} from './fixtures';
+import { createCreateEvent, createWatchEvent, createForkEvent, createIssueCommentEvent } from './fixtures';
 import { SearchData, SearchPullRequest, SearchCommit, SearchIssue } from '../types';
 
 const emptySearchData: SearchData = { pullRequests: [], commits: [], issues: [] };
@@ -108,7 +103,11 @@ describe('ContributionsByRepo', () => {
     const searchData: SearchData = {
       ...emptySearchData,
       pullRequests: [
-        makeSearchPR({ number: 1, state: 'closed', pull_request: { ...makeSearchPR().pull_request, merged_at: '2024-01-15T10:00:00Z' } }),
+        makeSearchPR({
+          number: 1,
+          state: 'closed',
+          pull_request: { ...makeSearchPR().pull_request, merged_at: '2024-01-15T10:00:00Z' },
+        }),
         makeSearchPR({ number: 2, state: 'open' }),
       ],
     };

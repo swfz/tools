@@ -36,11 +36,7 @@ const isDependencyUpdateTitle = (title: string): boolean => {
 
 const isDependencyUpdateCommitMessage = (message: string): boolean => {
   const lower = message.toLowerCase();
-  return (
-    lower.includes('update dependency') ||
-    lower.includes('renovate') ||
-    lower.includes('dependabot')
-  );
+  return lower.includes('update dependency') || lower.includes('renovate') || lower.includes('dependabot');
 };
 
 export const filterDependencyUpdateSearchData = (searchData: SearchData): SearchData => {

@@ -276,7 +276,17 @@ describe('filterDependencyUpdateSearchData', () => {
   test('issuesはフィルタされない', () => {
     const data: SearchData = {
       ...emptySearchData,
-      issues: [{ title: 'renovate issue', number: 1, state: 'open', html_url: '', created_at: '', updated_at: '', repository_url: '' }],
+      issues: [
+        {
+          title: 'renovate issue',
+          number: 1,
+          state: 'open',
+          html_url: '',
+          created_at: '',
+          updated_at: '',
+          repository_url: '',
+        },
+      ],
     };
 
     const result = filterDependencyUpdateSearchData(data);

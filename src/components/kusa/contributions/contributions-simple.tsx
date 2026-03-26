@@ -48,12 +48,7 @@ const SearchCommitRow = ({ commit }: { commit: SearchCommit }) => {
   return (
     <ul className="list-disc">
       <li className="ml-8">
-        <a
-          href={commit.html_url}
-          target="_blank"
-          rel="noreferrer"
-          className="text-blue-600 hover:underline"
-        >
+        <a href={commit.html_url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
           {commit.sha.substring(0, 6)}
         </a>{' '}
         {commit.commit.message.split('\n')[0]}
@@ -169,10 +164,14 @@ const CommitCommentEvent = ({ payload }: { payload: CommitCommentEventPayload })
 
 const rowTypeName = (row: SimpleRow): string => {
   switch (row.kind) {
-    case 'search-pr': return 'PullRequestEvent';
-    case 'search-commit': return 'PushEvent';
-    case 'search-issue': return 'IssuesEvent';
-    case 'event': return row.data.type;
+    case 'search-pr':
+      return 'PullRequestEvent';
+    case 'search-commit':
+      return 'PushEvent';
+    case 'search-issue':
+      return 'IssuesEvent';
+    case 'event':
+      return row.data.type;
   }
 };
 
@@ -191,7 +190,8 @@ const EventDetail = ({ row }: { row: SimpleRow }) => {
       if (event.type === 'WatchEvent') return <WatchEvent payload={event.payload} />;
       if (event.type === 'IssueCommentEvent') return <IssueCommentEvent payload={event.payload} />;
       if (event.type === 'ForkEvent') return <ForkEvent payload={event.payload} />;
-      if (event.type === 'PullRequestReviewCommentEvent') return <PullRequestReviewCommentEvent payload={event.payload} />;
+      if (event.type === 'PullRequestReviewCommentEvent')
+        return <PullRequestReviewCommentEvent payload={event.payload} />;
       if (event.type === 'PullRequestReviewEvent') return <PullRequestReviewEvent payload={event.payload} />;
       if (event.type === 'CommitCommentEvent') return <CommitCommentEvent payload={event.payload} />;
       return null;

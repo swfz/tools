@@ -24,10 +24,7 @@ export const fetchSearchPullRequests = async (
   return json.items;
 };
 
-export const fetchSearchCommits = async (
-  username: string,
-  since: string = defaultSince(),
-): Promise<SearchCommit[]> => {
+export const fetchSearchCommits = async (username: string, since: string = defaultSince()): Promise<SearchCommit[]> => {
   const q = `author:${username}+author-date:>${since}`;
   const res = await fetch(`${SEARCH_API_BASE}/commits?q=${q}&per_page=100&sort=author-date&order=desc`);
 
@@ -37,10 +34,7 @@ export const fetchSearchCommits = async (
   return json.items;
 };
 
-export const fetchSearchIssues = async (
-  username: string,
-  since: string = defaultSince(),
-): Promise<SearchIssue[]> => {
+export const fetchSearchIssues = async (username: string, since: string = defaultSince()): Promise<SearchIssue[]> => {
   const q = `author:${username}+type:issue+created:>${since}`;
   const res = await fetch(`${SEARCH_API_BASE}/issues?q=${q}&per_page=100&sort=created&order=desc`);
 
