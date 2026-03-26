@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitHubEvent, PushEventPayload, SearchData, Summary } from './types';
+import { GitHubEvent, SearchData, Summary } from './types';
 import { uniqueAndSortCommits, ignoreDuplicatePullRequest, aggregateIssues } from './aggregate';
 
 import Commits from './by-repo/commits';
