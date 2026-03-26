@@ -2,9 +2,11 @@ import Head from 'next/head';
 import dayjs from 'dayjs';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { useEffect } from 'react';
-import { useInfiniteQuery, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Contributions from '@/components/kusa/contributions/contributions';
 import { calculateCurrentStreak, calculateCoverage } from '@/lib/contribution-stats';
+import { fetchSearchPullRequests, fetchSearchCommits, fetchSearchIssues } from '@/components/kusa/contributions/search-api';
+import { SearchData } from '@/components/kusa/contributions/types';
 
 const queryClient = new QueryClient();
 
@@ -103,7 +105,8 @@ const Detail = ({ username }: { username: string }) => {
   const queryClient = useQueryClient();
   const queryFn = createQueryFn(username);
 
-  const { status, data, error, isFetching, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery(
+  // Events API (Star/Fork/Create/Delete/Comments用)
+  const { status: eventsStatus, data: eventsData, fetchNextPage, hasNextPage } = useInfiniteQuery(
     ['events'],
     queryFn,
     {
@@ -111,14 +114,30 @@ const Detail = ({ username }: { username: string }) => {
     },
   );
 
+  // Search API (PR/Commit/Issue用)
+  const { status: searchStatus, data: searchData } = useQuery<SearchData>(
+    ['search', username],
+    async () => {
+      const [pullRequests, commits, issues] = await Promise.all([
+        fetchSearchPullRequests(username),
+        fetchSearchCommits(username),
+        fetchSearchIssues(username),
+      ]);
+      return { pullRequests, commits, issues };
+    },
+  );
+
   useEffect(() => {
     fetchNextPage();
   }, [fetchNextPage]);
 
-  return status === 'loading' ? (
+  const isLoading = eventsStatus === 'loading' || searchStatus === 'loading';
+  const isError = eventsStatus === 'error' || searchStatus === 'error';
+
+  return isLoading ? (
     <div>Loading...</div>
-  ) : status === 'error' ? (
-    <div>Eerror</div>
+  ) : isError ? (
+    <div>Error</div>
   ) : (
     <>
       <div className="flex justify-start sm:justify-end">
@@ -133,7 +152,11 @@ const Detail = ({ username }: { username: string }) => {
         </button>
       </div>
 
-      <Contributions result={data.pages.flat()} username={username}></Contributions>
+      <Contributions
+        events={eventsData?.pages.flat() ?? []}
+        searchData={searchData ?? { pullRequests: [], commits: [], issues: [] }}
+        username={username}
+      />
     </>
   );
 };

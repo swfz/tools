@@ -2,6 +2,7 @@ import React from 'react';
 import { StoryFn, Meta } from '@storybook/react';
 import ContributionsSimple from './contributions-simple';
 import sampleResponse from '../../../../sample-github-public-event.json';
+import { GitHubEvent } from './types';
 
 export default {
   /* 👇 The title prop is optional.
@@ -18,5 +19,6 @@ const Template: StoryFn<typeof ContributionsSimple> = (args) => <ContributionsSi
 export const SimpleView = Template.bind({});
 
 SimpleView.args = {
-  result: sampleResponse,
+  events: sampleResponse as unknown as GitHubEvent[],
+  searchData: { pullRequests: [], commits: [], issues: [] },
 };

@@ -2,11 +2,15 @@ import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Contributions from '../contributions';
-import { createPushEvent, createPullRequestEvent } from './fixtures';
+import { createPushEvent, createPullRequestEvent, createWatchEvent } from './fixtures';
+import { SearchData } from '../types';
+
+const emptySearchData: SearchData = { pullRequests: [], commits: [], issues: [] };
 
 describe('Contributions', () => {
   const defaultProps = {
-    result: [createPushEvent(), createPullRequestEvent()],
+    events: [createWatchEvent()],
+    searchData: emptySearchData,
     username: 'testuser',
   };
 
@@ -38,6 +42,6 @@ describe('Contributions', () => {
   });
 
   test('空配列でクラッシュしない', () => {
-    expect(() => render(<Contributions result={[]} username="testuser" />)).not.toThrow();
+    expect(() => render(<Contributions events={[]} searchData={emptySearchData} username="testuser" />)).not.toThrow();
   });
 });
