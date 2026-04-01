@@ -115,25 +115,31 @@ const Detail = ({ username }: { username: string }) => {
     data: eventsData,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery(['events'], queryFn, {
+  } = useInfiniteQuery({
+    queryKey: ['events'],
+    queryFn,
+    initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => (allPages.length >= 3 ? undefined : allPages.length + 1),
   });
 
   // Search API (PR/Commit/Issue用)
-  const { status: searchStatus, data: searchData } = useQuery<SearchData>(['search', username], async () => {
-    const [pullRequests, commits, issues] = await Promise.all([
-      fetchSearchPullRequests(username),
-      fetchSearchCommits(username),
-      fetchSearchIssues(username),
-    ]);
-    return { pullRequests, commits, issues };
+  const { status: searchStatus, data: searchData } = useQuery<SearchData>({
+    queryKey: ['search', username],
+    queryFn: async () => {
+      const [pullRequests, commits, issues] = await Promise.all([
+        fetchSearchPullRequests(username),
+        fetchSearchCommits(username),
+        fetchSearchIssues(username),
+      ]);
+      return { pullRequests, commits, issues };
+    },
   });
 
   useEffect(() => {
     fetchNextPage();
   }, [fetchNextPage]);
 
-  const isLoading = eventsStatus === 'loading' || searchStatus === 'loading';
+  const isLoading = eventsStatus === 'pending' || searchStatus === 'pending';
   const isError = eventsStatus === 'error' || searchStatus === 'error';
 
   return isLoading ? (
