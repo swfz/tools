@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "lint:format": "prettier --check './**/*.{js,ts,tsx,json,css}'",
     "format": "prettier --write './**/*.{js,ts,tsx,json,css}'",
     "storybook": "start-storybook -p 6006",
