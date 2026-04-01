@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import ContributionsByRepo from './contributions-by-repo';
 import ContributionsSimple from './contributions-simple';
 import { GitHubEvent, SearchData } from './types';
@@ -13,18 +13,15 @@ type Props = {
 const Contributions = (props: Props) => {
   const [selectedTab, setSelectedTab] = useState<string>('simple');
   const [exclude, setExclude] = useState<boolean>(false);
-  const [filteredEvents, setFilteredEvents] = useState<GitHubEvent[]>([]);
-  const [filteredSearchData, setFilteredSearchData] = useState<SearchData>(props.searchData);
 
-  useEffect(() => {
-    if (exclude) {
-      setFilteredEvents(filterDependencyUpdateEvents(props.events));
-      setFilteredSearchData(filterDependencyUpdateSearchData(props.searchData));
-    } else {
-      setFilteredEvents(props.events);
-      setFilteredSearchData(props.searchData);
-    }
-  }, [exclude, props.events, props.searchData]);
+  const filteredEvents = useMemo(
+    () => (exclude ? filterDependencyUpdateEvents(props.events) : props.events),
+    [exclude, props.events],
+  );
+  const filteredSearchData = useMemo(
+    () => (exclude ? filterDependencyUpdateSearchData(props.searchData) : props.searchData),
+    [exclude, props.searchData],
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setExclude(e.target.checked);

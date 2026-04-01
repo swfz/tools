@@ -83,8 +83,8 @@ const DocumentPinpTimer: NextPage = () => {
 
           link.rel = 'stylesheet';
           link.type = styleSheet.type;
-          link.media = styleSheet.media;
-          link.href = styleSheet.href;
+          link.media = styleSheet.media.mediaText;
+          link.href = styleSheet.href ?? '';
           if (pipWindow.current !== null) {
             pipWindow.current.document.head.appendChild(link);
           }
