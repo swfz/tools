@@ -41,6 +41,11 @@ const fetchContribution = async (url: string, username: string, to: string): Pro
 
   const json = await res.json();
 
+  if (!json.contributions || !Array.isArray(json.contributions) || json.contributions.length === 0) {
+    console.log('Unexpected contributions format:', json);
+    return [null, null];
+  }
+
   if (!to) {
     console.log(json.contributions.at(-1));
   }
@@ -75,9 +80,9 @@ export const getServerSideProps = async (
   console.log(Intl.DateTimeFormat().resolvedOptions().timeZone, [todayContributionCount, yesterdayContributionCount]);
 
   if (
-    todayContributionCount === null ||
-    yesterdayContributionCount === null ||
-    contributions.some((c: number | null) => c === null)
+    todayContributionCount == null ||
+    yesterdayContributionCount == null ||
+    contributions.some((c: number | null) => c == null)
   ) {
     return {
       props: {
@@ -99,7 +104,14 @@ export const getServerSideProps = async (
 const createQueryFn = (username: string) => {
   const fetchEvents = async ({ pageParam = 1 }) => {
     const res = await fetch(`https://api.github.com/users/${username}/events?per_page=100&page=${pageParam}`);
-    return res.json();
+
+    if (!res.ok) {
+      console.log(`Failed to fetch events: ${res.status}`);
+      return [];
+    }
+
+    const json = await res.json();
+    return Array.isArray(json) ? json : [];
   };
 
   return fetchEvents;
