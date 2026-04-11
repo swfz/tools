@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     name: run eslint
     steps:
-      - uses: actions/checkout@v6.0.2
-      - uses: pnpm/action-setup@v5.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
           run_install: true
-      - uses: actions/setup-node@v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: .node-version
           cache: pnpm
@@ -24,11 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     name: run prettier check
     steps:
-      - uses: actions/checkout@v6.0.2
-      - uses: pnpm/action-setup@v5.0.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
         with:
           run_install: true
-      - uses: actions/setup-node@v6.3.0
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: .node-version
           cache: pnpm
@@ -42,11 +42,11 @@ jobs:
     name: post slack
     runs-on: ubuntu-latest
     steps:
-      - uses: swfz/slack-workflow-status@v1.4.0
+      - uses: swfz/slack-workflow-status@e6d0c984ad7d32737692508f1a4e4390f16e8fdd # v1.4.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-      - uses: swfz/failed-log-to-slack-action@v1.1.0
+      - uses: swfz/failed-log-to-slack-action@5e26213c694dbc972a06e6cfab2e31db7453f164 # v1.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
