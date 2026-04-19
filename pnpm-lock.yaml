@@ -49,16 +49,16 @@ importers:
         specifier: 7.29.0
         version: 7.29.0
       '@eslint/compat':
-        specifier: ^2.0.0
+        specifier: 2.0.5
         version: 2.0.5(eslint@9.39.4(jiti@2.6.1))
       '@eslint/eslintrc':
-        specifier: ^3.2.0
+        specifier: 3.3.5
         version: 3.3.5
       '@eslint/js':
-        specifier: ^9.15.0
+        specifier: 9.39.4
         version: 9.39.4
       '@playwright/test':
-        specifier: ^1.58.2
+        specifier: 1.59.1
         version: 1.59.1
       '@storybook/addon-actions':
         specifier: 9.0.8
@@ -88,16 +88,16 @@ importers:
         specifier: 0.2.2
         version: 0.2.2
       '@tailwindcss/postcss':
-        specifier: ^4.2.2
+        specifier: 4.2.2
         version: 4.2.2
       '@testing-library/jest-dom':
-        specifier: ^6.9.1
+        specifier: 6.9.1
         version: 6.9.1
       '@testing-library/react':
-        specifier: ^16.3.2
+        specifier: 16.3.2
         version: 16.3.2(@testing-library/dom@10.4.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@testing-library/user-event':
-        specifier: ^14.6.1
+        specifier: 14.6.1
         version: 14.6.1(@testing-library/dom@10.4.0)
       '@types/gtag.js':
         specifier: 0.0.20
@@ -118,7 +118,7 @@ importers:
         specifier: 11.0.0
         version: 11.0.0
       '@typescript-eslint/parser':
-        specifier: ^8.0.0
+        specifier: 8.57.1
         version: 8.57.1(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.2)
       autoprefixer:
         specifier: 10.4.27
@@ -136,10 +136,10 @@ importers:
         specifier: 10.1.8
         version: 10.1.8(eslint@9.39.4(jiti@2.6.1))
       eslint-import-resolver-typescript:
-        specifier: ^4.0.0
+        specifier: 4.4.4
         version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.4(jiti@2.6.1))
       eslint-plugin-import:
-        specifier: ^2.28.1
+        specifier: 2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.57.1(eslint@9.39.4(jiti@2.6.1))(typescript@6.0.2))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.4(jiti@2.6.1))
       eslint-plugin-tailwindcss:
         specifier: 4.0.0-beta.0
@@ -6818,12 +6818,6 @@ packages:
     resolution: {integrity: sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw==}
     engines: {node: '>=18'}
 
-  ts-api-utils@2.4.0:
-    resolution: {integrity: sha512-3TaVTaAv2gTiMB35i3FiGJaRfwb3Pyn/j3m/bfAvGe8FB7CF6u+LMYqYlDh7reQf7UNvoTvdfAqHGmPGOSsPmA==}
-    engines: {node: '>=18.12'}
-    peerDependencies:
-      typescript: '>=4.8.4'
-
   ts-api-utils@2.5.0:
     resolution: {integrity: sha512-OJ/ibxhPlqrMM0UiNHJ/0CKQkoKF243/AEmplt3qpRgkW8VG7IfOS41h7V8TjITqdByHzrjcS/2si+y4lIh8NA==}
     engines: {node: '>=18.12'}
@@ -9816,8 +9810,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.57.1(typescript@6.0.2)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.57.1(typescript@6.0.2)
-      '@typescript-eslint/types': 8.57.1
+      '@typescript-eslint/tsconfig-utils': 8.58.0(typescript@6.0.2)
+      '@typescript-eslint/types': 8.58.0
       debug: 4.4.3
       typescript: 6.0.2
     transitivePeerDependencies:
@@ -9876,7 +9870,7 @@ snapshots:
       minimatch: 10.2.5
       semver: 7.7.4
       tinyglobby: 0.2.15
-      ts-api-utils: 2.4.0(typescript@6.0.2)
+      ts-api-utils: 2.5.0(typescript@6.0.2)
       typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
@@ -15558,10 +15552,6 @@ snapshots:
   tr46@5.1.1:
     dependencies:
       punycode: 2.3.1
-
-  ts-api-utils@2.4.0(typescript@6.0.2):
-    dependencies:
-      typescript: 6.0.2
 
   ts-api-utils@2.5.0(typescript@6.0.2):
     dependencies:
