@@ -65,7 +65,7 @@
     "eslint-plugin-tailwindcss": "4.0.0-beta.0",
     "jest": "30.3.0",
     "jest-environment-jsdom": "30.3.0",
-    "postcss": "8.5.9",
+    "postcss": "8.5.10",
     "prettier": "3.8.2",
     "storybook": "10.3.5",
     "tailwindcss": "4.2.2",
