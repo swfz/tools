@@ -63,6 +63,7 @@
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-tailwindcss": "4.0.0-beta.0",
+    "espree": "11.2.0",
     "jest": "30.3.0",
     "jest-environment-jsdom": "30.3.0",
     "postcss": "8.5.10",

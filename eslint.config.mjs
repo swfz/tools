@@ -1,13 +1,29 @@
+import { fixupConfigRules } from "@eslint/compat";
 import nextConfig from "eslint-config-next/core-web-vitals";
 import tailwindcssPlugin from "eslint-plugin-tailwindcss";
 import prettierConfig from "eslint-config-prettier";
+import * as espree from "espree";
 
 export default [
   {
     ignores: ["**/*.config.js"],
   },
-  ...nextConfig,
-  ...tailwindcssPlugin.configs["flat/recommended"],
+  ...fixupConfigRules(nextConfig),
+  // Override parser for plain JS files: the babel-based parser bundled in
+  // eslint-config-next returns a scope manager incompatible with ESLint v10
+  // (missing `addGlobals`). Using espree (ESLint's default parser) resolves this.
+  {
+    files: ["**/*.js", "**/*.mjs", "**/*.jsx"],
+    languageOptions: {
+      parser: espree,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
+      },
+    },
+  },
+  ...fixupConfigRules(tailwindcssPlugin.configs["flat/recommended"]),
   prettierConfig,
   {
     settings: {
