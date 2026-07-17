@@ -188,7 +188,7 @@ const KusaIndex: NextPage = () => {
                       </div>
                     </div>
                     <img
-                      src={`https://kusa-image.deno.dev/${username}`}
+                      src={`https://kusa-image.swfz.deno.net/${username}`}
                       alt={`${username}'s GitHub Contributions`}
                       className="w-full max-w-4xl rounded border"
                     />
@@ -200,7 +200,7 @@ const KusaIndex: NextPage = () => {
 
           <p className="mt-4 text-xs text-gray-600">
             💡 コントリビューション画像は
-            <a href="https://kusa-image.deno.dev/" className="text-blue-600 hover:underline">
+            <a href="https://kusa-image.swfz.deno.net/" className="text-blue-600 hover:underline">
               kusa-image
             </a>
             を使用しています
