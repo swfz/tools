@@ -30,7 +30,7 @@
     "uuid": "14.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.29.0",
+    "@babel/core": "7.29.6",
     "@eslint/compat": "2.0.5",
     "@eslint/eslintrc": "3.3.5",
     "@eslint/js": "10.0.1",
