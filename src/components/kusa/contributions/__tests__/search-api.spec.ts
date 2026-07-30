@@ -7,6 +7,10 @@ const mockFetch = (data: any, ok = true) => {
   });
 };
 
+const mockFetchRejection = () => {
+  global.fetch = jest.fn().mockRejectedValue(new TypeError('Failed to fetch'));
+};
+
 afterEach(() => {
   jest.restoreAllMocks();
 });
@@ -29,6 +33,12 @@ describe('fetchSearchPullRequests', () => {
     const result = await fetchSearchPullRequests('testuser', '2024-01-01');
     expect(result).toEqual([]);
   });
+
+  test('fetchが例外を投げても空配列を返す', async () => {
+    mockFetchRejection();
+
+    await expect(fetchSearchPullRequests('testuser', '2024-01-01')).resolves.toEqual([]);
+  });
 });
 
 describe('fetchSearchCommits', () => {
@@ -49,6 +59,12 @@ describe('fetchSearchCommits', () => {
     const result = await fetchSearchCommits('testuser', '2024-01-01');
     expect(result).toEqual([]);
   });
+
+  test('fetchが例外を投げても空配列を返す', async () => {
+    mockFetchRejection();
+
+    await expect(fetchSearchCommits('testuser', '2024-01-01')).resolves.toEqual([]);
+  });
 });
 
 describe('fetchSearchIssues', () => {
@@ -68,5 +84,11 @@ describe('fetchSearchIssues', () => {
 
     const result = await fetchSearchIssues('testuser', '2024-01-01');
     expect(result).toEqual([]);
+  });
+
+  test('fetchが例外を投げても空配列を返す', async () => {
+    mockFetchRejection();
+
+    await expect(fetchSearchIssues('testuser', '2024-01-01')).resolves.toEqual([]);
   });
 });

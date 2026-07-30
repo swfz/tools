@@ -9,6 +9,15 @@ const mockGitHubEventsApi = async (page: Page) => {
       body: JSON.stringify(sampleEvents),
     });
   });
+
+  // Search APIは未認証だと10req/minで枯れるため常にモックする
+  await page.route('**/api.github.com/search/**', (route) => {
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ total_count: 0, incomplete_results: false, items: [] }),
+    });
+  });
 };
 
 test.describe('Kusa ページ', () => {
