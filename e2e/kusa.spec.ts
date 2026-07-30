@@ -70,6 +70,14 @@ test.describe('Kusa ページ', () => {
     await expect(statsText).toBeVisible();
   });
 
+  test('Contribution APIが利用不可でもページが表示され統計はハイフンになる', async ({ page }) => {
+    await mockGitHubEventsApi(page);
+    // モックサーバーが deadapi に対して503を返す（旧APIのサービス停止相当）
+    await page.goto('/kusa/deadapi');
+    await expect(page.locator("text=deadapi's kusa")).toBeVisible();
+    await expect(page.locator('text=Today: -, Yesterday: -, Streak: -, Coverage: -%')).toBeVisible();
+  });
+
   test('OGメタタグのdescriptionに貢献統計が含まれる', async ({ page }) => {
     await mockGitHubEventsApi(page);
     await page.goto('/kusa/swfz');
