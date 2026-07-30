@@ -22,17 +22,10 @@ type Props = {
   coverage: number | string;
 };
 
-const contributionApiUrl = process.env.CONTRIBUTION_API_URL || 'https://github-contributions-api.deno.dev';
+const contributionApiUrl = process.env.CONTRIBUTION_API_URL || 'https://forked-contributions-api.swfz.deno.net';
 
 const fetchContribution = async (url: string, username: string, to: string): Promise<(number | null)[]> => {
   const res = await fetch(`${url}/${username}.json?to=${to}`);
-
-  if (res.status !== 200 && url === contributionApiUrl) {
-    console.log('Failed fetch. Retry with another API');
-    console.log(await res.text());
-
-    return await fetchContribution('https://forked-gh-contributions-wt0jrc54gcqt.deno.dev', username, to);
-  }
 
   if (res.status !== 200) {
     console.log(await res.text());

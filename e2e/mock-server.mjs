@@ -40,7 +40,15 @@ const server = http.createServer((req, res) => {
   const url = req.url || '';
 
   // Contribution API: /{username}.json?to=...
-  if (url.match(/\/[\w-]+\.json/)) {
+  const contributionMatch = url.match(/^\/([\w-]+)\.json/);
+  if (contributionMatch) {
+    // Simulate an unavailable upstream API for this username
+    if (contributionMatch[1] === 'deadapi') {
+      res.writeHead(503, { 'Content-Type': 'text/plain' });
+      res.end('Service Unavailable');
+      return;
+    }
+
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(contributionResponse));
     return;

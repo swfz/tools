@@ -9,6 +9,15 @@ const mockGitHubEventsApi = async (page: Page) => {
       body: JSON.stringify(sampleEvents),
     });
   });
+
+  // Search APIは未認証だと10req/minで枯れるため常にモックする
+  await page.route('**/api.github.com/search/**', (route) => {
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ total_count: 0, incomplete_results: false, items: [] }),
+    });
+  });
 };
 
 test.describe('Kusa ページ', () => {
@@ -59,6 +68,14 @@ test.describe('Kusa ページ', () => {
     // Today=5, Yesterday=3, Streak=7, Coverage=85%
     const statsText = page.locator('text=Today: 5, Yesterday: 3, Streak: 7, Coverage: 85%');
     await expect(statsText).toBeVisible();
+  });
+
+  test('Contribution APIが利用不可でもページが表示され統計はハイフンになる', async ({ page }) => {
+    await mockGitHubEventsApi(page);
+    // モックサーバーが deadapi に対して503を返す（旧APIのサービス停止相当）
+    await page.goto('/kusa/deadapi');
+    await expect(page.locator("text=deadapi's kusa")).toBeVisible();
+    await expect(page.locator('text=Today: -, Yesterday: -, Streak: -, Coverage: -%')).toBeVisible();
   });
 
   test('OGメタタグのdescriptionに貢献統計が含まれる', async ({ page }) => {
