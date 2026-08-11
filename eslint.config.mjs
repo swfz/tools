@@ -23,11 +23,14 @@ export default [
       },
     },
   },
-  ...fixupConfigRules(tailwindcssPlugin.configs["flat/recommended"]),
+  tailwindcssPlugin.configs.recommended,
   prettierConfig,
   {
     settings: {
       "import/resolver": "typescript",
+      tailwindcss: {
+        cssConfigPath: "styles/tailwind.css",
+      },
     },
   },
   {

@@ -62,7 +62,7 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-tailwindcss": "4.0.0-beta.0",
+    "eslint-plugin-tailwindcss": "4.2.0",
     "espree": "11.2.0",
     "jest": "30.4.2",
     "jest-environment-jsdom": "30.4.1",
