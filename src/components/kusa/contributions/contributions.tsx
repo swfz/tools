@@ -1,13 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import ContributionsByRepo from './contributions-by-repo';
 import ContributionsSimple from './contributions-simple';
+import ActivitySummary from './activity-summary';
 import { GitHubEvent, SearchData } from './types';
+import type { ContributionStats } from './activity-digest';
 import { filterDependencyUpdateEvents, filterDependencyUpdateSearchData } from './filter';
 
 type Props = {
   events: GitHubEvent[];
   searchData: SearchData;
   username: string;
+  contributionStats?: ContributionStats;
 };
 
 const Contributions = (props: Props) => {
@@ -39,6 +42,14 @@ const Contributions = (props: Props) => {
       <label htmlFor="exclude" className="text-xs">
         Exclude events related dependencies update
       </label>
+
+      <ActivitySummary
+        username={props.username}
+        events={filteredEvents}
+        searchData={filteredSearchData}
+        contributionStats={props.contributionStats}
+      />
+
       <nav className="flex flex-row sm:flex-row">
         {tabs.map((tab) => {
           return (

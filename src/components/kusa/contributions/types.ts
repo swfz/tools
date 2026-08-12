@@ -130,6 +130,15 @@ export type GitHubRepo = {
   name: string;
 };
 
+export type ReleaseEventPayload = {
+  action: string;
+  release: {
+    tag_name: string;
+    name: string | null;
+    html_url: string;
+  };
+};
+
 export type GitHubEventType =
   | 'PullRequestEvent'
   | 'IssuesEvent'
@@ -141,7 +150,8 @@ export type GitHubEventType =
   | 'ForkEvent'
   | 'PullRequestReviewCommentEvent'
   | 'PullRequestReviewEvent'
-  | 'CommitCommentEvent';
+  | 'CommitCommentEvent'
+  | 'ReleaseEvent';
 
 export type GitHubEvent = {
   id: number;

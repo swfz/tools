@@ -20,6 +20,34 @@ const mockGitHubEventsApi = async (page: Page) => {
   });
 };
 
+// Chromiumに実装があってもモデル未ダウンロードのため、要約結果はスタブで固定する
+const stubSummarizer = async (page: Page) => {
+  await page.addInitScript(() => {
+    Object.assign(window, {
+      Summarizer: {
+        availability: async () => 'available',
+        create: async () => ({
+          summarizeStreaming: () =>
+            new ReadableStream({
+              start(controller) {
+                controller.enqueue('モックされた要約');
+                controller.enqueue('結果');
+                controller.close();
+              },
+            }),
+          destroy: () => {},
+        }),
+      },
+    });
+  });
+};
+
+const disableSummarizer = async (page: Page) => {
+  await page.addInitScript(() => {
+    Reflect.deleteProperty(window, 'Summarizer');
+  });
+};
+
 test.describe('Kusa ページ', () => {
   test('Kusaインデックスページが表示される', async ({ page }) => {
     await page.goto('/kusa');
@@ -76,6 +104,25 @@ test.describe('Kusa ページ', () => {
     await page.goto('/kusa/deadapi');
     await expect(page.locator("text=deadapi's kusa")).toBeVisible();
     await expect(page.locator('text=Today: -, Yesterday: -, Streak: -, Coverage: -%')).toBeVisible();
+  });
+
+  test('Summarizer API非対応環境では利用できない旨が表示される', async ({ page }) => {
+    await mockGitHubEventsApi(page);
+    await disableSummarizer(page);
+    await page.goto('/kusa/swfz');
+    await expect(page.locator('text=この環境ではSummarizer APIを利用できません')).toBeVisible({ timeout: 15000 });
+  });
+
+  test('Summarizeボタンを押すとAIサマリーが表示される', async ({ page }) => {
+    await mockGitHubEventsApi(page);
+    await stubSummarizer(page);
+    await page.goto('/kusa/swfz');
+
+    const button = page.locator('button:has-text("Summarize")');
+    await expect(button).toBeEnabled({ timeout: 15000 });
+    await button.click();
+
+    await expect(page.getByTestId('summary-output')).toHaveText('モックされた要約結果');
   });
 
   test('OGメタタグのdescriptionに貢献統計が含まれる', async ({ page }) => {
