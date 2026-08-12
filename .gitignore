@@ -42,6 +42,3 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-
-# pnpm 11 のローカル設定(pnpm 9 を使う Vercel が解釈できないため追跡しない)
-pnpm-workspace.yaml
