@@ -11,6 +11,7 @@ import {
   fetchSearchIssues,
 } from '@/components/kusa/contributions/search-api';
 import { SearchData } from '@/components/kusa/contributions/types';
+import type { ContributionStats } from '@/components/kusa/contributions/activity-digest';
 
 const queryClient = new QueryClient();
 
@@ -110,7 +111,7 @@ const createQueryFn = (username: string) => {
   return fetchEvents;
 };
 
-const Detail = ({ username }: { username: string }) => {
+const Detail = ({ username, contributionStats }: { username: string; contributionStats: ContributionStats }) => {
   const queryClient = useQueryClient();
   const queryFn = createQueryFn(username);
 
@@ -169,6 +170,7 @@ const Detail = ({ username }: { username: string }) => {
         events={eventsData?.pages.flat() ?? []}
         searchData={searchData ?? { pullRequests: [], commits: [], issues: [] }}
         username={username}
+        contributionStats={contributionStats}
       />
     </>
   );
@@ -208,7 +210,15 @@ const Kusa = (props: Props) => {
         <img src={imgUrl} alt="GitHub Contribution" />
         <div>{desc}</div>
         <QueryClientProvider client={queryClient}>
-          <Detail username={username}></Detail>
+          <Detail
+            username={username}
+            contributionStats={{
+              today: props.todayContributionCount,
+              yesterday: props.yesterdayContributionCount,
+              currentStreak: props.currentStreak,
+              coverage: props.coverage,
+            }}
+          ></Detail>
         </QueryClientProvider>
       </div>
     </>

@@ -1,0 +1,12 @@
+# ルート単体のプロジェクトだがサブパッケージが無いことを明示する。
+# pnpm 9 (Vercel が使う) は packages が無いと install に失敗するため必須。
+packages: []
+
+# ネイティブバイナリはいずれもプラットフォーム別のprebuiltパッケージで解決されるため
+# ビルドスクリプト(postinstall)の実行は不要
+allowBuilds:
+  core-js: false
+  esbuild: false
+  fsevents: false
+  sharp: false
+  unrs-resolver: false
