@@ -70,7 +70,7 @@
     "prettier": "3.9.9",
     "storybook": "10.3.5",
     "tailwindcss": "4.3.3",
-    "ts-jest": "29.4.12",
+    "ts-jest": "29.4.13",
     "typescript": "6.0.3"
   },
   "packageManager": "pnpm@11.28.2",
