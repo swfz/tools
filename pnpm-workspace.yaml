@@ -5,6 +5,7 @@ packages: []
 # ネイティブバイナリはいずれもプラットフォーム別のprebuiltパッケージで解決されるため
 # ビルドスクリプト(postinstall)の実行は不要
 allowBuilds:
+  "@parcel/watcher": false
   core-js: false
   esbuild: false
   fsevents: false
