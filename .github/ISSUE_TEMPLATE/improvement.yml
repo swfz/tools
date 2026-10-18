@@ -1,0 +1,36 @@
+name: Improvement
+description: 改善内容と機械的に確認できる完了条件を記録する
+title: ""
+labels: [improvement]
+body:
+  - type: textarea
+    id: background
+    attributes:
+      label: 背景
+      description: 現状の問題と、なぜ対応が必要かを記載してください。
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: やること
+      description: 変更対象のファイルや機能を具体的に記載してください。
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 完了条件
+      description: 入力、確認コマンド、期待結果が分かる形で記載してください。
+      placeholder: |
+        - `pnpm test:ci` が成功する
+        - 対象入力を与えると期待する結果になる
+    validations:
+      required: true
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: 範囲外
+      description: 今回変更しないものがあれば記載してください。
+    validations:
+      required: false
