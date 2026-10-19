@@ -45,16 +45,8 @@ const ANSITextDisplay: NextPage = () => {
         .replace(/\\u001b\[/g, '[')
         .replace(/\\x1b\[/g, '[')
         .replace(/\\e\[/g, '['),
-    toJSON: (text: string) =>
-      text
-        .replace(/\\x1b\[/g, '\\u001b[')
-        .replace(/\\e\[/g, '\\u001b[')
-        .replace(/(?<!\\)\[/g, '\\u001b['),
-    toYAML: (text: string) =>
-      text
-        .replace(/\\u001b\[/g, '\\e[')
-        .replace(/\\x1b\[/g, '\\e[')
-        .replace(/(?<!\\)\[/g, '\\e['),
+    toJSON: (text: string) => text.replace(/\\(?:u001b|x1b|e)\[|(?<!\\)\[/g, '\\u001b['),
+    toYAML: (text: string) => text.replace(/\\(?:u001b|x1b|e)\[|(?<!\\)\[/g, '\\e['),
   };
 
   const parseANSI = (input: string) => {

@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import { v4 as uuid } from 'uuid';
 import { MouseEvent, useState, useRef, forwardRef, ForwardedRef } from 'react';
 import Head from 'next/head';
 
@@ -288,8 +287,8 @@ const ArrowFlow = forwardRef(function ArrowFlow(props: ArrowFlowProps, ref: Forw
 });
 
 const ArrowFlowGenerator: NextPage = () => {
-  const generateDefaultItem = () => ({
-    id: uuid(),
+  const generateDefaultItem = (id: string) => ({
+    id,
     text: 'sample',
     fill: '#3399EE',
     stroke: '#666666',
@@ -298,9 +297,9 @@ const ArrowFlowGenerator: NextPage = () => {
     textColor: '#FFFFFF',
   });
 
-  const initialItems = [...Array(3)].map(() => generateDefaultItem());
+  const initialItems = [...Array(3)].map((_, index) => generateDefaultItem(`initial-${index}`));
   const [items, setItems] = useState<Item[]>(initialItems);
-  const [batch, setBatch] = useState<Item>(generateDefaultItem());
+  const [batch, setBatch] = useState<Item>(generateDefaultItem('batch'));
   const svgRef = useRef<SVGSVGElement>(null);
   const [options, setOptions] = useState<Options>({
     width: 800,
@@ -314,7 +313,7 @@ const ArrowFlowGenerator: NextPage = () => {
 
   const handleAddButtonClick = (e: MouseEvent<HTMLElement>) => {
     setItems((prevItems) => {
-      return [...prevItems, { ...batch, id: uuid() }];
+      return [...prevItems, { ...batch, id: crypto.randomUUID() }];
     });
   };
 
@@ -353,8 +352,7 @@ const ArrowFlowGenerator: NextPage = () => {
 
   const handleSvgDownload = () => {
     if (svgRef.current) {
-      const buffer = Buffer.from(svgRef.current.outerHTML, 'utf-8');
-      const blob = new Blob([buffer], { type: 'image/svg+xml' });
+      const blob = new Blob([svgRef.current.outerHTML], { type: 'image/svg+xml;charset=utf-8' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
