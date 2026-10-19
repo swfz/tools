@@ -69,7 +69,7 @@
     "jest": "30.5.2",
     "jest-environment-jsdom": "30.5.2",
     "lint-staged": "17.6.0",
-    "postcss": "8.5.28",
+    "postcss": "8.5.29",
     "prettier": "3.9.9",
     "storybook": "10.6.1",
     "tailwindcss": "4.3.3",
