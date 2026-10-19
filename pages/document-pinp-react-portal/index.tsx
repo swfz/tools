@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 declare global {
@@ -34,11 +34,13 @@ const DocumentPinpReactPortal: NextPage = () => {
   const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>> | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
+  const [pipSupported, setPipSupported] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   const clickHandler = () => setCount((prev) => prev + 1);
 
   const createDocumentPinp = async () => {
+    if (!pipSupported) return;
     // close
     if (isOpen) {
       if (!pipWindow.current) return;
@@ -85,6 +87,10 @@ const DocumentPinpReactPortal: NextPage = () => {
     }
   };
 
+  useEffect(() => {
+    setPipSupported(typeof documentPictureInPicture !== 'undefined');
+  }, []);
+
   return (
     <>
       <ConditionalPortal usePortal={isOpen} portalContainer={pipWindow?.current?.document.body}>
@@ -102,7 +108,12 @@ const DocumentPinpReactPortal: NextPage = () => {
         </div>
       </ConditionalPortal>
 
-      <button onClick={createDocumentPinp} className="rounded border">
+      <button
+        onClick={createDocumentPinp}
+        className="rounded border"
+        disabled={!pipSupported}
+        title={pipSupported ? undefined : 'Document Picture in Picture is not supported'}
+      >
         Document PinP
       </button>
     </>

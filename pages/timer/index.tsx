@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent, StrictMode } from 'react';
 import { event } from '@/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@/components/icon';
-import { LinkExternalIcon } from '@primer/octicons-react';
 import Link from 'next/link';
 
 interface formValues {
@@ -27,6 +26,7 @@ const Timer: NextPage = () => {
   const [maxCount, setMaxCount] = useState(0);
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
   const [paused, setPaused] = useState(false);
+  const [pipSupported, setPipSupported] = useState(false);
 
   const getContext = (): CanvasRenderingContext2D | null => {
     const canvas = canvasRef.current;
@@ -38,7 +38,12 @@ const Timer: NextPage = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
-    if (canvas && video) {
+    if (
+      canvas &&
+      video &&
+      typeof canvas.captureStream === 'function' &&
+      typeof video.requestPictureInPicture === 'function'
+    ) {
       video.srcObject = canvas.captureStream();
       video.play();
     }
@@ -47,6 +52,7 @@ const Timer: NextPage = () => {
   const handleVideoEvent = (e: SyntheticEvent<HTMLVideoElement>) => {
     // TODO: さっと解決できなかったのでキャストしている
     const video = e.target as HTMLVideoElement;
+    if (!video.requestPictureInPicture) return;
     video.requestPictureInPicture();
 
     event({
@@ -175,6 +181,13 @@ const Timer: NextPage = () => {
   };
 
   useEffect(() => {
+    setPipSupported(
+      typeof HTMLCanvasElement.prototype.captureStream === 'function' &&
+        typeof HTMLVideoElement.prototype.requestPictureInPicture === 'function',
+    );
+  }, []);
+
+  useEffect(() => {
     const ctx: CanvasRenderingContext2D | null = getContext();
 
     if (!ctx) {
@@ -224,7 +237,6 @@ const Timer: NextPage = () => {
               <div>時間になると背景色が変わります</div>
               <Link href="/timer-dpip" passHref>
                 <button className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100">
-                  <LinkExternalIcon />
                   Document Picture in Picture Mode
                 </button>
               </Link>
@@ -305,6 +317,8 @@ const Timer: NextPage = () => {
                 <button
                   className="mx-1 flex items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={createVideo}
+                  disabled={!pipSupported}
+                  title={pipSupported ? undefined : 'Picture in Picture is not supported'}
                 >
                   <DuplicateIcon />
                   Picture in Picture

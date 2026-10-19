@@ -46,10 +46,12 @@ const DocumentPinpTimer: NextPage = () => {
   const [paused, setPaused] = useState<Boolean | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [started, setStarted] = useState<boolean>(false);
+  const [pipSupported, setPipSupported] = useState(false);
   const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>> | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   const createDocumentPinp = async () => {
+    if (!pipSupported) return;
     if (isOpen) {
       if (!pipWindow.current) return;
       pipWindow.current.close();
@@ -148,6 +150,10 @@ const DocumentPinpTimer: NextPage = () => {
 
     return `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
   };
+
+  useEffect(() => {
+    setPipSupported(typeof documentPictureInPicture !== 'undefined');
+  }, []);
 
   useEffect(() => {
     if (!workerRef.current) {
@@ -249,6 +255,7 @@ const DocumentPinpTimer: NextPage = () => {
                         <button
                           className="mx-1 flex items-center rounded border border-gray-400 bg-white p-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                           onClick={startTimer}
+                          aria-label="Start"
                         >
                           <PlayIcon />
                         </button>
@@ -257,6 +264,7 @@ const DocumentPinpTimer: NextPage = () => {
                         <button
                           className="mx-1 flex items-center rounded border border-gray-400 bg-white p-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                           onClick={pauseTimer}
+                          aria-label={paused ? 'Resume' : 'Pause'}
                         >
                           {paused ? (
                             <>
@@ -272,6 +280,7 @@ const DocumentPinpTimer: NextPage = () => {
                       <button
                         className="mx-1 flex items-center rounded border border-gray-400 bg-white p-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                         onClick={resetTimer}
+                        aria-label="Reset"
                       >
                         <StopIcon />
                       </button>
@@ -286,6 +295,8 @@ const DocumentPinpTimer: NextPage = () => {
                 <button
                   className="mx-1 flex w-full items-center rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-100"
                   onClick={createDocumentPinp}
+                  disabled={!pipSupported}
+                  title={pipSupported ? undefined : 'Document Picture in Picture is not supported'}
                 >
                   <DuplicateIcon />
                   Picture in Picture
