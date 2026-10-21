@@ -88,14 +88,14 @@ const KusaIndex: NextPage = () => {
 
         {/* 個別ユーザー詳細表示セクション */}
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-3">📊 個別ユーザー詳細表示</h2>
-          <div className="bg-blue-50 p-3 rounded mb-3">
+          <h2 className="mb-3 text-xl font-semibold">📊 個別ユーザー詳細表示</h2>
+          <div className="mb-3 rounded bg-blue-50 p-3">
             <p className="text-sm">GitHubユーザーの詳細な草情報（統計情報、イベント履歴など）を表示します</p>
             <p className="text-sm">OGP対応でSlackやTwitterでのシェアに最適化されています</p>
           </div>
           <div className="flex flex-row items-center gap-2">
             <input
-              className="block w-48 appearance-none rounded border border-gray-500 bg-white px-3 py-2 leading-none text-gray-700 focus:outline-none focus:border-blue-500"
+              className="block w-48 appearance-none rounded border border-gray-500 bg-white px-3 py-2 leading-none text-gray-700 focus:border-blue-500 focus:outline-none"
               onChange={handleInput}
               value={inputText}
               type="text"
@@ -113,10 +113,10 @@ const KusaIndex: NextPage = () => {
 
         {/* 複数ユーザー画像比較セクション */}
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-3">🖼️ 複数ユーザー画像比較</h2>
-          <div className="bg-green-50 p-3 rounded mb-3">
-            <p className="text-sm mb-1">複数のGitHubユーザーの草画像を並べて比較できます</p>
-            <ul className="text-xs list-disc list-inside ml-2 space-y-1">
+          <h2 className="mb-3 text-xl font-semibold">🖼️ 複数ユーザー画像比較</h2>
+          <div className="mb-3 rounded bg-green-50 p-3">
+            <p className="mb-1 text-sm">複数のGitHubユーザーの草画像を並べて比較できます</p>
+            <ul className="ml-2 list-inside list-disc space-y-1 text-xs">
               <li>
                 <strong>一人ずつ追加</strong>: ユーザー名入力後「画像追加」をクリック
               </li>
@@ -127,7 +127,7 @@ const KusaIndex: NextPage = () => {
           </div>
           <div className="flex flex-row items-center gap-2">
             <input
-              className="block w-48 appearance-none rounded border border-gray-500 bg-white px-3 py-2 leading-none text-gray-700 focus:outline-none focus:border-green-500"
+              className="block w-48 appearance-none rounded border border-gray-500 bg-white px-3 py-2 leading-none text-gray-700 focus:border-green-500 focus:outline-none"
               onChange={handleMultiInput}
               value={multiInputText}
               type="text"
@@ -145,12 +145,12 @@ const KusaIndex: NextPage = () => {
           {/* 複数ユーザー画像表示エリア */}
           {usernames.length > 0 && (
             <div className="mt-4">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-sm font-medium bg-gray-100 px-3 py-1 rounded-full">
+              <div className="mb-3 flex items-center gap-3">
+                <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium">
                   📈 {usernames.length}人のユーザーを表示中
                 </span>
                 <button
-                  className="px-3 py-1 text-xs text-red-600 hover:text-red-800 border border-red-300 rounded hover:bg-red-50"
+                  className="rounded border border-red-300 px-3 py-1 text-xs text-red-600 hover:bg-red-50 hover:text-red-800"
                   onClick={handleClearUsernames}
                 >
                   全てクリア
@@ -158,8 +158,8 @@ const KusaIndex: NextPage = () => {
               </div>
               <div className="grid gap-4">
                 {usernames.map((username) => (
-                  <div key={username} className="border border-gray-200 rounded-lg p-4 shadow-sm">
-                    <div className="flex items-center justify-between mb-3">
+                  <div key={username} className="rounded-lg border border-gray-200 p-4 shadow-sm">
+                    <div className="mb-3 flex items-center justify-between">
                       <h3 className="text-lg font-semibold">
                         <a
                           href={`https://github.com/${username}`}
@@ -173,7 +173,7 @@ const KusaIndex: NextPage = () => {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleRemoveUser(username)}
-                          className="px-3 py-1 text-xs text-red-600 hover:text-red-800 border border-red-300 rounded hover:bg-red-50"
+                          className="rounded border border-red-300 px-3 py-1 text-xs text-red-600 hover:bg-red-50 hover:text-red-800"
                         >
                           削除
                         </button>
@@ -181,7 +181,7 @@ const KusaIndex: NextPage = () => {
                           href={`/kusa/${username}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-3 py-1 text-xs text-blue-600 hover:underline border border-blue-300 rounded hover:bg-blue-50"
+                          className="rounded border border-blue-300 px-3 py-1 text-xs text-blue-600 hover:bg-blue-50 hover:underline"
                         >
                           詳細表示
                         </a>
