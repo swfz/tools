@@ -1,6 +1,6 @@
 import { fetchSearchPullRequests, fetchSearchCommits, fetchSearchIssues } from '../search-api';
 
-const mockFetch = (data: any, ok = true) => {
+const mockFetch = (data: unknown, ok = true) => {
   global.fetch = jest.fn().mockResolvedValue({
     ok,
     json: async () => data,

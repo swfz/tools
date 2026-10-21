@@ -55,16 +55,18 @@ const DocumentPinpReactPortal: NextPage = () => {
       });
 
       if (!pipWindow.current) return;
-      pipWindow.current.addEventListener('pagehide', (event: any) => {
+      pipWindow.current.addEventListener('pagehide', () => {
         if (!pipWindow.current) return;
         pipWindow.current.close();
         setIsOpen(false);
       });
 
-      // @ts-ignore
-      [...document.styleSheets].forEach((styleSheet) => {
+      // tsconfig の target が es5 のため StyleSheetList / CSSRuleList はスプレッドできない
+      Array.from(document.styleSheets).forEach((styleSheet) => {
         try {
-          const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
+          const cssRules = Array.from(styleSheet.cssRules)
+            .map((rule) => rule.cssText)
+            .join('');
           const style = document.createElement('style');
 
           style.textContent = cssRules;

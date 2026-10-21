@@ -30,20 +30,20 @@ test.describe('Timer ページ', () => {
     await page.locator('select').nth(2).selectOption('3');
     await page.getByRole('button', { name: 'Start' }).click();
     await page.clock.runFor(1100);
-    await expect.poll(() => page.evaluate(() => (window as any).__timerTextCalls.at(-1))).toBe('00:00:02');
+    await expect.poll(() => page.evaluate(() => window.__timerTextCalls.at(-1))).toBe('00:00:02');
 
     await page.getByRole('button', { name: 'Pause' }).click();
     await page.clock.runFor(2000);
-    await expect.poll(() => page.evaluate(() => (window as any).__timerTextCalls.at(-1))).toBe('00:00:02');
+    await expect.poll(() => page.evaluate(() => window.__timerTextCalls.at(-1))).toBe('00:00:02');
 
     await page.getByRole('button', { name: 'Replay' }).click();
     await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
     await page.clock.runFor(2100);
-    await expect.poll(() => page.evaluate(() => (window as any).__timerTextCalls.at(-1))).toBe('00:00:00');
+    await expect.poll(() => page.evaluate(() => window.__timerTextCalls.at(-1))).toBe('00:00:00');
 
     await page.getByRole('button', { name: 'Reset' }).click();
     await expect(page.locator('select').nth(2)).toHaveValue('0');
-    await expect.poll(() => page.evaluate(() => (window as any).__timerTextCalls.at(-1))).toBe('00:00:00');
+    await expect.poll(() => page.evaluate(() => window.__timerTextCalls.at(-1))).toBe('00:00:00');
   });
 
   test('通常PiPの非対応環境では操作を無効化する', async ({ page }) => {
@@ -64,20 +64,20 @@ test.describe('Timer ページ', () => {
       HTMLCanvasElement.prototype.captureStream = () => ({}) as MediaStream;
       HTMLMediaElement.prototype.play = async () => {};
       HTMLVideoElement.prototype.requestPictureInPicture = async function () {
-        (window as any).__pipRequests += 1;
+        window.__pipRequests += 1;
         return {} as PictureInPictureWindow;
       };
     });
     await page.goto('/timer');
     await page.getByRole('button', { name: 'Picture in Picture', exact: true }).click();
     await page.locator('video').dispatchEvent('loadedmetadata');
-    await expect.poll(() => page.evaluate(() => (window as any).__pipRequests)).toBe(1);
+    await expect.poll(() => page.evaluate(() => window.__pipRequests)).toBe(1);
   });
 });
 
 test.describe('Document Picture in Picture', () => {
   test('非対応環境では両ページの操作を無効化する', async ({ page }) => {
-    await page.addInitScript(() => delete (window as any).documentPictureInPicture);
+    await page.addInitScript(() => Reflect.deleteProperty(window, 'documentPictureInPicture'));
 
     await page.goto('/timer-dpip');
     await expect(page.getByRole('button', { name: 'Picture in Picture' })).toBeDisabled();
@@ -115,9 +115,9 @@ test.describe('Document Picture in Picture', () => {
     const button = page.getByRole('button', { name: 'Document PinP' });
     await expect(button).toBeEnabled();
     await button.click();
-    await expect.poll(() => page.evaluate(() => (window as any).__documentPipRequestCount)).toBe(1);
+    await expect.poll(() => page.evaluate(() => window.__documentPipRequestCount)).toBe(1);
     await button.click();
-    await expect.poll(() => page.evaluate(() => (window as any).__documentPipCloseCount)).toBe(1);
+    await expect.poll(() => page.evaluate(() => window.__documentPipCloseCount)).toBe(1);
     await expect(page.locator('#mock-pip-window')).toHaveCount(0);
   });
 });
