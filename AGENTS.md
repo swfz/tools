@@ -42,6 +42,8 @@ Run the relevant tests first, then run every validation command above before com
 
 Vercel hosts production. Inspect deployment and runtime logs in the Vercel project dashboard or through the authenticated Vercel CLI. GitHub Actions logs cover build, unit-test, and lint failures. Do not run `vercel deploy` or other deployment commands from an agent task.
 
+Application logs are written through `src/lib/logger.ts` as one-line JSON (`{"level","msg","ts",...fields}`), so runtime logs can be filtered by `level` (`debug` / `info` / `warn` / `error`). Do not call `console.*` directly outside the logger.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 ## This is NOT the Next.js you know

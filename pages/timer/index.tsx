@@ -83,7 +83,6 @@ const Timer: NextPage = () => {
     setStartMs(Date.now());
     setPaused(false);
     setElapsedMs(0);
-    console.log('start ==============');
     const count = formValue.hour * 60 * 60 + formValue.min * 60 + formValue.sec;
     setCount(count);
     setMaxCount(count);
