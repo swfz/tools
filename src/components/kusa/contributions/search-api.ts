@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { SearchPullRequest, SearchCommit, SearchIssue } from './types';
+import { logger } from '@/lib/logger';
 
 const SEARCH_API_BASE = 'https://api.github.com/search';
 
@@ -22,7 +23,7 @@ const fetchSearchItems = async <T>(url: string): Promise<T[]> => {
     const json: SearchResponse<T> = await res.json();
     return json.items;
   } catch (e) {
-    console.log('[search-api] request failed:', e);
+    logger.warn('search api request failed', { url, error: e });
     return [];
   }
 };

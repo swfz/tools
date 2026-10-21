@@ -12,6 +12,7 @@ import {
 } from '@/components/kusa/contributions/search-api';
 import { SearchData } from '@/components/kusa/contributions/types';
 import type { ContributionStats } from '@/components/kusa/contributions/activity-digest';
+import { logger } from '@/lib/logger';
 
 const queryClient = new QueryClient();
 
@@ -29,19 +30,19 @@ const fetchContribution = async (url: string, username: string, to: string): Pro
   const res = await fetch(`${url}/${username}.json?to=${to}`);
 
   if (res.status !== 200) {
-    console.log(await res.text());
+    logger.error('contributions api request failed', { status: res.status, body: await res.text() });
     return [null, null];
   }
 
   const json = await res.json();
 
   if (!json.contributions || !Array.isArray(json.contributions) || json.contributions.length === 0) {
-    console.log('Unexpected contributions format:', json);
+    logger.error('unexpected contributions format', { json });
     return [null, null];
   }
 
   if (!to) {
-    console.log(json.contributions.at(-1));
+    logger.debug('latest contributions', { contributions: json.contributions.at(-1) });
   }
 
   const contributions = json.contributions
@@ -71,7 +72,11 @@ export const getServerSideProps = async (
   const contributions = await fetchContribution(contributionApiUrl, username, '');
   const [todayContributionCount, yesterdayContributionCount] = contributions;
 
-  console.log(Intl.DateTimeFormat().resolvedOptions().timeZone, [todayContributionCount, yesterdayContributionCount]);
+  logger.debug('contribution counts', {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    todayContributionCount,
+    yesterdayContributionCount,
+  });
 
   if (
     todayContributionCount == null ||
@@ -100,7 +105,7 @@ const createQueryFn = (username: string) => {
     const res = await fetch(`https://api.github.com/users/${username}/events?per_page=100&page=${pageParam}`);
 
     if (!res.ok) {
-      console.log(`Failed to fetch events: ${res.status}`);
+      logger.error('failed to fetch events', { status: res.status });
       return [];
     }
 
