@@ -202,7 +202,7 @@ const ANSITextDisplay: NextPage = () => {
 
           <div>結果</div>
           <div
-            className="min-h-[200px] rounded p-4"
+            className="min-h-50 rounded p-4"
             style={{
               backgroundColor: solarizedColors.base02,
               border: `1px solid ${solarizedColors.base01}`,

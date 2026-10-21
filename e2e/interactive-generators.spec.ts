@@ -49,7 +49,7 @@ test.describe('Ansi Text Display', () => {
     const input = page.getByPlaceholder('エスケープシーケンス付きのテキストを入力してください...');
     await input.fill('[31mError[0m\\nDone');
 
-    const result = page.locator('div.min-h-\\[200px\\]');
+    const result = page.locator('div.min-h-50');
     await expect(result).toContainText('Error');
     await expect(result).toContainText('Done');
     await expect(result.locator('span').filter({ hasText: 'Error' })).toHaveCSS('color', 'rgb(220, 50, 47)');
@@ -64,17 +64,17 @@ test.describe('Ansi Text Display', () => {
     await page.getByRole('button', { name: 'JSON形式に変換' }).click();
     await expect(input).toHaveValue('\\u001b[32mOK\\u001b[0m');
     await page.locator('select').selectOption('json');
-    await expect(page.locator('div.min-h-\\[200px\\]')).toContainText('OK');
+    await expect(page.locator('div.min-h-50')).toContainText('OK');
 
     await page.getByRole('button', { name: 'YAML形式に変換' }).click();
     await expect(input).toHaveValue('\\e[32mOK\\e[0m');
     await page.locator('select').selectOption('yaml');
-    await expect(page.locator('div.min-h-\\[200px\\]')).toContainText('OK');
+    await expect(page.locator('div.min-h-50')).toContainText('OK');
   });
 
   test('空入力でも結果領域を表示する', async ({ page }) => {
-    await expect(page.locator('div.min-h-\\[200px\\]')).toBeVisible();
-    await expect(page.locator('div.min-h-\\[200px\\]')).toBeEmpty();
+    await expect(page.locator('div.min-h-50')).toBeVisible();
+    await expect(page.locator('div.min-h-50')).toBeEmpty();
   });
 });
 
