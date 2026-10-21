@@ -54,6 +54,13 @@ test.describe('Kusa ページ', () => {
     await expect(page).toHaveURL(/\/kusa/);
   });
 
+  test('URLのusersパラメータから複数ユーザーの草を表示する', async ({ page }) => {
+    await page.route('https://kusa-image.swfz.deno.net/**', (route) => route.fulfill({ status: 204 }));
+    await page.goto('/kusa?users=swfz,%20octocat');
+    await expect(page.getByAltText("swfz's GitHub Contributions")).toBeAttached();
+    await expect(page.getByAltText("octocat's GitHub Contributions")).toBeAttached();
+  });
+
   test('/kusa/swfz にアクセスしてページが表示される', async ({ page }) => {
     await mockGitHubEventsApi(page);
     await page.goto('/kusa/swfz');

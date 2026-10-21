@@ -1,4 +1,5 @@
 import React from 'react';
+import { renderToString } from 'react-dom/server';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ActivitySummary from '../activity-summary';
@@ -68,6 +69,14 @@ const findEnabledButton = async (name: string) => {
 describe('ActivitySummary', () => {
   afterEach(() => {
     delete window.Summarizer;
+  });
+
+  test('サーバーレンダリングでは対応有無を判定せず確認中として描画する', () => {
+    const html = renderToString(
+      <ActivitySummary username="testuser" events={[createWatchEvent()]} searchData={emptySearchData} />,
+    );
+
+    expect(html).not.toContain('この環境ではSummarizer APIを利用できません');
   });
 
   test('Summarizer APIが無い環境では利用できない旨を表示する', async () => {

@@ -1,6 +1,15 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState, useRef, useCallback, ChangeEvent, SyntheticEvent, StrictMode } from 'react';
+import {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useSyncExternalStore,
+  ChangeEvent,
+  SyntheticEvent,
+  StrictMode,
+} from 'react';
 import { event } from '@/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@/components/icon';
 import Link from 'next/link';
@@ -11,6 +20,21 @@ interface formValues {
   sec: number;
 }
 
+const formatTime = (count: number) => {
+  const hour = Math.floor(count / 60 / 60);
+  const min = Math.floor(count / 60) - hour * 60;
+  const sec = count % 60;
+
+  return `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+};
+
+// ブラウザ API の対応有無は実行中に変わらないため購読するイベントは無い。
+// useSyncExternalStore なら SSR・ハイドレーション中は false、クライアントで実際の値になる(effect 内で setState しない)
+const subscribeNoop = () => () => {};
+const detectPipSupport = () =>
+  typeof HTMLCanvasElement.prototype.captureStream === 'function' &&
+  typeof HTMLVideoElement.prototype.requestPictureInPicture === 'function';
+
 const Timer: NextPage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,14 +43,14 @@ const Timer: NextPage = () => {
   const minutes = [...Array(60)].map((_, i) => i);
   const hours = [...Array(24)].map((_, i) => i);
 
-  const [startMs, setStartMs] = useState(Date.now());
+  const [startMs, setStartMs] = useState(() => Date.now());
   const [elapsedMs, setElapsedMs] = useState(0);
   const [decrement, setDecrement] = useState(0);
   const [count, setCount] = useState(0);
   const [maxCount, setMaxCount] = useState(0);
   const [formValue, setFormValue] = useState<formValues>({ hour: 0, min: 0, sec: 0 });
   const [paused, setPaused] = useState(false);
-  const [pipSupported, setPipSupported] = useState(false);
+  const pipSupported = useSyncExternalStore(subscribeNoop, detectPipSupport, () => false);
 
   const getContext = (): CanvasRenderingContext2D | null => {
     const canvas = canvasRef.current;
@@ -171,21 +195,6 @@ const Timer: NextPage = () => {
     [maxCount],
   );
 
-  const formatTime = (count: number) => {
-    const hour = Math.floor(count / 60 / 60);
-    const min = Math.floor(count / 60) - hour * 60;
-    const sec = count % 60;
-
-    return `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-  };
-
-  useEffect(() => {
-    setPipSupported(
-      typeof HTMLCanvasElement.prototype.captureStream === 'function' &&
-        typeof HTMLVideoElement.prototype.requestPictureInPicture === 'function',
-    );
-  }, []);
-
   useEffect(() => {
     const ctx: CanvasRenderingContext2D | null = getContext();
 
@@ -217,7 +226,7 @@ const Timer: NextPage = () => {
     }, 200);
 
     return () => clearInterval(interval);
-  }, [count, elapsedMs, decrement, startMs, paused, writeToCanvas]);
+  }, [count, elapsedMs, decrement, startMs, paused, maxCount, writeToCanvas]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState, ChangeEvent, StrictMode, useRef } from 'react';
+import { useEffect, useState, useSyncExternalStore, ChangeEvent, StrictMode, useRef } from 'react';
 import { event } from '@/lib/gtag';
 import { PlayIcon, StopIcon, PauseIcon, DuplicateIcon } from '@/components/icon';
 import { createPortal } from 'react-dom';
@@ -18,6 +18,11 @@ declare global {
 
   var documentPictureInPicture: DocumentPictureInPicture;
 }
+
+// ブラウザ API の対応有無は実行中に変わらないため購読するイベントは無い。
+// useSyncExternalStore なら SSR・ハイドレーション中は false、クライアントで実際の値になる(effect 内で setState しない)
+const subscribeNoop = () => () => {};
+const detectDocumentPipSupport = () => typeof documentPictureInPicture !== 'undefined';
 
 interface ConditionalPortalProps {
   children: React.ReactNode;
@@ -46,7 +51,9 @@ const DocumentPinpTimer: NextPage = () => {
   const [paused, setPaused] = useState<Boolean | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [started, setStarted] = useState<boolean>(false);
-  const [pipSupported, setPipSupported] = useState(false);
+  const pipSupported = useSyncExternalStore(subscribeNoop, detectDocumentPipSupport, () => false);
+  // render 中に ref を読まないよう、Portal の描画先は state で持つ
+  const [pipBody, setPipBody] = useState<HTMLElement | null>(null);
   const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>> | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -92,6 +99,7 @@ const DocumentPinpTimer: NextPage = () => {
           }
         }
       });
+      setPipBody(pipWindow.current.document.body);
       setIsOpen((prev) => !prev);
     }
   };
@@ -152,10 +160,6 @@ const DocumentPinpTimer: NextPage = () => {
   };
 
   useEffect(() => {
-    setPipSupported(typeof documentPictureInPicture !== 'undefined');
-  }, []);
-
-  useEffect(() => {
     if (!workerRef.current) {
       workerRef.current = new Worker('/timer-worker.js');
     }
@@ -200,7 +204,7 @@ const DocumentPinpTimer: NextPage = () => {
               <div>時間になると背景色が変わります</div>
             </div>
 
-            <ConditionalPortal usePortal={isOpen} portalContainer={pipWindow?.current?.document.body}>
+            <ConditionalPortal usePortal={isOpen} portalContainer={pipBody}>
               <div>
                 <div className="divide-y divide-gray-300">
                   <div id="container">

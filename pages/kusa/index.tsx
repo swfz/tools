@@ -2,6 +2,13 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ChangeEvent, MouseEvent, useState, useEffect } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
+
+const parseUsers = (users: string) =>
+  users
+    .split(',')
+    .map((name) => name.trim())
+    .filter((name) => name);
 
 const KusaIndex: NextPage = () => {
   const router = useRouter();
@@ -9,19 +16,15 @@ const KusaIndex: NextPage = () => {
   const [multiInputText, setMultiInputText] = useState('');
   const [usernames, setUsernames] = useState<string[]>([]);
 
-  // URLからusersパラメータを取得してstateを初期化
-  useEffect(() => {
-    if (router.isReady) {
-      const { users } = router.query;
-      if (users && typeof users === 'string') {
-        const urlUsernames = users
-          .split(',')
-          .map((name) => name.trim())
-          .filter((name) => name);
-        setUsernames(urlUsernames);
-      }
+  // URLのusersパラメータが変わったらstateに反映する(effectではなくrender中に前回値と比べて更新する)
+  const queryUsers = router.isReady && typeof router.query.users === 'string' ? router.query.users : null;
+  const [prevQueryUsers, setPrevQueryUsers] = useState<string | null>(null);
+  if (queryUsers !== prevQueryUsers) {
+    setPrevQueryUsers(queryUsers);
+    if (queryUsers) {
+      setUsernames(parseUsers(queryUsers));
     }
-  }, [router.isReady, router.query]);
+  }
 
   // usernamesが変更されたらURLを更新
   useEffect(() => {
@@ -187,9 +190,13 @@ const KusaIndex: NextPage = () => {
                         </a>
                       </div>
                     </div>
-                    <img
+                    {/* 日々変わる外部画像のため Next.js の画像最適化は通さない。サイズは kusa-image の PNG(670x140) */}
+                    <Image
                       src={`https://kusa-image.swfz.deno.net/${username}`}
                       alt={`${username}'s GitHub Contributions`}
+                      width={670}
+                      height={140}
+                      unoptimized
                       className="w-full max-w-4xl rounded border"
                     />
                   </div>
