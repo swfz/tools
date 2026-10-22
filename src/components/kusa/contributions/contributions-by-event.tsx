@@ -1,7 +1,7 @@
 import React from 'react';
 
 type Props = {
-  result: any;
+  result: unknown;
 };
 
 const ContributionsByEvent = (props: Props) => {

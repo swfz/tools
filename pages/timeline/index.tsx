@@ -63,7 +63,7 @@ const Schedule: NextPage = () => {
   };
 
   const fixHandleInput = (targetItem: Item, column: Column) => {
-    return (event: any) => {
+    return (event: ChangeEvent<HTMLInputElement>) => {
       setItems((beforeItems) => {
         const newItems = beforeItems.reduce((acc: Item[], i: Item) => {
           const newItem = i.id === targetItem.id ? { ...i, [column]: event?.target?.value } : i;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitHubEvent, SearchData, Summary } from './types';
+import { ForkEventPayload, GitHubEvent, SearchData, Summary } from './types';
 import { uniqueAndSortCommits, ignoreDuplicatePullRequest, aggregateIssues } from './aggregate';
 
 import Commits from './by-repo/commits';
@@ -121,7 +121,7 @@ const ContributionsByRepo = (props: Props) => {
     {
       repositories: [] as GitHubEvent[],
       stared: [] as GitHubEvent[],
-      forks: [] as any[],
+      forks: [] as ForkEventPayload[],
       comments: {} as Summary['comments'],
     },
   );
