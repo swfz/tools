@@ -6,7 +6,7 @@ import * as espree from 'espree';
 
 const config = [
   {
-    ignores: ['**/*.config.js'],
+    ignores: ['**/*.config.js', 'coverage/**'],
   },
   ...fixupConfigRules(nextConfig),
   // Override parser for plain JS files: the babel-based parser bundled in
