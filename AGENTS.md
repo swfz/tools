@@ -27,6 +27,8 @@ pnpm test:e2e
 pnpm build
 ```
 
+`pnpm test:ci` collects coverage for `src/` and fails when line coverage drops below 80% (`coverageThreshold` in `jest.config.js`).
+
 Run the relevant tests first, then run every validation command above before committing. Add tests for new behavior and regression tests for bug fixes. Do not deploy while validating a change.
 
 ## Architecture
