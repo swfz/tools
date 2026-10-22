@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import dayjs from 'dayjs';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { useEffect } from 'react';
@@ -212,7 +213,8 @@ const Kusa = (props: Props) => {
           &apos;s kusa
         </span>
 
-        <img src={imgUrl} alt="GitHub Contribution" />
+        {/* 日々変わる外部画像のため Next.js の画像最適化は通さない。サイズは kusa-image の PNG(670x140) */}
+        <Image src={imgUrl} alt="GitHub Contribution" width={670} height={140} unoptimized />
         <div>{desc}</div>
         <QueryClientProvider client={queryClient}>
           <Detail

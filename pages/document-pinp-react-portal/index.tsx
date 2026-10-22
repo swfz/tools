@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
 declare global {
@@ -16,6 +16,11 @@ declare global {
 
   var documentPictureInPicture: DocumentPictureInPicture;
 }
+
+// ブラウザ API の対応有無は実行中に変わらないため購読するイベントは無い。
+// useSyncExternalStore なら SSR・ハイドレーション中は false、クライアントで実際の値になる(effect 内で setState しない)
+const subscribeNoop = () => () => {};
+const detectDocumentPipSupport = () => typeof documentPictureInPicture !== 'undefined';
 
 interface ConditionalPortalProps {
   children: React.ReactNode;
@@ -34,7 +39,9 @@ const DocumentPinpReactPortal: NextPage = () => {
   const pipWindow = useRef<Awaited<ReturnType<DocumentPictureInPicture['requestWindow']>> | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
-  const [pipSupported, setPipSupported] = useState(false);
+  const pipSupported = useSyncExternalStore(subscribeNoop, detectDocumentPipSupport, () => false);
+  // render 中に ref を読まないよう、Portal の描画先は state で持つ
+  const [pipBody, setPipBody] = useState<HTMLElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   const clickHandler = () => setCount((prev) => prev + 1);
@@ -85,17 +92,14 @@ const DocumentPinpReactPortal: NextPage = () => {
           }
         }
       });
+      setPipBody(pipWindow.current.document.body);
       setIsOpen((prev) => !prev);
     }
   };
 
-  useEffect(() => {
-    setPipSupported(typeof documentPictureInPicture !== 'undefined');
-  }, []);
-
   return (
     <>
-      <ConditionalPortal usePortal={isOpen} portalContainer={pipWindow?.current?.document.body}>
+      <ConditionalPortal usePortal={isOpen} portalContainer={pipBody}>
         <div id="container">
           <div id="dpip" ref={contentRef}>
             <p>this is content!!!</p>

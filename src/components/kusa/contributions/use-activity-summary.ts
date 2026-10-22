@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import type { SummarizerAvailability, SummarizerLength, SummarizerType } from '@/lib/summarizer';
 import type { ActivityDigest } from './activity-digest';
 import { getSummarizer, readSummaryStream } from '@/lib/summarizer';
@@ -10,6 +10,10 @@ const SHARED_CONTEXT =
 
 export type SummarizerState = SummarizerAvailability | 'unsupported' | 'checking';
 
+// Summarizer API の有無は実行中に変わらないため購読するイベントは無い
+const subscribeNoop = () => () => {};
+const detectSummarizer = () => getSummarizer() !== null;
+
 export type UseActivitySummaryOptions = {
   type: SummarizerType;
   length: SummarizerLength;
@@ -17,7 +21,10 @@ export type UseActivitySummaryOptions = {
 };
 
 export const useActivitySummary = (digest: ActivityDigest, options: UseActivitySummaryOptions) => {
-  const [state, setState] = useState<SummarizerState>('checking');
+  // SSR とハイドレーション中は対応有無が分からないため null(= checking)にする(effect 内で setState しない)
+  const supported = useSyncExternalStore<boolean | null>(subscribeNoop, detectSummarizer, () => null);
+  const [availabilityState, setState] = useState<SummarizerState>('checking');
+  const state: SummarizerState = supported === false ? 'unsupported' : availabilityState;
   const [summary, setSummary] = useState<string>('');
   const [input, setInput] = useState<string | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -27,10 +34,7 @@ export const useActivitySummary = (digest: ActivityDigest, options: UseActivityS
   useEffect(() => {
     const summarizer = getSummarizer();
 
-    if (summarizer === null) {
-      setState('unsupported');
-      return;
-    }
+    if (summarizer === null) return;
 
     let cancelled = false;
 

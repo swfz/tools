@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState, ReactNode, MouseEvent, useEffect } from 'react';
+import { useState, ReactNode, MouseEvent } from 'react';
 import { useMedia } from 'react-use';
 import { ClockIcon, AdjustmentsIcon, GridIcon, ChevronDoubleIcon } from './icon';
 import { PaintbrushIcon } from '@primer/octicons-react';
@@ -7,10 +7,12 @@ import { PaintbrushIcon } from '@primer/octicons-react';
 function Layout({ children }: { children: ReactNode }) {
   const isWide = useMedia('(min-width: 640px)', false);
   const [isOpen, setIsOpen] = useState(isWide);
-
-  useEffect(() => {
+  // 画面幅が切り替わったら幅に合わせて開閉し直す(effectではなくrender中に前回値と比べて更新する)
+  const [prevIsWide, setPrevIsWide] = useState(isWide);
+  if (isWide !== prevIsWide) {
+    setPrevIsWide(isWide);
     setIsOpen(isWide);
-  }, [isWide]);
+  }
 
   const togglOpen = (event: MouseEvent<SVGElement>) => {
     setIsOpen((prev) => !prev);
