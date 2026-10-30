@@ -74,7 +74,7 @@
     "storybook": "10.6.2",
     "tailwindcss": "4.3.3",
     "ts-jest": "29.4.15",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   },
   "packageManager": "pnpm@12.15.0",
   "lint-staged": {
