@@ -192,7 +192,7 @@ const KusaIndex: NextPage = () => {
                     </div>
                     {/* 日々変わる外部画像のため Next.js の画像最適化は通さない。サイズは kusa-image の PNG(670x140) */}
                     <Image
-                      src={`https://kusa-image.swfz.deno.net/${username}`}
+                      src={`https://kusa-image.swfz.dev/${username}`}
                       alt={`${username}'s GitHub Contributions`}
                       width={670}
                       height={140}
@@ -207,7 +207,7 @@ const KusaIndex: NextPage = () => {
 
           <p className="mt-4 text-xs text-gray-600">
             💡 コントリビューション画像は
-            <a href="https://kusa-image.swfz.deno.net/" className="text-blue-600 hover:underline">
+            <a href="https://kusa-image.swfz.dev/" className="text-blue-600 hover:underline">
               kusa-image
             </a>
             を使用しています
