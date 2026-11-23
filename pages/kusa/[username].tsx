@@ -25,7 +25,7 @@ type Props = {
   coverage: number | string;
 };
 
-const contributionApiUrl = process.env.CONTRIBUTION_API_URL || 'https://forked-contributions-api.swfz.deno.net';
+const contributionApiUrl = process.env.CONTRIBUTION_API_URL || 'https://kusa-image.swfz.dev';
 
 const fetchContribution = async (url: string, username: string, to: string): Promise<(number | null)[]> => {
   const res = await fetch(`${url}/${username}.json?to=${to}`);
